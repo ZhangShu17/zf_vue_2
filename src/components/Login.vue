@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  // ajax 前置请求头设置
+  // ajax 前置请求头设置token
   $.ajaxSetup({
     beforeSend: function (xhr) {
       xhr.setRequestHeader('Authorization', localStorage.getItem('token'))
@@ -57,6 +57,7 @@
         mobile: '',
         verifyCode: '',
         title: '获取验证码',
+        wait: 60,
         pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/ // 匹配手机号码
       }
     },
@@ -64,38 +65,28 @@
       // 获取验证码
       getVerifyCode: function () {
         let btn = document.getElementsByClassName('verify-code')[0]
-        // 解除事件绑定
-        this.flag = false
-        btn.classList.add('disabled')
-        let wait = 60
-        let _this = this
-        // 验证合法手机号：请求验证码、倒计时
-        if (_this.mobile.match(_this.pattern)) {
+        // 验证合法手机号：解除事件绑定、倒计时、请求验证码
+        if (this.mobile.match(this.pattern)) {
+          this.flag = false
+          btn.classList.add('disabled')
+          this.countDown(btn)
+          let _this = this
           // 发送请求
-          let url = 'https://test-yikaoyan-api.51easymaster.com/admin/admin/login/?mobile=' + _this.mobile
+          let url = 'https://test-yikaoyan-api.51easymaster.com/admin/admin/login/'
           $.ajax({
             url: url,
             type: 'GET',
+            data: {
+              mobile: _this.mobile
+            },
             success: function (response) {
               console.log(response)
             },
             error: function (error) {
-              alert('err')
               console.log(error)
+              alert('验证码请求过于频繁或手机号码错误！')
             }
           })
-          // 倒计时
-          let timer = setInterval(function () {
-            wait--
-            if (wait !== 0) {
-              _this.title = wait + 's后重发'
-            } else {
-              btn.classList.remove('disabled')
-              _this.flag = true
-              _this.title = '获取验证码'
-              clearInterval(timer)
-            }
-          }, 1000)
         } else {
           alert('请输入有效的手机号！')
         }
@@ -103,7 +94,8 @@
       // 提交登陆
       loginPost: function () {
         let _this = this
-        let url = 'https://test-yikaoyan-api.51easymaster.com/admin/admin/login/?mobile=' + this.mobile
+        let url = 'https://test-yikaoyan-api.51easymaster.com/admin/admin/login/'
+        console.log('ready to send post request')
         $.ajax({
           url: url,
           type: 'POST',
@@ -112,15 +104,34 @@
             verifyCode: _this.verifyCode
           },
           success: function (result) {
+            console.log('success to get response')
             // 登陆成功，储存用户信息，跳转
             // alert(result.data.token)
             _this.saveInfo(result)
+            // alert('登陆信息存储完毕')
             _this.$router.push({ name: 'SubmitScore' })
           },
           error: function (err) {
             console.log(err)
           }
         })
+        console.log('ajax 请求完成')
+      },
+      // 倒计时
+      countDown: function (btn) {
+        let _this = this
+        let timer = setInterval(function () {
+          // 计时器内部是匿名函数，注意this问题
+          _this.wait--
+          if (this.wait !== 0) {
+            _this.title = _this.wait + 's后重发'
+          } else {
+            btn.classList.remove('disabled')
+            _this.flag = true
+            _this.title = '获取验证码'
+            clearInterval(timer)
+          }
+        }, 1000)
       },
       // 保存登陆信息至localstorage
       saveInfo: function (result) {

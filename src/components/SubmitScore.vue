@@ -67,7 +67,7 @@
           <div class="form-group">
             <label for="Major_score" class="col-sm-4 control-label">专业成绩</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" id="Major_score" placeholder="请输入专业课成绩" v-model="major_score">
+              <input type="text" class="form-control" id="Major_score" placeholder="请输入专业课成绩" v-model="major_score" required>
             </div>
           </div>
           <!--总分-->
@@ -102,13 +102,13 @@
         major: '',
         english_score: '',
         political_score: '',
-        math_score: '',
+        math_score: 0,
         major_score: ''
       }
     },
     methods: {
       submit_score: function () {
-        let url = 'http://test-yikaoyan-api.51easymaster.com/score/'
+        let url = 'https://test-yikaoyan-api.51easymaster.com/score/'
         let _this = this
         $.ajax({
           url: url,

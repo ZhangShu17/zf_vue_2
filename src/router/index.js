@@ -11,8 +11,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'ScoreList',
-      component: ScoreList
+      name: 'Login',
+      component: Login
     },
     {
       path: '/submitscore',
