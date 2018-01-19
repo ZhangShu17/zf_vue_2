@@ -28,14 +28,37 @@
               <input type="email" class="form-control" id="Email" placeholder="请输入邮箱" v-model="email">
             </div>
           </div>
-          <!--学校-->
+          <!--QQ-->
           <div class="form-group">
-            <label for="Uni" class="col-sm-4 control-label">学校</label>
+            <label for="QQ" class="col-sm-4 control-label">QQ</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" id="Uni" placeholder="请输入学校" v-model="school">
+              <input type="text" class="form-control" id="QQ" placeholder="请输入QQ号" v-model="qq">
             </div>
           </div>
-          <!--专业-->
+          <!--地区-->
+          <div class="form-group">
+            <label for="District" class="col-sm-4 control-label">地区</label>
+            <div class="col-sm-8">
+              <select class="form-control" id="District" v-model="state_selected_id" @change="uni_state">
+                <template v-for="(state,index) in states">
+                  <option v-if="index === 0" v-bind:label="state.name" v-bind:value="state.id" selected="selected">{{state.name}}</option>
+                  <option v-else v-bind:label="state.name" v-bind:value="state.id">{{state.name}}</option>
+                </template>
+              </select>
+            </div>
+          </div>
+          <!--学校-->
+          <div class="form-group">
+            <label for="University" class="col-sm-4 control-label">学校</label>
+            <div class="col-sm-8">
+              <select class="form-control" id="University" v-model="university">
+                <template v-for="(uni,index) in university_list">
+                  <option v-if="index === 0" selected="selected" v-bind:label="uni.name" v-bind:value="uni.name">{{uni.name}}</option>
+                  <option v-else v-bind:label="uni.name" v-bind:value="uni.name">{{uni.name}}</option>
+                </template>
+              </select>
+            </div>
+          </div>
           <div class="form-group">
             <label for="Major" class="col-sm-4 control-label">报考专业</label>
             <div class="col-sm-8">
@@ -98,12 +121,19 @@
         name: '',
         mobile: '',
         email: '',
-        school: '',
+        // 删除school
+        // school: '',
         major: '',
+        qq: '',
         english_score: '',
         political_score: '',
         math_score: 0,
-        major_score: ''
+        major_score: '',
+        states: [],
+        university_list: [],
+        state_selected_id: '',
+        university: '',
+        state_selected: ''
       }
     },
     methods: {
@@ -117,8 +147,11 @@
             userId: localStorage.getItem('userId'),
             name: _this.name,
             mobile: _this.mobile,
+            // 添加qq
+            qq: _this.qq,
             email: _this.email,
-            school: _this.school,
+            // 添加高校
+            school: _this.university,
             major: _this.major,
             english_score: _this.english_score,
             political_score: _this.political_score,
@@ -135,7 +168,52 @@
             console.log(err)
           }
         })
+      },
+      uni_state: function () {
+        let url = 'https://yikaoyan-api.51easymaster.com/admin/university/list/'
+        let _this = this
+        $.ajax({
+          url: url,
+          type: 'GET',
+          data: {
+            stateId: _this.state_selected_id
+          },
+          success: function (response) {
+            console.log('我点击了地区了哦')
+            _this.university_list = response.data.university
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
       }
+    },
+    mounted: function () {
+      let url1 = 'https://yikaoyan-api.51easymaster.com/admin/state/'
+      let _this = this
+      $.ajax({
+        url: url1,
+        type: 'GET',
+        success: function (response) {
+          console.log(response)
+          _this.states = response.data.states
+        },
+        error: function (err) {
+          console.log(err)
+        }
+      })
+      let url2 = 'https://yikaoyan-api.51easymaster.com/admin/university/list/?stateId=3&hasCourse=0'
+      $.ajax({
+        url: url2,
+        type: 'GET',
+        success: function (response) {
+          console.log(response)
+          _this.university_list = response.data.university
+        },
+        error: function (err) {
+          console.log(err)
+        }
+      })
     },
     computed: {
       get_amount: function () {

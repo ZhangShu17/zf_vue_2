@@ -13,7 +13,8 @@ Vue.config.productionTip = false
 Vue.use(Vuex)
 
 /* eslint-disable no-new */
-
+// eslint-disable-next-line
+/* eslint-disable */
 // 创建根实例
 new Vue({
   el: '#app',
