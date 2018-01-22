@@ -17,6 +17,7 @@
                 <th>姓名</th>
                 <th>电话</th>
                 <th>邮箱</th>
+                <th>QQ</th>
                 <th>学校</th>
                 <th>专业</th>
                 <th>英语成绩</th>
@@ -28,11 +29,13 @@
               </thead>
               <tbody>
               <tr v-for="(item, index) in items">
-                <th scope="row">{{ index + 1 }}</th>
+                <th scope="row">{{ item.id}}</th>
                 <td>{{ item.name }}</td>
                 <td>{{ item.mobile }}</td>
                 <td>{{ item.email }}</td>
-                <td>{{ item.school }}</td>
+                <td>{{item.qq}}</td>
+                <td v-if="item.school">{{ item.school.name }}</td>
+                <td v-else></td>
                 <td>{{ item.major }}</td>
                 <td>{{ item.englishScore }}</td>
                 <td>{{ item.politicalScore }}</td>
@@ -91,8 +94,9 @@
             page: _this.pagination.current_page
           },
           success: function (response) {
-            // console.log(response)
+            console.log(response)
             _this.items = response.results
+            console.log(_this.items)
             _this.pagination.total = response.count  // 总数
             if (response.next) {
               // 根据返回结果的下一页获取当前页码
@@ -112,6 +116,7 @@
           },
           error: function (err) {
             console.log(err)
+            alert('获取权限失败，无法访问！')
           }
         })
       },
@@ -121,9 +126,9 @@
           const {
             export_json_to_excel
           } = require('vendor/Export2Excel')
-          const tHeader = ['序号', '姓名', '电话', '邮箱', '学校', '专业', '英语成绩',
+          const tHeader = ['序号', '姓名', '电话', '邮箱', 'QQ', '学校', '专业', '英语成绩',
             '政治成绩', '数学成绩', '专业成绩', '考研总分']
-          const filterVal = ['id', 'name', 'mobile', 'email', 'school', 'major', 'englishScore',
+          const filterVal = ['id', 'name', 'mobile', 'email', 'qq', 'school.name', 'major', 'englishScore',
             'politicalScore', 'mathScore', 'majorScore', 'amount']
           // const list = [
           //   {id: 1, title: 2, author: 3, pageviews: 4, display_time: 5},

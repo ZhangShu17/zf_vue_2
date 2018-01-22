@@ -2,10 +2,10 @@
   <div id="app">
     <div class="container">
       <ul class="nav nav-pills">
+        <li v-if="getUserId()" role="presentation"><router-link to="/logout">退出登陆</router-link></li>
+        <li v-else role="presentation"><router-link to="/login">登陆</router-link></li>
         <li role="presentation" class="active"><router-link to="/submitscore">录入成绩</router-link></li>
         <li role="presentation"><router-link to="/scorelist">成绩列表</router-link></li>
-          <li v-if="getUserId()" role="presentation"><router-link to="/logout">退出登陆</router-link></li>
-          <li v-else role="presentation"><router-link to="/login">登陆</router-link></li>
       </ul>
       <router-view></router-view>
     </div>
@@ -17,7 +17,7 @@
     name: 'app',
     methods: {
       getUserId: function () {
-        return localStorage.getItem('userId')
+        return localStorage.getItem('userName')
       }
     }
   }

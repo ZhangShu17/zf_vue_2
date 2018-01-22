@@ -17,7 +17,7 @@
         }
       },
       mounted: function () {
-        if (!window.localStorage.getItem('userId')) {
+        if (!window.localStorage.getItem('userName')) {
           this.$router.push({name: 'Login'})
         }
       }

@@ -3,7 +3,12 @@
     <div class="row">
       <div class="col-md-4 col-lg-offset-4">
         <!-- 登录表单 开始 -->
-        <h1>Admin Login</h1>
+        <h1>管理员登录</h1>
+        <p>普通用户在此
+          <router-link :to="{name:'commonUser'}">
+            <a>登录</a>
+          </router-link>
+        </p>
         <hr>
         <form>
           <p id='error' style="color: red"></p>
@@ -109,7 +114,7 @@
             // alert(result.data.token)
             _this.saveInfo(result)
             // alert('登陆信息存储完毕')
-            _this.$router.push({ name: 'SubmitScore' })
+            _this.$router.push({ name: 'SubmitScore', query: {usertype: 'admin'} })
           },
           error: function (err) {
             console.log(err)

@@ -4,6 +4,7 @@ import ScoreList from '@/components/ScoreList'
 import SubmitScore from '@/components/SubmitScore'
 import Login from '@/components/Login'
 import Logout from '@/components/Logout'
+import commonUser from '@/components/commonUser'
 
 Vue.use(Router)
 
@@ -33,6 +34,11 @@ export default new Router({
       path: '/logout',
       name: 'Logout',
       component: Logout
+    },
+    {
+      path: '/commonUser',
+      name: 'commonUser',
+      component: commonUser
     }
   ]
 })

@@ -2,6 +2,7 @@
   <div>
   <div class="container" id="app_student_score">
 
+
     <div class="row">
       <div class="col-md-6">
         <h3 align="center">易考研学员信息录入</h3>
@@ -53,8 +54,8 @@
             <div class="col-sm-8">
               <select class="form-control" id="University" v-model="university">
                 <template v-for="(uni,index) in university_list">
-                  <option v-if="index === 0" selected="selected" v-bind:label="uni.name" v-bind:value="uni.name">{{uni.name}}</option>
-                  <option v-else v-bind:label="uni.name" v-bind:value="uni.name">{{uni.name}}</option>
+                  <option v-if="index === 0" selected="selected" v-bind:label="uni.name" v-bind:value="uni.id">{{uni.name}}</option>
+                  <option v-else v-bind:label="uni.name" v-bind:value="uni.id">{{uni.name}}</option>
                 </template>
               </select>
             </div>
@@ -125,21 +126,30 @@
         // school: '',
         major: '',
         qq: '',
-        english_score: '',
-        political_score: '',
+        english_score: 0,
+        political_score: 0,
         math_score: 0,
-        major_score: '',
+        major_score: 0,
         states: [],
         university_list: [],
         state_selected_id: '',
         university: '',
-        state_selected: ''
+        state_selected: '',
+        usertype: this.$route.query.usertype
       }
     },
     methods: {
       submit_score: function () {
-        let url = 'https://test-yikaoyan-api.51easymaster.com/score/'
         let _this = this
+        console.log(_this.university)
+        var url = ''
+        if (_this.usertype === 'admin') {
+          url = 'https://test-yikaoyan-api.51easymaster.com/score/'
+        } else if (_this.usertype === 'commonuser') {
+          url = 'https://test-yikaoyan-api.51easymaster.com/score_common/submit/'
+        } else {
+          alert('未登录，无此权限')
+        }
         $.ajax({
           url: url,
           type: 'POST',
@@ -162,7 +172,7 @@
           success: function (response) {
             console.log(response)
             // 跳转到清单
-            _this.$router.push({ name: 'ScoreList' })
+            // _this.$router.push({ name: 'ScoreList' })
           },
           error: function (err) {
             console.log(err)
