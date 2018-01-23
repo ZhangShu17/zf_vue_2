@@ -61,6 +61,7 @@
                 console.log('用户名及密码正确')
                 window.localStorage.setItem('userName', response.data.userInfo.username)
                 _this.$router.push({name: 'SubmitScore', query: {usertype: 'commonuser'}})
+                console.log('普通用户登录成功')
               } else {
                 alert('用户名或密码错误')
               }
@@ -69,7 +70,6 @@
               console.log(err)
             }
           })
-          console.log('ajax请求完成，普通用户登录成功')
         }
       }
     }

@@ -22,8 +22,8 @@
                 <th>专业</th>
                 <th>英语成绩</th>
                 <th>政治成绩</th>
-                <th>数学成绩</th>
-                <th>专业成绩</th>
+                <th>专业1成绩</th>
+                <th>专业2成绩</th>
                 <th>考研总分</th>
               </tr>
               </thead>
@@ -39,8 +39,8 @@
                 <td>{{ item.major }}</td>
                 <td>{{ item.englishScore }}</td>
                 <td>{{ item.politicalScore }}</td>
-                <td>{{ item.mathScore }}</td>
-                <td>{{ item.majorScore }}</td>
+                <td>{{ item.major1_score }}</td>
+                <td>{{ item.major2_score }}</td>
                 <td>{{ item.amount }}</td>
               </tr>
               </tbody>
@@ -127,15 +127,19 @@
             export_json_to_excel
           } = require('vendor/Export2Excel')
           const tHeader = ['序号', '姓名', '电话', '邮箱', 'QQ', '学校', '专业', '英语成绩',
-            '政治成绩', '数学成绩', '专业成绩', '考研总分']
-          const filterVal = ['id', 'name', 'mobile', 'email', 'qq', 'school.name', 'major', 'englishScore',
-            'politicalScore', 'mathScore', 'majorScore', 'amount']
-          // const list = [
-          //   {id: 1, title: 2, author: 3, pageviews: 4, display_time: 5},
-          //   {id: 6, title: 7, author: 8, pageviews: 9, display_time: 10},
-          //   {id: 11, title: 12, author: 13, pageviews: 14, display_time: 15}
-          // ]
-          const data = this.formatJson(filterVal, this.items)
+            '政治成绩', '专业1成绩', '专业2成绩', '考研总分']
+          const filterVal = ['id', 'name', 'mobile', 'email', 'qq', 'school', 'major', 'englishScore',
+            'politicalScore', 'major1_score', 'major2_score', 'amount']
+          const listStr = JSON.stringify(this.items)
+          const list = JSON.parse(listStr)
+          for (var i = 0; i < list.length; i++) {
+            if (list[i].school) {
+              list[i].school = list[i].school.name
+            } else {
+              list[i].school = '/'
+            }
+          }
+          const data = this.formatJson(filterVal, list)
           export_json_to_excel(tHeader, data, '学生考研信息excel')
         })
       },
