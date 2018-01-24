@@ -101,6 +101,7 @@
         let _this = this
         let url = 'https://test-yikaoyan-api.51easymaster.com/admin/admin/login/'
         console.log('ready to send post request')
+        window.alert('1')
         $.ajax({
           url: url,
           type: 'POST',
@@ -109,17 +110,20 @@
             verifyCode: _this.verifyCode
           },
           success: function (result) {
+            window.alert('2')
             console.log('success to get response')
             // 登陆成功，储存用户信息，跳转
             // alert(result.data.token)
             _this.saveInfo(result)
             // alert('登陆信息存储完毕')
+            window.alert('3')
             _this.$router.push({ name: 'SubmitScore', query: {usertype: 'admin'} })
           },
           error: function (err) {
             console.log(err)
           }
         })
+        window.alert('4')
         console.log('ajax 请求完成')
       },
       // 倒计时

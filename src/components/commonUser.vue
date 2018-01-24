@@ -48,6 +48,7 @@
           console.log(_this.username)
           let url = 'https://test-yikaoyan-api.51easymaster.com/score_common/login/'
           console.log('普通用户准备登录')
+          window.alert('1')
           $.ajax({
             url: url,
             type: 'POST',
@@ -57,11 +58,13 @@
               password: _this.password
             },
             success: function (response) {
+              window.alert(2)
               console.log(response)
               console.log(response.data)
               window.alert('success')
               window.alert(response)
               if (response.retCode === 0) {
+                window.alert('3')
                 console.log('用户名及密码正确')
                 window.localStorage.setItem('userName', response.data.userInfo.username)
                 // _this.$router.push({name: 'SubmitScore', query: {usertype: 'commonuser'}})
@@ -74,7 +77,7 @@
               console.log(err)
             }
           })
-          window.alert('f')
+          window.alert('4')
           _this.$router.push({name: 'SubmitScore', query: {usertype: 'commonuser'}})
         }
       }
