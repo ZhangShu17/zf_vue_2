@@ -51,6 +51,7 @@
           $.ajax({
             url: url,
             type: 'POST',
+            async: false,
             data: {
               username: _this.username,
               password: _this.password
