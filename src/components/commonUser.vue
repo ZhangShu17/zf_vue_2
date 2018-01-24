@@ -58,10 +58,13 @@
             },
             success: function (response) {
               console.log(response)
+              console.log(response.data)
+              window.alert('success')
+              window.alert(response)
               if (response.retCode === 0) {
                 console.log('用户名及密码正确')
                 window.localStorage.setItem('userName', response.data.userInfo.username)
-                _this.$router.push({name: 'SubmitScore', query: {usertype: 'commonuser'}})
+                // _this.$router.push({name: 'SubmitScore', query: {usertype: 'commonuser'}})
                 console.log('普通用户登录成功')
               } else {
                 alert('用户名或密码错误')
@@ -71,6 +74,8 @@
               console.log(err)
             }
           })
+          window.alert('f')
+          _this.$router.push({name: 'SubmitScore', query: {usertype: 'commonuser'}})
         }
       }
     }
