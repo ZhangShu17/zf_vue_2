@@ -104,6 +104,7 @@
         $.ajax({
           url: url,
           type: 'POST',
+          async: false,
           data: {
             mobile: _this.mobile,
             verifyCode: _this.verifyCode
@@ -114,7 +115,7 @@
             // alert(result.data.token)
             _this.saveInfo(result)
             // alert('登陆信息存储完毕')
-            _this.$router.push({ name: 'SubmitScore', query: {usertype: 'admin'} })
+            _this.$router.push({ name: 'SubmitScore' })
           },
           error: function (err) {
             console.log(err)

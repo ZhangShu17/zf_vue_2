@@ -1,8 +1,6 @@
 <template>
   <div>
   <div class="container" id="app_student_score">
-
-
     <div class="row">
       <div class="col-md-6">
         <h3 align="center">易考研学员信息录入</h3>
@@ -62,7 +60,7 @@
           <!--</div>-->
           <!--学校-->
           <div class="form-group">
-            <label for="School" class="col-sm-4 control-label">报考学校</label>
+            <label for="School" class="col-sm-4 control-label">报考学校代码</label>
             <div class="col-sm-8">
               <input type="number" class="form-control" id="School" placeholder="请输入学校代码" v-model="university">
             </div>
@@ -148,13 +146,15 @@
     },
     methods: {
       submit_score: function () {
+        console.log(localStorage.getItem('userType'))
         let _this = this
+        console.log(_this.username)
         console.log(_this.university)
         console.log(_this.usertype)
         var url = ''
-        if (_this.usertype === 'admin') {
+        if (localStorage.getItem('userType') === 'admin') {
           url = 'https://test-yikaoyan-api.51easymaster.com/score/'
-        } else if (_this.usertype === 'commonuser') {
+        } else if (localStorage.getItem('userType') === 'commonuser') {
           url = 'https://test-yikaoyan-api.51easymaster.com/score_common/submit/'
         } else {
           alert('未登录，无此权限')
@@ -163,6 +163,7 @@
         $.ajax({
           url: url,
           type: 'POST',
+          async: false,
           data: {
             userId: localStorage.getItem('userId'),
             name: _this.name,
@@ -180,11 +181,23 @@
             amount: _this.get_amount
           },
           success: function (response) {
+            console.log('success')
             console.log(response)
+            if (window.localStorage.getItem('userType') === 'commonuser') {
+              if (response.retCode === -1) {
+                alert('提交失败，' + response.data.error)
+              } else {
+                alert('提交成功！')
+              }
+            } else {
+              alert('提交成功！')
+              _this.$router.push({ name: 'ScoreList' })
+            }
             // 跳转到清单
             // _this.$router.push({ name: 'ScoreList' })
           },
           error: function (err) {
+            alert('提交失败！')
             console.log(err)
           }
         })

@@ -82,6 +82,10 @@
     },
     methods: {
       init: function () {
+        if (window.localStorage.getItem('userType') !== 'admin') {
+          alert('无访问权限')
+          return
+        }
         var _this = this
         let userId = localStorage.getItem('userId')
         let url = 'https://test-yikaoyan-api.51easymaster.com/score/'
@@ -105,18 +109,21 @@
             }
             // 计算最后一页的页码 last_page：total / per_page
             let resFull = _this.pagination.total / _this.pagination.per_page
+            let mod = _this.pagination.total % _this.pagination.per_page
             let resInt = parseInt(resFull)
-            if (resFull < 1) {
+            if (_this.pagination.total === 0) {
               _this.pagination.last_page = 1
-            } else if (resFull === 1) {
-              _this.pagination.last_page = resFull
             } else {
-              _this.pagination.last_page = resInt + 1
+              if (mod > 0) {
+                _this.pagination.last_page = resInt + 1
+              } else {
+                _this.pagination.last_page = resInt
+              }
             }
           },
           error: function (err) {
             console.log(err)
-            alert('获取权限失败，无法访问！')
+            alert('访问错误')
           }
         })
       },
