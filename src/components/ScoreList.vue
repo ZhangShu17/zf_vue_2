@@ -116,7 +116,7 @@
           },
           error: function (err) {
             console.log(err)
-            alert('获取权限失败，无法访问！')
+            alert('无访问权限！')
           }
         })
       },
