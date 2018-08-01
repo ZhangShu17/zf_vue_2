@@ -1,0 +1,211 @@
+<template>
+  <div>
+    <div class="container" id="edit_admin">
+      <div class="row">
+        <div class="col-md-6">
+          <h3 align="center">人员添加</h3>
+          <hr>
+          <form class="form-horizontal">
+            <!--姓名-->
+            <div class="form-group">
+              <label for="name" class="col-sm-4 control-label">姓名</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="name" v-model="name">
+              </div>
+            </div>
+            <!--手机-->
+            <div class="form-group">
+              <label for="mobile" class="col-sm-4 control-label">手机号</label>
+              <div class="col-sm-8">
+                <input type="email" class="form-control" id="mobile" v-model="mobile">
+              </div>
+            </div>
+            <!--职务-->
+            <div class="form-group">
+              <label for="duty" class="col-sm-4 control-label">职务</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="duty" v-model="duty">
+              </div>
+            </div>
+            <!--电台信道-->
+            <div class="form-group">
+              <label for="channel" class="col-sm-4 control-label">电台信道</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="channel" v-model="channel">
+              </div>
+            </div>
+            <!--电台呼号-->
+            <div class="form-group">
+              <label for="callSign" class="col-sm-4 control-label">电台呼号</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="callSign" v-model="callSign">
+              </div>
+            </div>
+
+            <!--提交按钮-->
+            <div class="form-group">
+              <div class="col-sm-offset-4 col-sm-8">
+                <button type="button" class="btn btn-primary btn-block" @click="AddFaculty">提交添加</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'addFaculty',
+    data () {
+      return {
+        type: '',
+        roadId: '',
+        sectionId: '',
+        stationId: '',
+        chiefType: '',
+        name: '',
+        mobile: '',
+        duty: '',
+        channel: '',
+        callSign: ''
+      }
+    },
+    methods: {
+      init: function () {
+        console.log('添加人员初始化完成')
+        this.type = this.$route.query.type
+        this.chiefType = this.$route.query.chiefType
+        console.log(this.type)
+        console.log('打印ciefType')
+        console.log(this.chiefType)
+        console.log('打印ciefType  END')
+        if (this.type === 1) {
+          this.roadId = this.$route.query.roadId
+          console.log(this.roadId)
+        }
+        if (this.type === 2) {
+          this.sectionId = this.$route.query.sectionId
+          console.log(this.sectionId)
+        }
+        if (this.type === 3) {
+          this.stationId = this.$route.query.stationId
+          console.log(this.stationId)
+        }
+      },
+      AddFaculty: function () {
+        console.log('~~~~~~~~~~~~~~~')
+        console.log(this.chiefType)
+        console.log('~~~~~end~~~~~~')
+        let _this = this
+        if (_this.type === 0) {
+          let url = 'http://127.0.0.1:8000/faculty/edit'
+          $.ajax({
+            url: url,
+            type: 'POST',
+            async: false,  // 取消异步请求
+            data: {
+              userName: localStorage.getItem('userName'),
+              name: _this.name,
+              mobile: _this.mobile,
+              duty: _this.duty,
+              channel: _this.channel,
+              callSign: _this.callSign
+            },
+            success: function (response) {
+              console.log('success')
+              _this.$router.push('/facultyList')
+            },
+            error: function (error) {
+              console.log(error)
+            }
+          })
+        }
+        if (_this.type === 1) {
+          let url = 'http://127.0.0.1:8000/road/faculty'
+          $.ajax({
+            url: url,
+            type: 'POST',
+            async: false,  // 取消异步请求
+            data: {
+              userName: localStorage.getItem('userName'),
+              roadId: _this.roadId,
+              facultyType: _this.chiefType,
+              name: _this.name,
+              mobile: _this.mobile,
+              duty: _this.duty,
+              channel: _this.channel,
+              callSign: _this.callSign
+            },
+            success: function (response) {
+              console.log('success')
+              _this.$router.push({path: '/facultyInfo', query: {type: _this.type, roadId: _this.roadId}})
+            },
+            error: function (error) {
+              console.log(error)
+            }
+          })
+        }
+        if (_this.type === 2) {
+          let url = 'http://127.0.0.1:8000/section/faculty'
+          $.ajax({
+            url: url,
+            type: 'POST',
+            async: false,  // 取消异步请求
+            data: {
+              userName: localStorage.getItem('userName'),
+              sectionId: _this.sectionId,
+              facultyType: _this.chiefType,
+              name: _this.name,
+              mobile: _this.mobile,
+              duty: _this.duty,
+              channel: _this.channel,
+              callSign: _this.callSign
+            },
+            success: function (response) {
+              console.log('success')
+              _this.$router.push({path: '/facultyInfo', query: {type: _this.type, sectionId: _this.sectionId}})
+            },
+            error: function (error) {
+              console.log(error)
+            }
+          })
+        }
+        if (_this.type === 3) {
+          let url = 'http://127.0.0.1:8000/station/faculty'
+          $.ajax({
+            url: url,
+            type: 'POST',
+            async: false,  // 取消异步请求
+            data: {
+              userName: localStorage.getItem('userName'),
+              stationId: _this.stationId,
+              facultyType: _this.chiefType,
+              name: _this.name,
+              mobile: _this.mobile,
+              duty: _this.duty,
+              channel: _this.channel,
+              callSign: _this.callSign
+            },
+            success: function (response) {
+              console.log('success')
+              _this.$router.push({path: '/facultyInfo', query: {type: _this.type, stationId: _this.stationId}})
+            },
+            error: function (error) {
+              console.log(error)
+            }
+          })
+        }
+      }
+    },
+    mounted () {
+      console.log('挂载完成')
+      this.init()
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>
