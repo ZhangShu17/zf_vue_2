@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="container">
-      <h3 align="center">岗哨管理
+      <h3 align="center" v-if="sectionId">岗哨管理-路段【{{sectionId}}】
+      </h3>
+      <h3 align="center" v-else>岗哨管理
       </h3>
       <ul class="nav nav-pills">
         <li @click = 'jump2AddStation'><a href="#">+添加岗位</a></li>
@@ -88,19 +90,37 @@
         })
       },
       jump2AddStation: function () {
-        this.$router.push({path: '/addStation', query: {sectionId: this.$route.query.sectionId, type: this.$route.query.type}})
+        this.$router.push({
+          path: '/addStation',
+          query: {
+            sectionId: this.$route.query.sectionId,
+            type: this.$route.query.type
+          }
+        })
       },
       StationFaculty: function (msg, event) {
         let el = event.currentTarget
         let idInt = parseInt(el.value)
         // 跳转信息：1 路线人员信息 2：路段人员信息 3：岗哨人员信息
-        this.$router.push({path: '/facultyInfo', query: {stationId: idInt, type: 3}})
+        this.$router.push({
+          path: '/facultyInfo',
+          query: {
+            stationId: idInt,
+            type: 3}
+        })
       },
       EditStation: function (msg, event) {
         var el = event.currentTarget
         var idInt = parseInt(el.value)
+        console.log('编辑岗哨打印')
         console.log(idInt)
-        this.$router.push({path: '/submitStation', query: {stationId: idInt, type: this.type, sectionId: this.sectionId}})
+        console.log('编辑岗哨打印 END')
+        this.$router.push({
+          path: '/submitStation',
+          query: {stationId: idInt,
+            type: this.type,
+            sectionId: this.sectionId}
+        })
       },
       RemoveStation: function (msg, event) {
         let userName = localStorage.getItem('userName')

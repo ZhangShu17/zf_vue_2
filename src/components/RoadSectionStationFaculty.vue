@@ -9,7 +9,9 @@
       </h3>
       <ul class="nav nav-pills">
         <!--<li><router-link to="/addroad">路长+</router-link></li>-->
-        <li @click="addFaculty(1, $event)"><a href="#">路长+</a></li>
+        <li @click="addFaculty(1, $event)" v-if="type===1"><a href="#">路长+</a></li>
+        <li @click="addFaculty(1, $event)" v-if="type===2"><a href="#">段长+</a></li>
+        <li @click="addFaculty(1, $event)" v-if="type===3"><a href="#">岗长(分局)+</a></li>
       </ul>
       <hr>
       <div class="container">
@@ -57,7 +59,8 @@
     <!--分局-->
     <div class="container" v-if="type !== 3">
       <ul class="nav nav-pills">
-        <li @click="addFaculty(2, $event)"><a href="#">执行路长(分局)+</a></li>
+        <li @click="addFaculty(2, $event)" v-if="type===1"><a href="#">执行路长(分局)+</a></li>
+        <li @click="addFaculty(2, $event)" v-if="type===2"><a href="#">执行段长(分局)+</a></li>
       </ul>
       <hr>
       <div class="container">
@@ -105,7 +108,9 @@
     <!--交通-->
     <div class="container">
       <ul class="nav nav-pills">
-        <li @click="addFaculty(3, $event)"><a href="#">执行路长(交通)+</a></li>
+        <li @click="addFaculty(3, $event)" v-if="type===1"><a href="#">执行路长(交管)+</a></li>
+        <li @click="addFaculty(3, $event)" v-if="type===2"><a href="#">执行段长(交通)+</a></li>
+        <li @click="addFaculty(3, $event)" v-if="type===3"><a href="#">执行岗长(交管)+</a></li>
       </ul>
       <hr>
       <div class="container">
@@ -153,7 +158,8 @@
     <!--武警-->
     <div class="container" v-if="type !== 3">
       <ul class="nav nav-pills">
-        <li @click="addFaculty(4, $event)"><a href="#">执行路长(武警)+</a></li>
+        <li @click="addFaculty(4, $event)" v-if="type===1"><a href="#">执行路长(武警)+</a></li>
+        <li @click="addFaculty(4, $event)" v-if="type===2"><a href="#">执行段长(武警)+</a></li>
       </ul>
       <hr>
       <div class="container">

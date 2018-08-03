@@ -80,6 +80,7 @@
         console.log(result)
         window.localStorage.setItem('token', result.data.token)
         window.localStorage.setItem('userName', result.data.userName)
+        window.localStorage.setItem('districtId', result.data.districtId)
       }
     }
 

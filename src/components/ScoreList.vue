@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="container">
-      <h3 align="center">路线管理
+      <h3 align="center" v-if="serviceLineId">路线管理-勤务路线【{{serviceLineId}}】
+      </h3>
+      <h3 align="center" v-else>路线管理
       </h3>
       <ul class="nav nav-pills">
         <li><router-link to="/addroad">+添加路线</router-link></li>
@@ -16,6 +18,7 @@
         <tr>
           <th>路线ID</th>
           <th>路线名称</th>
+          <th>路线长度</th>
           <th>起点坐标</th>
           <th>终点坐标</th>
           <th>段/岗信息</th>
@@ -26,7 +29,8 @@
       <template v-for="list in roadlist">
         <tr>
           <th>{{list.id}}</th>
-          <td>{{list.name}}</td>
+          <td :id="list.id" @click="PushExcel('', $event)"><a href="#">{{list.name}}</a></td>
+          <td>{{list.length}}</td>
           <td>{{list.startPoint}}</td>
           <td>{{list.endPoint}}</td>
           <td :id="list.id" @click="PushSection('', $event)"><a href="#">{{list.sectionNumber + '段' + list.stationNumber + '岗'}}</a> </td>
@@ -59,18 +63,24 @@
     data () {
       return {
         count: 0,
-        roadlist: []
+        roadlist: [],
+        serviceLineId: 0
       }
     },
     methods: {
       init: function () {
-        var _this = this
-        var url = 'http://127.0.0.1:8000/road/edit'
+        this.serviceLineId = this.$route.query.serviceLineId
+        console.log('打印serviceLineId')
+        console.log(this.serviceLineId)
+        let _this = this
+        let url = 'http://127.0.0.1:8000/road/edit'
         $.ajax({
           url: url,
           type: 'GET',
           data: {
-            userName: localStorage.getItem('userName')
+            userName: localStorage.getItem('userName'),
+            districtId: localStorage.getItem('districtId'),
+            serviceLineId: _this.serviceLineId
           },
           async: false,
           success: function (response) {
@@ -127,6 +137,13 @@
         console.log(idInt)
         console.log('push section')
         this.$router.push({path: '/sectionlist', query: {type: 1, roadId: idInt}})
+      },
+      PushExcel: function (msg, event) {
+        let el = event.currentTarget
+        let idInt = parseInt(el.id)
+        console.log('跳转到excel')
+        console.log(idInt)
+        this.$router.push({path: '/roadExcel', query: {roadId: idInt}})
       }
     },
     mounted () {

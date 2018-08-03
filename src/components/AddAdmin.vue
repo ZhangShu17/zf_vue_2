@@ -37,6 +37,13 @@
               <input type="text" class="form-control" id="name" v-model="name">
             </div>
           </div>
+          <!--路线长度-->
+          <div class="form-group">
+            <label for="length" class="col-sm-4 control-label">路线长度</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="length" v-model="length">
+            </div>
+          </div>
           <!--起点-->
           <div class="form-group">
             <label for="startPlace" class="col-sm-4 control-label">路线起点</label>
@@ -52,7 +59,7 @@
             </div>
           </div>
           <!--起点坐标-->
-          <div class="startPoint">
+          <div class="form-group">
             <label for="startPoint" class="col-sm-4 control-label">起点坐标</label>
             <div class="col-sm-8">
               <input type="email" class="form-control" id="startPoint" v-model="startPoint">
@@ -106,6 +113,7 @@
         return {
           district: '',
           name: '',
+          length: '',
           startPlace: '',
           endPlace: '',
           startPoint: '',
@@ -126,6 +134,7 @@
               userName: localStorage.getItem('userName'),
               districtId: _this.district,
               name: _this.name,
+              length: _this.length,
               startPlace: _this.startPlace,
               endPlace: _this.endPlace,
               startPoint: _this.startPoint,

@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="container">
-      <h3 align="center">路段管理系统
+      <h3 align="center" v-if="roadId">路段管理-路线【{{this.roadId}}】
+      </h3>
+      <h3 align="center" v-else>路段管理
       </h3>
       <ul class="nav nav-pills">
         <li @click="AddSection"><a href="#">+添加路段</a></li>

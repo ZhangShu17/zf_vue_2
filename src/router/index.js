@@ -20,11 +20,23 @@ import editSection from '@/components/editSection'
 import addSection from '@/components/addSection'
 import SubmitStation from '@/components/SubmitStation'
 import AddStation from '@/components/AddStation'
+import roadExcel from '@/components/roadExcel'
+import ServiceLine from '@/components/ServiceLine'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/serviceLineList',
+      name: 'servieLineList',
+      component: ServiceLine
+    },
+    {
+      path: '/roadExcel',
+      name: 'roadExcel',
+      component: roadExcel
+    },
     {
       path: '/addStation',
       name: 'addStation',

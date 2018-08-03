@@ -20,6 +20,13 @@
               <input type="text" class="form-control" id="roadname" v-model="roadName">
             </div>
           </div>
+          <!--道路长度-->
+          <div class="form-group">
+            <label for="length" class="col-sm-4 control-label">道路长度</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="length" v-model="length">
+            </div>
+          </div>
           <!--道路起点-->
           <div class="form-group">
             <label for="roadstart" class="col-sm-4 control-label">道路起点</label>
@@ -89,6 +96,7 @@
       return {
         roadId: '',
         roadName: '',
+        length: '',
         roadStart: '',
         roadEnd: '',
         startPoint: '',
@@ -110,6 +118,7 @@
             userName: localStorage.getItem('userName'),
             roadId: _this.roadId,
             name: _this.roadName,
+            length: _this.length,
             startPlace: _this.roadStart,
             endPlace: _this.roadEnd,
             startPoint: _this.startPoint,
@@ -145,6 +154,7 @@
           console.log(response)
           _this.roadId = response.data.id
           _this.roadName = response.data.name
+          _this.length = response.data.length
           _this.roadStart = response.data.startPlace
           _this.roadEnd = response.data.endPlace
           _this.startPoint = response.data.startPoint
