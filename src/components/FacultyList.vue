@@ -65,7 +65,7 @@
       methods: {
         init: function () {
           var _this = this
-          var url = config.ROOT_API_URL + '/faculty/edit'
+          var url = config.ROOT_API_URL + 'faculty/edit'
           $.ajax({
             url: url,
             type: 'GET',
@@ -86,7 +86,7 @@
         },
         removeFaculty: function (msg, event) {
           var _this = this
-          var url = config.ROOT_API_URL + '/faculty/delete'
+          var url = config.ROOT_API_URL + 'faculty/delete'
           let el = event.currentTarget
           let idInt = parseInt(el.value)
           $.ajax({

@@ -5,9 +5,6 @@ import ScoreList from '@/components/ScoreList'
 import SubmitScore from '@/components/SubmitScore'
 import Login from '@/components/Login'
 import Logout from '@/components/Logout'
-import commonUser from '@/components/commonUser'
-import ImageFile from '@/components/ImageFile'
-import AddCommodity from '@/components/AddCommodity'
 import CommodityList from '@/components/commoditylist'
 import RoadSectionStationFaculty from '@/components/RoadSectionStationFaculty'
 import editFaculty from '@/components/editFaculty'
@@ -109,16 +106,6 @@ export default new Router({
 
     },
     {
-      path: '/addcommodity',
-      name: 'AddCommodity',
-      component: AddCommodity
-    },
-    {
-      path: '/imagefile',
-      name: 'ImageFile',
-      component: ImageFile
-    },
-    {
       path: '/addroad',
       name: 'AddRoad',
       component: AddAdmin
@@ -132,11 +119,6 @@ export default new Router({
       path: '/roadlist',
       name: 'RoadList',
       component: ScoreList
-    },
-    {
-      path: '/commonUser',
-      name: 'commonUser',
-      component: commonUser
     }
   ]
 })

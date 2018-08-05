@@ -90,6 +90,7 @@
 </template>
 
 <script>
+  import config from '../config/config'
   export default {
     name: 'SubmitScore',
     data () {
@@ -109,7 +110,7 @@
     methods: {
       EditRoad: function () {
         let _this = this
-        let url = 'http://127.0.0.1:8000/road/edit'
+        let url = config.ROOT_API_URL + 'road/edit'
         $.ajax({
           url: url,
           type: 'PUT',
@@ -140,7 +141,7 @@
     mounted: function () {
       let roadId = this.$route.query.roadId
       let _this = this
-      let url = 'http://127.0.0.1:8000/road/single'
+      let url = config.ROOT_API_URL + 'road/single'
       console.log(roadId)
       $.ajax({
         url: url,

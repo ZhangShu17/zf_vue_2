@@ -94,6 +94,7 @@
 </template>
 
 <script>
+    import config from '../config/config'
     export default {
       name: 'add-admin',
       data () {
@@ -115,7 +116,7 @@
       methods: {
         AddRoad: function () {
           let _this = this
-          let url = 'http://127.0.0.1:8000/road/edit'
+          let url = config.ROOT_API_URL + 'road/edit'
           $.ajax({
             url: url,
             type: 'POST',
@@ -146,7 +147,7 @@
           })
         },
         initDistrict: function () {
-          let url = 'http://127.0.0.1:8000/district/lists'
+          let url = config.ROOT_API_URL + 'district/lists'
           let _this = this
           $.ajax({
             url: url,

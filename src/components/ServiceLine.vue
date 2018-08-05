@@ -50,6 +50,7 @@
 
 <script>
     // import bus from '../assets/EventBus'
+    import config from '../config/config'
     export default {
       name: 'ServiceLine',
       data () {
@@ -61,7 +62,7 @@
       methods: {
         init: function () {
           let _this = this
-          let url = 'http://127.0.0.1:8000/server_line/edit'
+          let url = config.ROOT_API_URL + 'server_line/edit'
           $.ajax({
             url: url,
             type: 'GET',

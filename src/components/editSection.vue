@@ -83,6 +83,7 @@
 </template>
 
 <script>
+    import config from '../config/config'
     export default {
       name: 'editSection',
       data () {
@@ -105,7 +106,7 @@
           this.type = this.$route.query.type
           this.sectionId = this.$route.query.sectionId
           this.roadId = this.$route.query.roadId
-          let url = 'http://127.0.0.1:8000/section/single'
+          let url = config.ROOT_API_URL + 'section/single'
           let _this = this
           $.ajax({
             url: url,
@@ -132,7 +133,7 @@
           })
         },
         EditSection: function () {
-          let url = 'http://127.0.0.1:8000/section/edit'
+          let url = config.ROOT_API_URL + 'section/edit'
           let _this = this
           $.ajax({
             url: url,

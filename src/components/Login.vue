@@ -30,13 +30,13 @@
 </template>
 
 <script>
+  import config from '../config/config'
   // ajax 前置请求头设置token
   $.ajaxSetup({
     beforeSend: function (xhr) {
       xhr.setRequestHeader('Authorization', localStorage.getItem('token'))
     }
   })
-
   export default {
     name: 'login',
     data () {
@@ -51,7 +51,7 @@
         console.log(this.username)
         console.log(this.password)
         let _this = this
-        let url = 'http://127.0.0.1:8000/faculty/login'
+        let url = config.ROOT_API_URL + 'faculty/login'
         $.ajax({
           url: url,
           type: 'POST',

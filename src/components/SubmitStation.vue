@@ -62,6 +62,7 @@
 </template>
 
 <script>
+    import config from '../config/config'
     export default {
       name: 'SubmitStation',
       data () {
@@ -79,7 +80,7 @@
       methods: {
         EditStation: function () {
           let _this = this
-          let url = 'http://127.0.0.1:8000/station/edit'
+          let url = config.ROOT_API_URL + 'station/edit'
           $.ajax({
             url: url,
             type: 'PUT',
@@ -116,7 +117,7 @@
           console.log(this.stationId)
           console.log('初始化打印信息  END')
           let _this = this
-          let url = 'http://127.0.0.1:8000/station/edit'
+          let url = config.ROOT_API_URL + 'station/edit'
           console.log(this.stationId)
           $.ajax({
             url: url,

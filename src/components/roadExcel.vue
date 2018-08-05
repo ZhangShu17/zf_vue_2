@@ -190,6 +190,7 @@
 </template>
 
 <script>
+    import config from '../config/config'
     export default {
       name: 'roadExcel',
       data () {
@@ -200,7 +201,7 @@
       methods: {
         init: function () {
           let roadId = this.$route.query.roadId
-          let url = 'http://127.0.0.1:8000/road/excel/info'
+          let url = config.ROOT_API_URL + 'road/excel/info'
           let _this = this
           $.ajax({
             url: url,

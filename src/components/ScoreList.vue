@@ -58,6 +58,7 @@
 </template>
 
 <script>
+  import config from '../config/config'
   export default {
     name: 'RoadList',
     data () {
@@ -74,7 +75,7 @@
         console.log('打印serviceLineId')
         console.log(this.serviceLineId)
         let _this = this
-        let url = 'http://127.0.0.1:8000/road/edit'
+        let url = config.ROOT_API_URL + 'road/edit'
         $.ajax({
           url: url,
           type: 'GET',
@@ -110,7 +111,7 @@
         let userName = localStorage.getItem('userName')
         let el = event.currentTarget
         let idInt = parseInt(el.value)
-        let url = 'http://127.0.0.1:8000/road/delete'
+        let url = config.ROOT_API_URL + 'road/delete'
         let _this = this
         $.ajax({
           url: url,

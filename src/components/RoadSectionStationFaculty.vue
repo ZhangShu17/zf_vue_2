@@ -208,6 +208,7 @@
 </template>
 
 <script>
+    import config from '../config/config'
     export default {
       name: 'RoadSectionStationFaculty',
       data () {
@@ -229,7 +230,7 @@
           // 路线人员信息
           if (this.type === 1) {
             this.roadId = this.$route.query.roadId
-            let url = 'http://127.0.0.1:8000/road/faculty'
+            let url = config.ROOT_API_URL + 'road/faculty'
             let _this = this
             $.ajax({
               url: url,
@@ -253,7 +254,7 @@
           }
           if (this.type === 2) {
             this.sectionId = this.$route.query.sectionId
-            let url = 'http://127.0.0.1:8000/section/faculty'
+            let url = config.ROOT_API_URL + 'section/faculty'
             let _this = this
             $.ajax({
               url: url,
@@ -277,7 +278,7 @@
           }
           if (this.type === 3) {
             this.stationId = this.$route.query.stationId
-            let url = 'http://127.0.0.1:8000/station/faculty'
+            let url = config.ROOT_API_URL + 'station/faculty'
             let _this = this
             $.ajax({
               url: url,
@@ -307,7 +308,7 @@
           console.log(idInt)
           if (this.type === 1) {
             let roadId = this.$route.query.roadId
-            let url = 'http://127.0.0.1:8000/road/faculty/delete'
+            let url = config.ROOT_API_URL + 'road/faculty/delete'
             let _this = this
             $.ajax({
               url: url,
@@ -330,7 +331,7 @@
           }
           if (this.type === 2) {
             let sectionId = this.$route.query.sectionId
-            let url = 'http://127.0.0.1:8000/section/faculty/delete'
+            let url = config.ROOT_API_URL + 'section/faculty/delete'
             let _this = this
             $.ajax({
               url: url,
@@ -353,7 +354,7 @@
           }
           if (this.type === 3) {
             let stationId = this.$route.query.stationId
-            let url = 'http://127.0.0.1:8000/station/faculty/delete'
+            let url = config.ROOT_API_URL + 'station/faculty/delete'
             let _this = this
             $.ajax({
               url: url,

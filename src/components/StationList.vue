@@ -53,6 +53,7 @@
 </template>
 
 <script>
+  import config from '../config/config'
   export default {
     name: 'StationList',
     data () {
@@ -67,7 +68,7 @@
       init: function () {
         this.type = this.$route.query.type
         let _this = this
-        let url = 'http://127.0.0.1:8000/station/edit'
+        let url = config.ROOT_API_URL + 'station/edit'
         if (this.$route.query.type !== 0) {
           this.sectionId = this.$route.query.sectionId
         }
@@ -127,7 +128,7 @@
         let userName = localStorage.getItem('userName')
         let el = event.currentTarget
         let idInt = parseInt(el.value)
-        let url = 'http://127.0.0.1:8000/station/delete'
+        let url = config.ROOT_API_URL + 'station/delete'
         let _this = this
         $.ajax({
           url: url,

@@ -56,6 +56,7 @@
 </template>
 
 <script>
+  import config from '../config/config'
   export default {
     name: 'addFaculty',
     data () {
@@ -100,7 +101,7 @@
         console.log('~~~~~end~~~~~~')
         let _this = this
         if (_this.type === 0) {
-          let url = 'http://127.0.0.1:8000/faculty/edit'
+          let url = config.ROOT_API_URL + 'faculty/edit'
           $.ajax({
             url: url,
             type: 'POST',
@@ -123,7 +124,7 @@
           })
         }
         if (_this.type === 1) {
-          let url = 'http://127.0.0.1:8000/road/faculty'
+          let url = config.ROOT_API_URL + 'road/faculty'
           $.ajax({
             url: url,
             type: 'POST',
@@ -148,7 +149,7 @@
           })
         }
         if (_this.type === 2) {
-          let url = 'http://127.0.0.1:8000/section/faculty'
+          let url = config.ROOT_API_URL + 'section/faculty'
           $.ajax({
             url: url,
             type: 'POST',
@@ -173,7 +174,7 @@
           })
         }
         if (_this.type === 3) {
-          let url = 'http://127.0.0.1:8000/station/faculty'
+          let url = config.ROOT_API_URL + 'station/faculty'
           $.ajax({
             url: url,
             type: 'POST',

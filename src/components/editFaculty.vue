@@ -63,6 +63,7 @@
 </template>
 
 <script>
+    import config from '../config/config'
     export default {
       name: 'editFaculty',
       data () {
@@ -92,7 +93,7 @@
           if (this.type === 3) {
             this.stationId = this.$route.query.stationId
           }
-          let url = 'http://127.0.0.1:8000/faculty/edit'
+          let url = config.ROOT_API_URL + 'faculty/edit'
           let _this = this
           $.ajax({
             url: url,
@@ -118,7 +119,7 @@
         },
         EditFaculty: function () {
           let _this = this
-          let url = 'http://127.0.0.1:8000/faculty/edit'
+          let url = config.ROOT_API_URL + 'faculty/edit'
           $.ajax({
             url: url,
             type: 'PUT',

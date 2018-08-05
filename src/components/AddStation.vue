@@ -55,6 +55,7 @@
 </template>
 
 <script>
+    import config from '../config/config'
     export default {
       name: 'AddStation',
       data () {
@@ -70,7 +71,7 @@
       methods: {
         AddStation: function () {
           let _this = this
-          let url = 'http://127.0.0.1:8000/station/edit'
+          let url = config.ROOT_API_URL + 'station/edit'
           console.log(_this.name)
           console.log(_this.sectionId)
           console.log(_this.location)
@@ -89,7 +90,13 @@
             success: function (response) {
               console.log(response)
               if (_this.type === 1) {
-                _this.$router.push({path: '/stationList', query: {type: 1, sectionId: _this.sectionId}})
+                _this.$router.push({
+                  path: '/stationList',
+                  query: {
+                    type: 1,
+                    sectionId: _this.sectionId
+                  }
+                })
               } else {
                 _this.$router.push({path: '/stationList', query: {type: 0}})
               }

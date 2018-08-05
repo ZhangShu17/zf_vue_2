@@ -56,6 +56,7 @@
 </template>
 
 <script>
+  import config from '../config/config'
   export default {
     name: 'sectionList',
     data () {
@@ -74,7 +75,7 @@
           this.roadId = this.$route.query.roadId
         }
         let _this = this
-        var url = 'http://127.0.0.1:8000/section/edit'
+        var url = config.ROOT_API_URL + 'section/edit'
         $.ajax({
           url: url,
           type: 'GET',
@@ -104,7 +105,7 @@
         let el = event.currentTarget
         let sectionId = parseInt(el.value)
         console.log(sectionId)
-        let url = 'http://127.0.0.1:8000/section/delete'
+        let url = config.ROOT_API_URL + 'section/delete'
         let _this = this
         $.ajax({
           url: url,

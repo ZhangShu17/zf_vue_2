@@ -86,6 +86,7 @@
 </template>
 
 <script>
+    import config from '../config/config'
     export default {
       name: 'EditServiceLine',
       data () {
@@ -99,7 +100,7 @@
       },
       methods: {
         initDistrict: function () {
-          let url = 'http://127.0.0.1:8000/district/lists'
+          let url = config.ROOT_API_URL + 'district/lists'
           let _this = this
           $.ajax({
             url: url,
@@ -117,7 +118,7 @@
           })
         },
         getServiceInfo: function () {
-          let url = 'http://127.0.0.1:8000/server_line/edit'
+          let url = config.ROOT_API_URL + 'server_line/edit'
           let _this = this
           $.ajax({
             url: url,
@@ -161,7 +162,7 @@
           }
           console.log(selectDistrictsStr)
           console.log(this.selectDistricts)
-          let url = 'http://127.0.0.1:8000/server_line/edit'
+          let url = config.ROOT_API_URL + 'server_line/edit'
           let _this = this
           $.ajax({
             url: url,

@@ -84,6 +84,7 @@
 </template>
 
 <script>
+  import config from '../config/config'
   export default {
     name: 'AddServiceLine',
     data () {
@@ -106,7 +107,7 @@
       AddServiceLine: function () {
         console.log(this.chosedDistrictIds)
         let _this = this
-        let url = 'http://127.0.0.1:8000/server_line/edit'
+        let url = config.ROOT_API_URL + 'server_line/edit'
         let strDistrictIds = ''
         for (let i = 0; i < _this.chosedDistrictIds.length; i++) {
           if (i !== _this.chosedDistrictIds.length - 1) {
@@ -140,7 +141,7 @@
         })
       },
       initDistrict: function () {
-        let url = 'http://127.0.0.1:8000/district/lists'
+        let url = config.ROOT_API_URL + 'district/lists'
         let _this = this
         $.ajax({
           url: url,
@@ -169,7 +170,7 @@
         let serviceLineId = this.$route.query.serverLineId
         let _this = this
         $.ajax({
-          url: 'http://127.0.0.1:8000/server_line/edit',
+          url: config.ROOT_API_URL + 'server_line/edit',
           type: 'GET',
           data: {
             userName: localStorage.getItem('userName'),
