@@ -11,22 +11,9 @@
             <label for="district" class="col-sm-4 control-label">路线区域</label>
             <div class="col-sm-8">
               <select class="form-control" id="district" v-model="district">
-                <option value="1">东城区</option>
-                <option value="2">西城区</option>
-                <option value="3">海淀区</option>
-                <option value="4">朝阳区</option>
-                <option value="5">丰台区</option>
-                <option value="6">门头沟区</option>
-                <option value="7">石景山区</option>
-                <option value="8">房山区</option>
-                <option value="9">通州区</option>
-                <option value="10">顺义区</option>
-                <option value="11">昌平区</option>
-                <option value="12">大兴区</option>
-                <option value="13">怀柔区</option>
-                <option value="14">平谷区</option>
-                <option value="15">延庆区</option>
-                <option value="16">密云区</option>
+                <template v-for="item in allDistricts">
+                  <option :value="item.id">{{item.name}}</option>
+                </template>
               </select>
             </div>
           </div>
@@ -111,6 +98,7 @@
       name: 'add-admin',
       data () {
         return {
+          serviceLineId: '',
           district: '',
           name: '',
           length: '',
@@ -120,7 +108,8 @@
           endPoint: '',
           remark1: '',
           remark2: '',
-          remark3: ''
+          remark3: '',
+          allDistricts: []
         }
       },
       methods: {
@@ -132,6 +121,7 @@
             type: 'POST',
             data: {
               userName: localStorage.getItem('userName'),
+              serviceLineId: _this.serviceLineId,
               districtId: _this.district,
               name: _this.name,
               length: _this.length,
@@ -145,13 +135,37 @@
             },
             success: function (response) {
               console.log(response)
-              _this.$router.push('/roadlist')
+              _this.$router.push({path: '/roadlist',
+                query: {
+                  serviceLineId: _this.serviceLineId
+                }})
+            },
+            error: function (err) {
+              console.log(err)
+            }
+          })
+        },
+        initDistrict: function () {
+          let url = 'http://127.0.0.1:8000/district/lists'
+          let _this = this
+          $.ajax({
+            url: url,
+            type: 'GET',
+            data: {
+              userName: localStorage.getItem('userName')
+            },
+            success: function (response) {
+              _this.allDistricts = response.districtList
             },
             error: function (err) {
               console.log(err)
             }
           })
         }
+      },
+      mounted () {
+        this.serviceLineId = this.$route.query.serviceLineId
+        this.initDistrict()
       }
     }
 </script>

@@ -6,7 +6,7 @@
       <h3 align="center" v-else>路线管理
       </h3>
       <ul class="nav nav-pills">
-        <li><router-link to="/addroad">+添加路线</router-link></li>
+        <li><router-link :to="{path: '/addroad', query: {serviceLineId: serviceLineId}}">+添加路线</router-link></li>
       </ul>
       <hr>
       <div class="container">
@@ -64,7 +64,8 @@
       return {
         count: 0,
         roadlist: [],
-        serviceLineId: 0
+        serviceLineId: 0,
+        districtId: localStorage.getItem('districtId')
       }
     },
     methods: {

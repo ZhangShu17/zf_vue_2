@@ -76,7 +76,8 @@
           type: 'GET',
           data: {
             userName: localStorage.getItem('userName'),
-            sectionId: _this.sectionId
+            sectionId: _this.sectionId,
+            districtId: localStorage.getItem('districtId')
           },
           async: false,
           success: function (response) {

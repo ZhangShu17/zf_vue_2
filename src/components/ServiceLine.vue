@@ -29,7 +29,7 @@
                   <td>{{list.time}}</td>
                   <td :id="list.id" @click="Jump2RoadList"><a href="#">路线数量：{{list.roadCount}}</a></td>
                   <td>
-                    <button :value="list.id" type="button">
+                    <button @click="EditServiceLine(list.id)" :value="list.id" type="button">
                       编辑
                     </button>
                     <button :value="list.id" type="button">
@@ -86,6 +86,7 @@
         Jump2RoadList: function () {
           let el = event.currentTarget
           let idInt = parseInt(el.id)
+          console.log(idInt)
           this.$router.push({
             path: '/roadlist',
             query: {
@@ -93,38 +94,19 @@
             }
           })
         },
-        // EditServerLine: function () {
-        //   let el = event.currentTarget
-        //   let idInt = parseInt(el.id)
-        //   this.$router.push({path: '/editServerLine', query: {server_lineId: idInt}})
-        // },
         AddServerLine: function () {
           let directId = localStorage.getItem('directId')
-          this.$router.push({path: '/addServerLine', query: {direct_id: directId}})
+          this.$router.push({path: '/addServiceLine', query: {direct_id: directId}})
+        },
+        EditServiceLine: function (param) {
+          console.log(param)
+          this.$router.push({
+            path: '/editServiceLine',
+            query: {
+              serviceLineId: param
+            }
+          })
         }
-        // RemoveServerLine: function () {
-        //   let el = event.currentTarget
-        //   let serverLineId = parseInt(el.id)
-        //   let _this = this
-        //   let url = '192.168.8.113:8000/server_line/delete'
-        //   $.ajax({
-        //     url: url,
-        //     type: 'GET',
-        //     data: {
-        //       userName: localStorage.getItem('userName'),
-        //       serverLineId: serverLineId
-        //     },
-        //     async: false,
-        //     success: function (response) {
-        //       console.log(response)
-        //       _this.count = response.data.listCount
-        //       _this.roadlist = response.data.list
-        //     },
-        //     error: function (err) {
-        //       console.log(err)
-        //     }
-        //   })
-        // }
       },
       mounted () {
         this.init()

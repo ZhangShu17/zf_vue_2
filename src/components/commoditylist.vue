@@ -63,7 +63,8 @@
         type: '',
         roadId: 0,
         count: 0,
-        sectionList: []
+        sectionList: [],
+        districtId: ''
       }
     },
     methods: {
@@ -79,7 +80,8 @@
           type: 'GET',
           data: {
             userName: localStorage.getItem('userName'),
-            roadId: _this.roadId
+            roadId: _this.roadId,
+            districtId: localStorage.getItem('districtId')
           },
           async: false,
           success: function (response) {

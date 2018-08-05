@@ -53,6 +53,7 @@
 </template>
 
 <script>
+    import config from '../config/config'
     export default {
       name: 'FacultyList',
       data () {
@@ -64,12 +65,13 @@
       methods: {
         init: function () {
           var _this = this
-          var url = 'http://127.0.0.1:8000/faculty/edit'
+          var url = config.ROOT_API_URL + '/faculty/edit'
           $.ajax({
             url: url,
             type: 'GET',
             data: {
-              userName: localStorage.getItem('userName')
+              userName: localStorage.getItem('userName'),
+              districtId: localStorage.getItem('districtId')
             },
             async: false,
             success: function (response) {
@@ -84,7 +86,7 @@
         },
         removeFaculty: function (msg, event) {
           var _this = this
-          var url = 'http://127.0.0.1:8000/faculty/delete'
+          var url = config.ROOT_API_URL + '/faculty/delete'
           let el = event.currentTarget
           let idInt = parseInt(el.value)
           $.ajax({

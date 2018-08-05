@@ -64,7 +64,7 @@
             // 登陆成功，储存用户信息，跳转
             console.log(result)
             if (result.retCode === 0) {
-              _this.$router.push({ name: 'RoadList' })
+              _this.$router.push({ path: '/serviceLineList' })
               _this.saveInfo(result)
             } else {
               alert(result.reason)
@@ -81,6 +81,7 @@
         window.localStorage.setItem('token', result.data.token)
         window.localStorage.setItem('userName', result.data.userName)
         window.localStorage.setItem('districtId', result.data.districtId)
+        window.localStorage.setItem('districtList', result.data.districtList)
       }
     }
 

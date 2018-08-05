@@ -8,9 +8,7 @@ import Logout from '@/components/Logout'
 import commonUser from '@/components/commonUser'
 import ImageFile from '@/components/ImageFile'
 import AddCommodity from '@/components/AddCommodity'
-import CommodityLunBo from '@/components/commodity_lunbo'
 import CommodityList from '@/components/commoditylist'
-import EditCommodity from '@/components/editCommodity'
 import RoadSectionStationFaculty from '@/components/RoadSectionStationFaculty'
 import editFaculty from '@/components/editFaculty'
 import addFaculty from '@/components/addFaculty'
@@ -22,11 +20,23 @@ import SubmitStation from '@/components/SubmitStation'
 import AddStation from '@/components/AddStation'
 import roadExcel from '@/components/roadExcel'
 import ServiceLine from '@/components/ServiceLine'
+import AddServiceLine from '@/components/AddServiceLine'
+import EditServiceLine from '@/components/EditServiceLine'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/editServiceLine',
+      name: 'editServiceLine',
+      component: EditServiceLine
+    },
+    {
+      path: '/addServiceLine',
+      name: 'addServiceLine',
+      component: AddServiceLine
+    },
     {
       path: '/serviceLineList',
       name: 'servieLineList',
@@ -93,20 +103,10 @@ export default new Router({
       component: Logout
     },
     {
-      path: '/editCommodity',
-      name: 'editCommodity',
-      component: EditCommodity
-    },
-    {
       path: '/sectionlist',
       name: 'sectionList',
       component: CommodityList
 
-    },
-    {
-      path: '/conmoditylunbo',
-      name: 'conmoditylunbo',
-      component: CommodityLunBo
     },
     {
       path: '/addcommodity',
