@@ -1,17 +1,45 @@
 <template>
   <div>
     <div class="container">
-      <h3 align="center" v-if="type===1">路线人员管理
+      <h3 align="center" v-if="type===1">路线人员管理-路线【{{roadId}}】
       </h3>
-      <h3 align="center" v-if="type===2">路段人员管理
+      <h3 align="center" v-if="type===2">路段人员管理-路段【{{sectionId}}】
       </h3>
-      <h3 align="center" v-if="type===3">岗哨人员管理
+      <h3 align="center" v-if="type===3">岗哨人员管理-岗哨【{{stationId}}】
       </h3>
       <ul class="nav nav-pills">
         <!--<li><router-link to="/addroad">路长+</router-link></li>-->
-        <li @click="addFaculty(1, $event)" v-if="type===1"><a href="#">路长+</a></li>
-        <li @click="addFaculty(1, $event)" v-if="type===2"><a href="#">段长+</a></li>
-        <li @click="addFaculty(1, $event)" v-if="type===3"><a href="#">岗长(分局)+</a></li>
+        <div v-if="type===1">
+          <li @click="addFaculty(1, $event)"><a href="#">路长+</a></li>
+          <li>路长：
+            <select v-model="selectedFacultyId_chief" style="width: 300px" @change="insertTo(1, $event)">
+              <template v-for="item in chiefToBeList">
+                <option :value="item.id">[id={{item.id}}]{{item.name}}-{{item.mobile}}</option>
+              </template>
+            </select>
+          </li>
+        </div>
+        <div v-if="type===2">
+          <li @click="addFaculty(1, $event)"><a href="#">段长+</a></li>
+          <li>段长：
+            <select v-model="selectedFacultyId_chief" style="width: 300px" @change="insertTo(1, $event)">
+              <template v-for="item in chiefToBeList">
+                <option :value="item.id">[id={{item.id}}]{{item.name}}-{{item.mobile}}</option>
+              </template>
+            </select>
+          </li>
+        </div>
+        <div v-if="type===3">
+          <li @click="addFaculty(1, $event)" v-if="type===3"><a href="#">岗长(分局)+</a></li>
+          <li>岗长(分局)：
+            <select v-model="selectedFacultyId_chief" style="width: 300px" @change="insertTo(1, $event)">
+              <template v-for="item in chiefToBeList">
+                <option :value="item.id">[id={{item.id}}]{{item.name}}-{{item.mobile}}</option>
+              </template>
+            </select>
+          </li>
+        </div>
+
       </ul>
       <hr>
       <div class="container">
@@ -44,7 +72,7 @@
                       编辑
                     </button>
                     <button :value="list.id" type="button" @click="RemoveFaculty(1,$event)">
-                      删除
+                      移除
                     </button>
                   </td>
                 </tr>
@@ -59,8 +87,27 @@
     <!--分局-->
     <div class="container" v-if="type !== 3">
       <ul class="nav nav-pills">
-        <li @click="addFaculty(2, $event)" v-if="type===1"><a href="#">执行路长(分局)+</a></li>
-        <li @click="addFaculty(2, $event)" v-if="type===2"><a href="#">执行段长(分局)+</a></li>
+        <div v-if="type===1">
+          <li @click="addFaculty(2, $event)" v-if="type===1"><a href="#">执行路长(分局)+</a></li>
+          <li>执行路长(分局)：
+            <select v-model="selectedFacultyId_bureau" style="width: 300px" @change="insertTo(2, $event)">
+              <template v-for="item in bureauToBeList">
+                <option :value="item.id">[id={{item.id}}]{{item.name}}-{{item.mobile}}</option>
+              </template>
+            </select>
+          </li>
+        </div>
+
+        <div v-if="type===2">
+          <li @click="addFaculty(2, $event)" v-if="type===2"><a href="#">执行段长(分局)+</a></li>
+          <li>执行段长(分局)：
+            <select v-model="selectedFacultyId_bureau" style="width: 300px" @change="insertTo(2, $event)">
+              <template v-for="item in bureauToBeList">
+                <option :value="item.id">[id={{item.id}}]{{item.name}}-{{item.mobile}}</option>
+              </template>
+            </select>
+          </li>
+        </div>
       </ul>
       <hr>
       <div class="container">
@@ -93,7 +140,7 @@
                       编辑
                     </button>
                     <button :value="list.id" type="button" @click="RemoveFaculty(2,$event)">
-                      删除
+                      移除
                     </button>
                   </td>
                 </tr>
@@ -108,9 +155,36 @@
     <!--交通-->
     <div class="container">
       <ul class="nav nav-pills">
-        <li @click="addFaculty(3, $event)" v-if="type===1"><a href="#">执行路长(交管)+</a></li>
-        <li @click="addFaculty(3, $event)" v-if="type===2"><a href="#">执行段长(交通)+</a></li>
-        <li @click="addFaculty(3, $event)" v-if="type===3"><a href="#">执行岗长(交管)+</a></li>
+        <div v-if="type===1">
+          <li @click="addFaculty(3, $event)" v-if="type===1"><a href="#">执行路长(交管)+</a></li>
+          <li>执行路长(交管)：
+            <select v-model="selectedFacultyId_trans" style="width: 300px" @change="insertTo(3, $event)">
+              <template v-for="item in transToBeList">
+                <option :value="item.id">[id={{item.id}}]{{item.name}}-{{item.mobile}}</option>
+              </template>
+            </select>
+          </li>
+        </div>
+        <div v-if="type===2">
+          <li @click="addFaculty(3, $event)" v-if="type===2"><a href="#">执行段长(交通)+</a></li>
+          <li>执行段长(交通)：
+            <select v-model="selectedFacultyId_trans" style="width: 300px" @change="insertTo(3, $event)">
+              <template v-for="item in transToBeList">
+                <option :value="item.id">[id={{item.id}}]{{item.name}}-{{item.mobile}}</option>
+              </template>
+            </select>
+          </li>
+        </div>
+        <div v-if="type===3">
+          <li @click="addFaculty(3, $event)" v-if="type===3"><a href="#">执行岗长(交管)+</a></li>
+          <li>执行岗长(交管)：
+            <select v-model="selectedFacultyId_trans" style="width: 300px" @change="insertTo(3, $event)">
+              <template v-for="item in transToBeList">
+                <option :value="item.id">[id={{item.id}}]{{item.name}}-{{item.mobile}}</option>
+              </template>
+            </select>
+          </li>
+        </div>
       </ul>
       <hr>
       <div class="container">
@@ -143,7 +217,7 @@
                       编辑
                     </button>
                     <button :value="list.id" type="button" @click="RemoveFaculty(3,$event)">
-                      删除
+                      移除
                     </button>
                   </td>
                 </tr>
@@ -158,8 +232,26 @@
     <!--武警-->
     <div class="container" v-if="type !== 3">
       <ul class="nav nav-pills">
-        <li @click="addFaculty(4, $event)" v-if="type===1"><a href="#">执行路长(武警)+</a></li>
-        <li @click="addFaculty(4, $event)" v-if="type===2"><a href="#">执行段长(武警)+</a></li>
+        <div v-if="type===1">
+          <li @click="addFaculty(4, $event)"><a href="#">执行路长(武警)+</a></li>
+          <li>执行路长(武警)：
+            <select v-model="selectedFacultyId_poli" style="width: 300px" @change="insertTo(4, $event)">
+              <template v-for="item in poliToBeList">
+                <option :value="item.id">[id={{item.id}}]{{item.name}}-{{item.mobile}}</option>
+              </template>
+            </select>
+          </li>
+        </div>
+        <div v-if="type===2">
+          <li @click="addFaculty(4, $event)"><a href="#">执行段长(武警)+</a></li>、
+          <li>执行段长(武警)：
+            <select v-model="selectedFacultyId_poli" style="width: 300px" @change="insertTo(4, $event)">
+              <template v-for="item in poliToBeList">
+                <option :value="item.id">[id={{item.id}}]{{item.name}}-{{item.mobile}}</option>
+              </template>
+            </select>
+          </li>
+        </div>
       </ul>
       <hr>
       <div class="container">
@@ -192,7 +284,7 @@
                       编辑
                     </button>
                     <button :value="list.id" type="button" @click="RemoveFaculty(4,$event)">
-                      删除
+                      移除
                     </button>
                   </td>
                 </tr>
@@ -220,7 +312,15 @@
           chiefList: [],
           execChiefTransList: [],
           execChiefSubBureauList: [],
-          execChiefArmedPoliList: []
+          execChiefArmedPoliList: [],
+          chiefToBeList: [],
+          bureauToBeList: [],
+          transToBeList: [],
+          poliToBeList: [],
+          selectedFacultyId_chief: '',
+          selectedFacultyId_bureau: '',
+          selectedFacultyId_trans: '',
+          selectedFacultyId_poli: ''
         }
       },
       methods: {
@@ -252,6 +352,7 @@
               }
             })
           }
+          // 路段人员信息
           if (this.type === 2) {
             this.sectionId = this.$route.query.sectionId
             let url = config.ROOT_API_URL + 'section/faculty'
@@ -276,6 +377,7 @@
               }
             })
           }
+          // 岗哨人员信息
           if (this.type === 3) {
             this.stationId = this.$route.query.stationId
             let url = config.ROOT_API_URL + 'station/faculty'
@@ -323,6 +425,19 @@
               success: function (response) {
                 console.log(response)
                 _this.init()
+                _this.facultyNotIn()
+                if (msg === 1) {
+                  _this.selectedFacultyId_chief = ''
+                }
+                if (msg === 2) {
+                  _this.selectedFacultyId_bureau = ''
+                }
+                if (msg === 3) {
+                  _this.selectedFacultyId_trans = ''
+                }
+                if (msg === 4) {
+                  _this.selectedFacultyId_poli = ''
+                }
               },
               error: function (err) {
                 console.log(err)
@@ -346,6 +461,19 @@
               success: function (response) {
                 console.log(response)
                 _this.init()
+                _this.facultyNotIn()
+                if (msg === 1) {
+                  _this.selectedFacultyId_chief = ''
+                }
+                if (msg === 2) {
+                  _this.selectedFacultyId_bureau = ''
+                }
+                if (msg === 3) {
+                  _this.selectedFacultyId_trans = ''
+                }
+                if (msg === 4) {
+                  _this.selectedFacultyId_poli = ''
+                }
               },
               error: function (err) {
                 console.log(err)
@@ -369,6 +497,19 @@
               success: function (response) {
                 console.log(response)
                 _this.init()
+                _this.facultyNotIn()
+                if (msg === 1) {
+                  _this.selectedFacultyId_chief = ''
+                }
+                if (msg === 2) {
+                  _this.selectedFacultyId_bureau = ''
+                }
+                if (msg === 3) {
+                  _this.selectedFacultyId_trans = ''
+                }
+                if (msg === 4) {
+                  _this.selectedFacultyId_poli = ''
+                }
               },
               error: function (err) {
                 console.log(err)
@@ -400,10 +541,201 @@
           if (this.type === 3) {
             this.$router.push({path: '/addFaculty', query: {type: this.type, stationId: this.stationId, chiefType: msg}})
           }
+        },
+        facultyNotIn: function () {
+          this.type = this.$route.query.type
+          console.log(this.type)
+          // 路线人员信息
+          if (this.type === 1) {
+            this.roadId = this.$route.query.roadId
+            let url = config.ROOT_API_URL + 'faculty/tobe_road'
+            let _this = this
+            $.ajax({
+              url: url,
+              type: 'GET',
+              data: {
+                userName: localStorage.getItem('userName'),
+                roadId: _this.roadId
+              },
+              async: false,
+              success: function (response) {
+                console.log(response)
+                _this.chiefToBeList = response.data.chiefList
+                _this.bureauToBeList = response.data.execChiefSubBureauList
+                _this.transToBeList = response.data.execChiefTransList
+                _this.poliToBeList = response.data.execChiefArmedPoliList
+              },
+              error: function (err) {
+                console.log(err)
+              }
+            })
+          }
+          // 路段人员信息
+          if (this.type === 2) {
+            this.sectionId = this.$route.query.sectionId
+            let url = config.ROOT_API_URL + 'faculty/tobe_section'
+            let _this = this
+            $.ajax({
+              url: url,
+              type: 'GET',
+              data: {
+                userName: localStorage.getItem('userName'),
+                sectionId: _this.sectionId
+              },
+              async: false,
+              success: function (response) {
+                console.log(response)
+                _this.chiefToBeList = response.data.chiefList
+                _this.bureauToBeList = response.data.execChiefSubBureauList
+                _this.transToBeList = response.data.execChiefTransList
+                _this.poliToBeList = response.data.execChiefArmedPoliList
+              },
+              error: function (err) {
+                console.log(err)
+              }
+            })
+          }
+          // 岗哨人员信息
+          if (this.type === 3) {
+            this.stationId = this.$route.query.stationId
+            let url = config.ROOT_API_URL + 'faculty/tobe_station'
+            let _this = this
+            $.ajax({
+              url: url,
+              type: 'GET',
+              data: {
+                userName: localStorage.getItem('userName'),
+                stationId: _this.stationId
+              },
+              async: false,
+              success: function (response) {
+                console.log(response)
+                _this.chiefToBeList = response.data.chiefList
+                _this.transToBeList = response.data.execChiefTransList
+              },
+              error: function (err) {
+                console.log(err)
+              }
+            })
+          }
+        },
+        insertTo: function (facultyType, event) {
+          let el = event.currentTarget
+          let value = parseInt(el.value)
+          console.log(value)
+          console.log(facultyType)
+          if (value) {
+            if (this.type === 1) {
+              let url = config.ROOT_API_URL + 'faculty/tobe_road'
+              let _this = this
+              $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                  userName: window.localStorage.getItem('userName'),
+                  roadId: _this.roadId,
+                  facultyId: value,
+                  facultyType: facultyType
+                },
+                async: false,
+                success: function (response) {
+                  console.log(response)
+                  _this.init()
+                  _this.facultyNotIn()
+                  if (value === 1) {
+                    _this.selectedFacultyId_chief = ''
+                  }
+                  if (value === 2) {
+                    _this.selectedFacultyId_bureau = ''
+                  }
+                  if (value === 3) {
+                    _this.selectedFacultyId_trans = ''
+                  }
+                  if (value === 4) {
+                    _this.selectedFacultyId_poli = ''
+                  }
+                },
+                error: function (err) {
+                  console.log(err)
+                }
+              })
+            }
+            if (this.type === 2) {
+              let url = config.ROOT_API_URL + 'faculty/tobe_section'
+              let _this = this
+              $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                  userName: window.localStorage.getItem('userName'),
+                  sectionId: _this.sectionId,
+                  facultyId: value,
+                  facultyType: facultyType
+                },
+                async: false,
+                success: function (response) {
+                  console.log(response)
+                  _this.init()
+                  _this.facultyNotIn()
+                  if (value === 1) {
+                    _this.selectedFacultyId_chief = ''
+                  }
+                  if (value === 2) {
+                    _this.selectedFacultyId_bureau = ''
+                  }
+                  if (value === 3) {
+                    _this.selectedFacultyId_trans = ''
+                  }
+                  if (value === 4) {
+                    _this.selectedFacultyId_poli = ''
+                  }
+                },
+                error: function (err) {
+                  console.log(err)
+                }
+              })
+            }
+            if (this.type === 3) {
+              let url = config.ROOT_API_URL + 'faculty/tobe_station'
+              let _this = this
+              $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                  userName: window.localStorage.getItem('userName'),
+                  stationId: _this.stationId,
+                  facultyId: value,
+                  facultyType: facultyType
+                },
+                async: false,
+                success: function (response) {
+                  console.log(response)
+                  _this.init()
+                  _this.facultyNotIn()
+                  if (value === 1) {
+                    _this.selectedFacultyId_chief = ''
+                  }
+                  if (value === 2) {
+                    _this.selectedFacultyId_bureau = ''
+                  }
+                  if (value === 3) {
+                    _this.selectedFacultyId_trans = ''
+                  }
+                  if (value === 4) {
+                    _this.selectedFacultyId_poli = ''
+                  }
+                },
+                error: function (err) {
+                  console.log(err)
+                }
+              })
+            }
+          }
         }
       },
       mounted () {
         this.init()
+        this.facultyNotIn()
       }
     }
 </script>
