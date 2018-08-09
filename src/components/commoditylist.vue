@@ -7,6 +7,15 @@
       </h3>
       <ul class="nav nav-pills">
         <li @click="AddSection"><a href="#">+添加路段</a></li>
+        <hr  v-show="roadId">
+        <li v-show="roadId">添加已有路段：
+          <select id="mySelect" v-model="selectSectionId" style="width: 300px">
+            <template v-for="item in sectionIntoList">
+              <option :value="item.id">[id={{item.id}}]{{item.name}}</option>
+            </template>
+          </select>
+        </li>
+        <button style="height: 20px" v-show="roadId" @click="InsertIntoRoad">ok</button>
       </ul>
       <hr>
       <div class="container">
@@ -39,7 +48,10 @@
               <button :value="list.id" type="button" @click="SectionFaculty('',$event)">
                 人员
               </button>
-              <button :value="list.id" type="button" @click="RemoveSection('',$event)">
+              <button :value="list.id" type="button" @click="RemoveSectionFromRoad('',$event)" v-show="roadId">
+                移除
+              </button>
+              <button :value="list.id" type="button" style="background-color: red" @click="RemoveSection('',$event)">
                   删除
               </button>
           </td>
@@ -65,7 +77,9 @@
         roadId: 0,
         count: 0,
         sectionList: [],
-        districtId: ''
+        districtId: '',
+        selectSectionId: '',
+        sectionIntoList: []
       }
     },
     methods: {
@@ -138,10 +152,82 @@
         let idInt = parseInt(el.id)
         console.log('jump2StationList,sectioniId:' + idInt)
         this.$router.push({path: '/stationList', query: {type: 1, sectionId: idInt}})
+      },
+      InsertIntoRoad: function () {
+        let _this = this
+        let url = config.ROOT_API_URL + 'section/tobe_road'
+        $.ajax({
+          url: url,
+          type: 'POST',
+          data: {
+            userName: localStorage.getItem('userName'),
+            roadId: _this.roadId,
+            sectionId: _this.selectSectionId
+          },
+          async: false,
+          success: function (response) {
+            console.log(response)
+            _this.selectSectionId = ''
+            _this.init()
+            _this.SectionNotInRoad()
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
+      },
+      RemoveSectionFromRoad: function (msg, event) {
+        console.log('移除')
+        let el = event.currentTarget
+        let sectionId = parseInt(el.value)
+        let _this = this
+        let url = config.ROOT_API_URL + 'section/tobe_road'
+        $.ajax({
+          url: url,
+          type: 'DELETE',
+          data: {
+            userName: localStorage.getItem('userName'),
+            roadId: _this.roadId,
+            sectionId: sectionId
+          },
+          async: false,
+          success: function (response) {
+            console.log(response)
+            _this.init()
+            _this.SectionNotInRoad()
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
+      },
+      SectionNotInRoad: function () {
+        let _this = this
+        let url = config.ROOT_API_URL + 'section/tobe_road'
+        $.ajax({
+          url: url,
+          type: 'GET',
+          data: {
+            userName: localStorage.getItem('userName'),
+            roadId: _this.roadId
+          },
+          async: false,
+          success: function (response) {
+            console.log('打印不属于此id的section')
+            console.log(response)
+            _this.sectionIntoList = response.dataList
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
       }
     },
     mounted () {
       this.init()
+      if (this.roadId) {
+        this.SectionNotInRoad()
+      }
     }
   }
 </script>

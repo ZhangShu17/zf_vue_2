@@ -7,6 +7,15 @@
       </h3>
       <ul class="nav nav-pills">
         <li @click = 'jump2AddStation'><a href="#">+添加岗位</a></li>
+        <hr v-show="sectionId">
+        <li v-show="sectionId">添加已有路线：
+          <select id="mySelect" v-model="selectStationId" style="width: 300px">
+            <template v-for="item in stationIntoList">
+              <option :value="item.id">[id={{item.id}}]{{item.name}}</option>
+            </template>
+          </select>
+        </li>
+        <button style="height: 20px" v-show="sectionId" @click="InsertIntoSection">ok</button>
       </ul>
 
       <hr>
@@ -36,7 +45,10 @@
                     <button :value="list.id" type="button" @click="StationFaculty('',$event)">
                       人员
                     </button>
-                    <button :value="list.id" type="button" @click="RemoveStation('',$event)">
+                    <button :value="list.id" type="button" @click="RemoveStationFromSection('',$event)" v-show="sectionId">
+                      移除
+                    </button>
+                    <button :value="list.id" type="button" style="background-color: red" @click="RemoveStation('',$event)">
                       删除
                     </button>
                   </td>
@@ -61,7 +73,9 @@
         type: '',
         count: 0,
         sectionId: 0,
-        stationList: []
+        stationList: [],
+        stationIntoList: [],
+        selectStationId: ''
       }
     },
     methods: {
@@ -146,10 +160,80 @@
             console.log(err)
           }
         })
+      },
+      StationNotInSection: function () {
+        let _this = this
+        let url = config.ROOT_API_URL + 'station/tobe_section'
+        $.ajax({
+          url: url,
+          type: 'GET',
+          data: {
+            userName: localStorage.getItem('userName'),
+            sectionId: _this.sectionId
+          },
+          async: false,
+          success: function (response) {
+            console.log(response)
+            _this.stationIntoList = response.dataList
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
+      },
+      InsertIntoSection: function () {
+        let _this = this
+        let url = config.ROOT_API_URL + 'station/tobe_section'
+        $.ajax({
+          url: url,
+          type: 'POST',
+          data: {
+            userName: localStorage.getItem('userName'),
+            sectionId: _this.sectionId,
+            stationId: _this.selectStationId
+          },
+          async: false,
+          success: function (response) {
+            console.log(response)
+            _this.init()
+            _this.StationNotInSection()
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
+      },
+      RemoveStationFromSection: function (msg, event) {
+        var el = event.currentTarget
+        var idInt = parseInt(el.value)
+        console.log(idInt)
+        let _this = this
+        let url = config.ROOT_API_URL + 'station/tobe_section'
+        $.ajax({
+          url: url,
+          type: 'DELETE',
+          data: {
+            userName: localStorage.getItem('userName'),
+            sectionId: _this.sectionId,
+            stationId: idInt
+          },
+          async: false,
+          success: function (response) {
+            console.log(response)
+            _this.init()
+            _this.StationNotInSection()
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
       }
     },
     mounted () {
       this.init()
+      if (this.sectionId) {
+        this.StationNotInSection()
+      }
     }
   }
 </script>

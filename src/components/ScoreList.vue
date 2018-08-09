@@ -7,6 +7,15 @@
       </h3>
       <ul class="nav nav-pills">
         <li><router-link :to="{path: '/addroad', query: {serviceLineId: serviceLineId}}">+添加路线</router-link></li>
+        <hr  v-show="serviceLineId">
+        <li v-show="serviceLineId">添加已有路线：
+          <select id="mySelect" v-model="selectRoadId" style="width: 300px">
+            <template v-for="item in roadIntoList">
+              <option :value="item.id">[id={{item.id}}]{{item.name}}</option>
+            </template>
+          </select>
+        </li>
+        <button style="height: 20px" v-show="serviceLineId" @click="InsertIntoServiceLine">ok</button>
       </ul>
       <hr>
       <div class="container">
@@ -41,8 +50,11 @@
               <button :value="list.id" type="button" @click="RoadFaculty('',$event)">
                   人员
               </button>
-              <button :value="list.id" type="button" @click="RemoveRoad('',$event)">
-                  删除
+              <button :value="list.id" type="button" @click="RemoveRoadFromServiceLine('',$event)" v-show="serviceLineId">
+                移除
+              </button>
+              <button :value="list.id" style="background-color: red" type="button" @click="RemoveRoad('',$event)">
+                删除
               </button>
           </td>
       </tr>
@@ -66,7 +78,9 @@
         count: 0,
         roadlist: [],
         serviceLineId: 0,
-        districtId: localStorage.getItem('districtId')
+        districtId: localStorage.getItem('districtId'),
+        roadIntoList: [],
+        selectRoadId: ''
       }
     },
     methods: {
@@ -146,10 +160,82 @@
         console.log('跳转到excel')
         console.log(idInt)
         this.$router.push({path: '/roadExcel', query: {roadId: idInt}})
+      },
+      RoadNotInServiceLine: function () {
+        let _this = this
+        let url = config.ROOT_API_URL + 'road/tobe_service_line'
+        $.ajax({
+          url: url,
+          type: 'GET',
+          data: {
+            userName: localStorage.getItem('userName'),
+            districtId: localStorage.getItem('districtId'),
+            serviceLineId: _this.serviceLineId
+          },
+          async: false,
+          success: function (response) {
+            console.log('打印不属于此id的road')
+            console.log(response)
+            _this.roadIntoList = response.dataList
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
+      },
+      InsertIntoServiceLine: function () {
+        let _this = this
+        let url = config.ROOT_API_URL + 'road/tobe_service_line'
+        $.ajax({
+          url: url,
+          type: 'POST',
+          data: {
+            userName: localStorage.getItem('userName'),
+            serviceLineId: _this.serviceLineId,
+            roadId: _this.selectRoadId
+          },
+          async: false,
+          success: function (response) {
+            console.log(response)
+            _this.init()
+            _this.RoadNotInServiceLine()
+            _this.selectRoadId = ''
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
+      },
+      RemoveRoadFromServiceLine: function (msg, event) {
+        let el = event.currentTarget
+        let idInt = parseInt(el.value)
+        console.log(idInt)
+        let _this = this
+        let url = config.ROOT_API_URL + 'road/tobe_service_line'
+        $.ajax({
+          url: url,
+          type: 'DELETE',
+          data: {
+            userName: localStorage.getItem('userName'),
+            serviceLineId: _this.serviceLineId,
+            roadId: idInt
+          },
+          async: false,
+          success: function (response) {
+            _this.init()
+            _this.RoadNotInServiceLine()
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
       }
     },
     mounted () {
       this.init()
+      if (this.serviceLineId) {
+        this.RoadNotInServiceLine()
+      }
     }
   }
 </script>
