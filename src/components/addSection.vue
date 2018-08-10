@@ -6,14 +6,17 @@
           <h3 align="center">添加路段</h3>
           <hr>
           <form class="form-horizontal">
-            <!--&lt;!&ndash;路段id&ndash;&gt;-->
-            <!--<div class="form-group">-->
-              <!--<label for="sectionId" class="col-sm-4 control-label">路段ID</label>-->
-              <!--<div class="col-sm-8">-->
-                <!--<input type="text" disabled="disabled" class="form-control" id="sectionId" v-model="sectionId">-->
-              <!--</div>-->
-            <!--</div>-->
-            <!--路段名称-->
+            <!--区域-->
+            <div class="form-group" v-show="!parseInt(userDistrictId)">
+              <label for="district" class="col-sm-4 control-label">路线区域</label>
+              <div class="col-sm-8">
+                <select class="form-control" id="district" v-model="districtId">
+                  <template v-for="item in allDistricts">
+                    <option :value="item.id">{{item.name}}</option>
+                  </template>
+                </select>
+              </div>
+            </div>
             <div class="form-group">
               <label for="sectionName" class="col-sm-4 control-label">路段名称</label>
               <div class="col-sm-8">
@@ -98,7 +101,10 @@
           endPoint: '',
           remark1: '',
           remark2: '',
-          remark3: ''
+          remark3: '',
+          districtId: '',
+          userDistrictId: '',
+          allDistricts: []
         }
       },
       methods: {
@@ -116,7 +122,7 @@
             data: {
               userName: localStorage.getItem('userName'),
               roadId: _this.roadId,
-              // sectionId: _this.sectionId,
+              districtId: _this.districtId,
               name: _this.sectionName,
               startPlace: _this.sectionStart,
               endPlace: _this.sectionEnd,
@@ -140,10 +146,30 @@
               console.log(err)
             }
           })
+        },
+        initDistrict: function () {
+          let url = config.ROOT_API_URL + 'district/lists'
+          let _this = this
+          $.ajax({
+            url: url,
+            type: 'GET',
+            data: {
+              userName: localStorage.getItem('userName')
+            },
+            success: function (response) {
+              _this.allDistricts = response.districtList
+            },
+            error: function (err) {
+              console.log(err)
+            }
+          })
         }
       },
       mounted () {
+        this.districtId = window.localStorage.getItem('districtId')
+        this.userDistrictId = window.localStorage.getItem('districtId')
         this.init()
+        this.initDistrict()
       }
     }
 </script>

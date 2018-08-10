@@ -48,7 +48,7 @@
         if (parseInt(disId) === 6) {
           this.district = '丰台区'
         }
-        if (parseInt(disId) === 1) {
+        if (parseInt(disId) === 7) {
           this.district = '石景山区'
         }
         if (!window.localStorage.getItem('userName')) {

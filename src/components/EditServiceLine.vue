@@ -7,7 +7,7 @@
           <hr>
           <form class="form-horizontal">
             <!--勤务ID-->
-            <div class="form-group">
+            <div class="form-group" v-show="action === 'Edit'">
               <label for="id" class="col-sm-4 control-label">勤务ID</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="id" v-model="serviceLineId" disabled="disabled">
@@ -72,10 +72,16 @@
                 <input type="text" class="form-control" id="remark3" v-model="info.remark3">
               </div>
             </div>
-            <!--提交按钮-->
-            <div class="form-group">
+            <!--提交修改按钮-->
+            <div class="form-group" v-show="action === 'Edit'">
               <div class="col-sm-offset-4 col-sm-8">
-                <button type="button" class="btn btn-primary btn-block" @click="ok">提交</button>
+                <button type="button" class="btn btn-primary btn-block" @click="ok">提交修改</button>
+              </div>
+            </div>
+            <!--提交复制按钮-->
+            <div class="form-group" v-show="action === 'Copy'">
+              <div class="col-sm-offset-4 col-sm-8">
+                <button type="button" class="btn btn-primary btn-block" @click="ok1">提交复制</button>
               </div>
             </div>
           </form>
@@ -91,6 +97,7 @@
       name: 'EditServiceLine',
       data () {
         return {
+          action: '',
           serviceLineId: '',
           allDistricts: [],
           info: {},
@@ -131,6 +138,9 @@
               console.log('请求单条路线')
               console.log(response)
               _this.info = response.data[0]
+              if (_this.action === 'Copy') {
+                _this.info.name = _this.info.name + '-copy'
+              }
               for (let i = 0; i < _this.info.district.length; i++) {
                 _this.currentDistrict.push(parseInt(_this.info.district[i].id))
               }
@@ -187,10 +197,57 @@
               console.log(err)
             }
           })
+        },
+        ok1: function () {
+          this.selectDistricts = []
+          for (let i = 0; i < this.allDistricts.length; i++) {
+            let id = this.allDistricts[i].id.toString()
+            let element = document.getElementById(id)
+            if (element.checked) {
+              if (!(this.selectDistricts.indexOf(id) + 1)) {
+                this.selectDistricts.push(id)
+              }
+            }
+          }
+          let selectDistrictsStr = ''
+          if (this.selectDistricts.length) {
+            selectDistrictsStr = this.selectDistricts[0]
+            for (let j = 1; j < this.selectDistricts.length; j++) {
+              selectDistrictsStr = selectDistrictsStr + '-' + this.selectDistricts[j]
+            }
+          }
+          console.log(selectDistrictsStr)
+          console.log(this.selectDistricts)
+          let url = config.ROOT_API_URL + 'server_line/edit'
+          let _this = this
+          $.ajax({
+            url: url,
+            type: 'POST',
+            data: {
+              userName: localStorage.getItem('userName'),
+              districtStr: selectDistrictsStr,
+              serviceLineId: _this.serviceLineId,
+              name: _this.info.name,
+              startPlace: _this.info.startPlace,
+              endPlace: _this.info.endPlace,
+              time: _this.info.time,
+              remark1: _this.info.remark1,
+              remark2: _this.info.remark2,
+              remark3: _this.info.remark3
+            },
+            success: function (response) {
+              console.log(response)
+              _this.$router.push('/serviceLineList')
+            },
+            error: function (err) {
+              console.log(err)
+            }
+          })
         }
       },
       mounted () {
         this.serviceLineId = this.$route.query.serviceLineId
+        this.action = this.$route.query.action
         this.initDistrict()
         this.getServiceInfo()
       }

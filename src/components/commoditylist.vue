@@ -43,7 +43,10 @@
           <td :id="list.id" @click="jump2Station('', $event)"><a href="#">岗哨数量：{{list.stationNumber}}</a></td>
           <td>
               <button :value="list.id" type="button" @click="EditAdmin('',$event)">
-                  编辑
+                编辑
+              </button>
+              <button :value="list.id" type="button" @click="CopyAdmin('',$event)">
+                复制
               </button>
               <button :value="list.id" type="button" @click="SectionFaculty('',$event)">
                 人员
@@ -52,7 +55,7 @@
                 移除
               </button>
               <button :value="list.id" type="button" style="background-color: red" @click="RemoveSection('',$event)">
-                  删除
+                删除
               </button>
           </td>
       </tr>
@@ -113,7 +116,29 @@
         let el = event.currentTarget
         let idInt = parseInt(el.value)
         console.log(idInt)
-        this.$router.push({path: '/editSection', query: {type: this.type, roadId: this.roadId, sectionId: idInt}})
+        this.$router.push({
+          path: '/editSection',
+          query: {
+            type: this.type,
+            roadId: this.roadId,
+            sectionId: idInt,
+            action: 'Edit'
+          }
+        })
+      },
+      CopyAdmin: function (msg, event) {
+        let el = event.currentTarget
+        let idInt = parseInt(el.value)
+        console.log(idInt)
+        this.$router.push({
+          path: '/editSection',
+          query: {
+            type: this.type,
+            roadId: this.roadId,
+            sectionId: idInt,
+            action: 'Copy'
+          }
+        })
       },
       RemoveSection: function (msg, event) {
         let el = event.currentTarget

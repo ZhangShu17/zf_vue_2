@@ -6,6 +6,17 @@
           <h3 align="center">添加岗位</h3>
           <hr>
           <form class="form-horizontal">
+            <!--区域-->
+            <div class="form-group" v-show="!parseInt(userDistrictId)">
+              <label for="district" class="col-sm-4 control-label">路线区域</label>
+              <div class="col-sm-8">
+                <select class="form-control" id="district" v-model="districtId">
+                  <template v-for="item in allDistricts">
+                    <option :value="item.id">{{item.name}}</option>
+                  </template>
+                </select>
+              </div>
+            </div>
             <!--岗位名称-->
             <div class="form-group">
               <label for="name" class="col-sm-4 control-label">岗位名称</label>
@@ -65,41 +76,63 @@
           remark1: '',
           remark2: '',
           remark3: '',
-          sectionId: ''
+          sectionId: '',
+          districtId: window.localStorage.getItem('districtId'),
+          userDistrictId: window.localStorage.getItem('districtId'),
+          allDistricts: []
         }
       },
       methods: {
         AddStation: function () {
+          if (!this.districtId) {
+            alert('请选择地区')
+          } else {
+            let _this = this
+            let url = config.ROOT_API_URL + 'station/edit'
+            $.ajax({
+              url: url,
+              type: 'POST',
+              data: {
+                districtId: _this.districtId,
+                userName: localStorage.getItem('userName'),
+                name: _this.name,
+                location: _this.location,
+                sectionId: _this.sectionId,
+                remark1: _this.remark1,
+                remark2: _this.remark2,
+                remark3: _this.remark3
+              },
+              success: function (response) {
+                console.log(response)
+                if (_this.type === 1) {
+                  _this.$router.push({
+                    path: '/stationList',
+                    query: {
+                      type: 1,
+                      sectionId: _this.sectionId
+                    }
+                  })
+                } else {
+                  _this.$router.push({path: '/stationList', query: {type: 0}})
+                }
+              },
+              error: function (err) {
+                console.log(err)
+              }
+            })
+          }
+        },
+        initDistrict: function () {
+          let url = config.ROOT_API_URL + 'district/lists'
           let _this = this
-          let url = config.ROOT_API_URL + 'station/edit'
-          console.log(_this.name)
-          console.log(_this.sectionId)
-          console.log(_this.location)
           $.ajax({
             url: url,
-            type: 'POST',
+            type: 'GET',
             data: {
-              userName: localStorage.getItem('userName'),
-              name: _this.name,
-              location: _this.location,
-              sectionId: _this.sectionId,
-              remark1: _this.remark1,
-              remark2: _this.remark2,
-              remark3: _this.remark3
+              userName: localStorage.getItem('userName')
             },
             success: function (response) {
-              console.log(response)
-              if (_this.type === 1) {
-                _this.$router.push({
-                  path: '/stationList',
-                  query: {
-                    type: 1,
-                    sectionId: _this.sectionId
-                  }
-                })
-              } else {
-                _this.$router.push({path: '/stationList', query: {type: 0}})
-              }
+              _this.allDistricts = response.districtList
             },
             error: function (err) {
               console.log(err)
@@ -110,6 +143,7 @@
       mounted: function () {
         this.type = this.$route.query.type
         this.sectionId = this.$route.query.sectionId
+        this.initDistrict()
       }
     }
 </script>

@@ -32,6 +32,9 @@
                     <button @click="EditServiceLine(list.id)" :value="list.id" type="button">
                       编辑
                     </button>
+                    <button @click="CopyServiceLine(list.id)" :value="list.id" type="button">
+                      复制
+                    </button>
                     <button :value="list.id" type="button">
                       删除
                     </button>
@@ -104,7 +107,18 @@
           this.$router.push({
             path: '/editServiceLine',
             query: {
-              serviceLineId: param
+              serviceLineId: param,
+              action: 'Edit'
+            }
+          })
+        },
+        CopyServiceLine: function (param) {
+          console.log(param)
+          this.$router.push({
+            path: '/editServiceLine',
+            query: {
+              serviceLineId: param,
+              action: 'Copy'
             }
           })
         }

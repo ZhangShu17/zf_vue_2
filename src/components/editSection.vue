@@ -7,7 +7,7 @@
           <hr>
           <form class="form-horizontal">
             <!--路段id-->
-            <div class="form-group">
+            <div class="form-group" v-show="action === 'Edit'">
               <label for="sectionId" class="col-sm-4 control-label">路段ID</label>
               <div class="col-sm-8">
                 <input type="text" disabled="disabled" class="form-control" id="sectionId" v-model="sectionId">
@@ -70,9 +70,15 @@
               </div>
             </div>
             <!--提交按钮-->
-            <div class="form-group">
+            <div class="form-group" v-show="action === 'Edit'">
               <div class="col-sm-offset-4 col-sm-8">
                 <button type="button" class="btn btn-primary btn-block" @click="EditSection">提交修改</button>
+              </div>
+            </div>
+            <!--提交复制-->
+            <div class="form-group" v-show="action === 'Copy'">
+              <div class="col-sm-offset-4 col-sm-8">
+                <button type="button" class="btn btn-primary btn-block" @click="CopySection">提交复制</button>
               </div>
             </div>
           </form>
@@ -98,7 +104,8 @@
           endPoint: '',
           remark1: '',
           remark2: '',
-          remark3: ''
+          remark3: '',
+          action: ''
         }
       },
       methods: {
@@ -106,6 +113,7 @@
           this.type = this.$route.query.type
           this.sectionId = this.$route.query.sectionId
           this.roadId = this.$route.query.roadId
+          this.action = this.$route.query.action
           let url = config.ROOT_API_URL + 'section/single'
           let _this = this
           $.ajax({
@@ -119,6 +127,9 @@
             success: function (response) {
               console.log(response)
               _this.sectionName = response.data.name
+              if (_this.action === 'Copy') {
+                _this.sectionName = response.data.name + '-copy'
+              }
               _this.sectionStart = response.data.startPlace
               _this.sectionEnd = response.data.endPlace
               _this.startPoint = response.data.startPoint
@@ -138,6 +149,39 @@
           $.ajax({
             url: url,
             type: 'PUT',
+            data: {
+              userName: localStorage.getItem('userName'),
+              sectionId: _this.sectionId,
+              name: _this.sectionName,
+              startPlace: _this.sectionStart,
+              endPlace: _this.sectionEnd,
+              startPoint: _this.startPoint,
+              endPoint: _this.endPoint,
+              remark1: _this.remark1,
+              remark2: _this.remark2,
+              remark3: _this.remark3
+            },
+            async: false,
+            success: function (response) {
+              console.log('success')
+              console.log(response)
+              if (_this.type === 1) {
+                _this.$router.push({path: '/sectionlist', query: {type: 1, roadId: _this.roadId}})
+              } else {
+                _this.$router.push({path: '/sectionlist', query: {type: 0}})
+              }
+            },
+            error: function (err) {
+              console.log(err)
+            }
+          })
+        },
+        CopySection: function () {
+          let url = config.ROOT_API_URL + 'copy/section'
+          let _this = this
+          $.ajax({
+            url: url,
+            type: 'POST',
             data: {
               userName: localStorage.getItem('userName'),
               sectionId: _this.sectionId,

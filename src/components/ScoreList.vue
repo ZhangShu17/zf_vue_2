@@ -47,6 +47,9 @@
               <button :value="list.id" type="button" @click="EditRoad('',$event)">
                   编辑
               </button>
+              <button :value="list.id" type="button" @click="CopyRoad('',$event)">
+                  复制
+              </button>
               <button :value="list.id" type="button" @click="RoadFaculty('',$event)">
                   人员
               </button>
@@ -119,7 +122,13 @@
         var el = event.currentTarget
         var idInt = parseInt(el.value)
         console.log(idInt)
-        this.$router.push({path: '/submitroad', query: {roadId: idInt}})
+        this.$router.push({path: '/submitroad', query: {roadId: idInt, action: 'Edit', serviceLineId: this.serviceLineId}})
+      },
+      CopyRoad: function (msg, event) {
+        var el = event.currentTarget
+        var idInt = parseInt(el.value)
+        console.log(idInt)
+        this.$router.push({path: '/submitroad', query: {roadId: idInt, action: 'Copy', serviceLineId: this.serviceLineId}})
       },
       RemoveRoad: function (msg, event) {
         let userName = localStorage.getItem('userName')

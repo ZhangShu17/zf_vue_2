@@ -42,6 +42,9 @@
                     <button :value="list.id" type="button" @click="EditStation('',$event)">
                       编辑
                     </button>
+                    <button :value="list.id" type="button" @click="CopyStation('',$event)">
+                      复制
+                    </button>
                     <button :value="list.id" type="button" @click="StationFaculty('',$event)">
                       人员
                     </button>
@@ -134,6 +137,21 @@
         this.$router.push({
           path: '/submitStation',
           query: {stationId: idInt,
+            action: 'Edit',
+            type: this.type,
+            sectionId: this.sectionId}
+        })
+      },
+      CopyStation: function (msg, event) {
+        var el = event.currentTarget
+        var idInt = parseInt(el.value)
+        console.log('复制岗哨打印')
+        console.log(idInt)
+        console.log('复制岗哨打印 END')
+        this.$router.push({
+          path: '/submitStation',
+          query: {stationId: idInt,
+            action: 'Copy',
             type: this.type,
             sectionId: this.sectionId}
         })

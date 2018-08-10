@@ -7,7 +7,7 @@
         <hr>
         <form class="form-horizontal">
           <!--道路id-->
-          <div class="form-group">
+          <div class="form-group" v-show="action === 'Edit'">
             <label for="roadid" class="col-sm-4 control-label">道路ID</label>
             <div class="col-sm-8">
               <input type="text" disabled="disabled" class="form-control" id="roadid" v-model="roadId">
@@ -24,7 +24,7 @@
           <div class="form-group">
             <label for="length" class="col-sm-4 control-label">道路长度</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" id="length" v-model="length">
+              <input type="text" class="form-control" id="length" v-model="length"  @change="CheckLength">
             </div>
           </div>
           <!--道路起点-->
@@ -77,9 +77,15 @@
             </div>
           </div>
           <!--提交按钮-->
-          <div class="form-group">
+          <div class="form-group" v-show="action === 'Edit'">
             <div class="col-sm-offset-4 col-sm-8">
               <button type="button" class="btn btn-primary btn-block" @click="EditRoad">提交修改</button>
+            </div>
+          </div>
+          <!--提交复制-->
+          <div class="form-group" v-show="action === 'Copy'">
+            <div class="col-sm-offset-4 col-sm-8">
+              <button type="button" class="btn btn-primary btn-block" @click="CopyRoad">提交复制</button>
             </div>
           </div>
         </form>
@@ -95,6 +101,7 @@
     name: 'SubmitScore',
     data () {
       return {
+        serviceLineId: '',
         roadId: '',
         roadName: '',
         length: '',
@@ -104,7 +111,8 @@
         endPoint: '',
         remark1: '',
         remark2: '',
-        remark3: ''
+        remark3: '',
+        action: ''
       }
     },
     methods: {
@@ -130,16 +138,57 @@
           },
           success: function (response) {
             console.log('success')
-            _this.$router.push('/roadlist')
+            _this.$router.push({path: '/roadlist', query: {serviceLineId: _this.serviceLineId}})
           },
           error: function (error) {
             console.log(error)
           }
         })
+      },
+      CopyRoad: function () {
+        console.log(this.serviceLineId)
+        let _this = this
+        let url = config.ROOT_API_URL + 'copy/road'
+        $.ajax({
+          url: url,
+          type: 'POST',
+          async: false,  // 取消异步请求
+          data: {
+            userName: localStorage.getItem('userName'),
+            roadId: _this.roadId,
+            name: _this.roadName,
+            length: _this.length,
+            startPlace: _this.roadStart,
+            endPlace: _this.roadEnd,
+            startPoint: _this.startPoint,
+            endPoint: _this.endPoint,
+            remark1: _this.remark1,
+            remark2: _this.remark2,
+            remark3: _this.remark3
+          },
+          success: function (response) {
+            console.log('success')
+            _this.$router.push({path: '/roadlist', query: {serviceLineId: _this.serviceLineId}})
+          },
+          error: function (error) {
+            console.log(error)
+          }
+        })
+      },
+      CheckLength: function () {
+        console.log('打印length')
+        console.log(this.length)
+        let reg = /^\d+\.\d+$/
+        console.log(reg.test(this.length))
+        if (!reg.test(this.length)) {
+          alert('输入不合法，长度应为带小数点的数字，请重新输入')
+        }
       }
     },
     mounted: function () {
+      this.serviceLineId = this.$route.query.serviceLineId
       let roadId = this.$route.query.roadId
+      this.action = this.$route.query.action
       let _this = this
       let url = config.ROOT_API_URL + 'road/single'
       console.log(roadId)
@@ -155,6 +204,9 @@
           console.log(response)
           _this.roadId = response.data.id
           _this.roadName = response.data.name
+          if (_this.action === 'Copy') {
+            _this.roadName = response.data.name + '-copy'
+          }
           _this.length = response.data.length
           _this.roadStart = response.data.startPlace
           _this.roadEnd = response.data.endPlace
