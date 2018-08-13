@@ -27,8 +27,8 @@
         <tr>
           <th>路段ID</th>
           <th>路段名称</th>
-          <th>起点坐标</th>
-          <th>终点坐标</th>
+          <th>路段起点</th>
+          <th>路段终点</th>
           <th>岗哨信息</th>
           <th>操作</th>
         </tr>
@@ -38,8 +38,8 @@
         <tr>
           <th>{{list.id}}</th>
           <td>{{list.name}}</td>
-          <td>{{list.startPoint}}</td>
-          <td>{{list.endPoint}}</td>
+          <td>{{list.startPlace}}</td>
+          <td>{{list.endPlace}}</td>
           <td :id="list.id" @click="jump2Station('', $event)"><a href="#">岗哨数量：{{list.stationNumber}}</a></td>
           <td>
               <button :value="list.id" type="button" @click="EditAdmin('',$event)">

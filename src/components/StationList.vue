@@ -160,11 +160,11 @@
         let userName = localStorage.getItem('userName')
         let el = event.currentTarget
         let idInt = parseInt(el.value)
-        let url = config.ROOT_API_URL + 'station/delete'
+        let url = config.ROOT_API_URL + 'station/edit'
         let _this = this
         $.ajax({
           url: url,
-          type: 'GET',
+          type: 'DELETE',
           async: false,  // 取消异步请求
           data: {
             userName: userName,

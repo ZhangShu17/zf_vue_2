@@ -36,7 +36,7 @@
                     <button :value="list.id" type="button" @click="EditFaculty('',$event)">
                       编辑
                     </button>
-                    <button :value="list.id" type="button" @click="removeFaculty('',$event)">
+                    <button :value="list.id" type="button" style="background-color: red" @click="removeFaculty('',$event)">
                       删除
                     </button>
                   </td>

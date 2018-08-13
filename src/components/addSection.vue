@@ -37,18 +37,11 @@
                 <input type="text" class="form-control" id="sectionEnd" v-model="sectionEnd">
               </div>
             </div>
-            <!--起点坐标-->
+            <!--路段坐标-->
             <div class="form-group">
-              <label for="startPoint" class="col-sm-4 control-label">起点坐标</label>
+              <label for="xycoordinate" class="col-sm-4 control-label">路段坐标坐标</label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" id="startPoint" v-model="startPoint">
-              </div>
-            </div>
-            <!--终点坐标-->
-            <div class="form-group">
-              <label for="endPoint" class="col-sm-4 control-label">终点坐标</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="endPoint" v-model="endPoint">
+                <input type="text" class="form-control" id="xycoordinate" v-model="xycoordinate">
               </div>
             </div>
             <!--备注1-->
@@ -97,8 +90,7 @@
           sectionName: '',
           sectionStart: '',
           sectionEnd: '',
-          startPoint: '',
-          endPoint: '',
+          xycoordinate: '',
           remark1: '',
           remark2: '',
           remark3: '',
@@ -126,7 +118,7 @@
               name: _this.sectionName,
               startPlace: _this.sectionStart,
               endPlace: _this.sectionEnd,
-              startPoint: _this.startPoint,
+              XYCOORDINATE: _this.xycoordinate,
               endPoint: _this.endPoint,
               remark1: _this.remark1,
               remark2: _this.remark2,
