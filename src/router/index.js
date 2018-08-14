@@ -19,11 +19,17 @@ import roadExcel from '@/components/roadExcel'
 import ServiceLine from '@/components/ServiceLine'
 import AddServiceLine from '@/components/AddServiceLine'
 import EditServiceLine from '@/components/EditServiceLine'
+import pagination from '@/components/pagination'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/pagination',
+      name: 'pagination',
+      component: pagination
+    },
     {
       path: '/editServiceLine',
       name: 'editServiceLine',

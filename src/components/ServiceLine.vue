@@ -35,7 +35,7 @@
                     <button @click="CopyServiceLine(list.id)" :value="list.id" type="button">
                       复制
                     </button>
-                    <button :value="list.id" type="button">
+                    <button @click="pushpagination" :value="list.id" type="button">
                       删除
                     </button>
                   </td>
@@ -120,6 +120,11 @@
               serviceLineId: param,
               action: 'Copy'
             }
+          })
+        },
+        pushpagination: function () {
+          this.$router.push({
+            path: '/pagination'
           })
         }
       },

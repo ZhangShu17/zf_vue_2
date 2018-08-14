@@ -69,13 +69,18 @@
         </div>
       </div>
     </div>
+    <my-pagination></my-pagination>
   </div>
 </template>
 
 <script>
   import config from '../config/config'
+  const pagination = () => import('../components/pagination')
   export default {
     name: 'RoadList',
+    components: {
+      'my-pagination': pagination
+    },
     data () {
       return {
         count: 0,
