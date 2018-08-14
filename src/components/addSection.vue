@@ -42,7 +42,9 @@
               <label for="xycoordinate" class="col-sm-4 control-label">路段坐标坐标</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="xycoordinate" v-model="xycoordinate">
+                <button @click="jump2map">地图</button>
               </div>
+
             </div>
             <!--备注1-->
             <div class="form-group">
@@ -86,6 +88,7 @@
         return {
           type: '',
           roadId: '',
+          districtId: '',
           // sectionId: '',
           sectionName: '',
           sectionStart: '',
@@ -104,6 +107,19 @@
           this.type = this.$route.query.type
           // this.sectionId = this.$route.query.sectionId
           this.roadId = this.$route.query.roadId
+          this.mapType = this.$route.query.mapType
+
+          if(this.mapType === 4){
+            this.districtId = this.$route.query.districtId
+            this.sectionName = this.$route.query.sectionName
+            this.sectionStart = this.$route.query.sectionStart
+            this.sectionEnd = this.$route.query.sectionEnd
+            this.xycoordinate = this.$route.query.locationList
+            this.remark1 = this.$route.query.remark1
+            this.remark2 = this.$route.query.remark2
+            this.remark3 = this.$route.query.remark3
+            console.log('init,'+'districtId:'+this.districtId+',type:'+this.type+',roadId:'+this.roadId+',maptype:'+this.mapType+'sectionName:'+this.sectionName)
+          }
         },
         AddSection: function () {
           let url = config.ROOT_API_URL + 'section/edit'
@@ -136,6 +152,25 @@
             },
             error: function (err) {
               console.log(err)
+            }
+          })
+        },
+        jump2map: function () {
+          console.log('section jump2map')
+          this.$router.push({
+            path: '/mapOperate',
+            query: {
+              type: this.type,
+              mapType: 4,
+              sectionName: this.sectionName,
+              roadId: this.roadId,
+              districtId: this.districtId,
+              sectionStart: this.sectionStart,
+              sectionEnd: this.sectionEnd,
+              locationList: this.xycoordinate,
+              remark1: this.remark1,
+              remark2: this.remark2,
+              remark3: this.remark3,
             }
           })
         },

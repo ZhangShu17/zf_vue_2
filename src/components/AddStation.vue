@@ -29,7 +29,9 @@
               <label for="location" class="col-sm-4 control-label">岗位坐标</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="location" v-model="location">
+                <button type="button" @click="jump2mapOperate" >地图选点</button>
               </div>
+
             </div>
             <!--备注1-->
             <div class="form-group">
@@ -72,6 +74,8 @@
       data () {
         return {
           name: '',
+          type: '',
+          mapType: '',
           location: '',
           remark1: '',
           remark2: '',
@@ -138,11 +142,39 @@
               console.log(err)
             }
           })
+        },
+        jump2mapOperate: function () {
+          console.log('jump2map')
+          this.$router.push({
+            path: '/mapOperate',
+            query: {
+              type: this.type,
+              mapType: 3,
+              name: this.name,
+              districtId: this.districtId,
+              location: this.location,
+              remark1: this.remark1,
+              remark2: this.remark2,
+              remark3: this.remark3,
+              sectionId: this.sectionId
+            }
+          })
         }
       },
+
       mounted: function () {
         this.type = this.$route.query.type
+        this.mapType = this.$route.query.mapType
         this.sectionId = this.$route.query.sectionId
+        console.log('addstation mounted,'+'type:'+this.type+',sectionId:'+this.sectionId)
+        if(this.mapType == 3){
+          this.districtId = this.$route.districtId
+          this.name = this.$route.query.name
+          this.location = this.$route.query.location
+          this.remark1 = this.$route.query.remark1
+          this.remark2 = this.$route.query.remark2
+          this.remark3 = this.$route.query.remark3
+        }
         this.initDistrict()
       }
     }

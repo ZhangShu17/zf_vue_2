@@ -20,6 +20,7 @@ import ServiceLine from '@/components/ServiceLine'
 import AddServiceLine from '@/components/AddServiceLine'
 import EditServiceLine from '@/components/EditServiceLine'
 import pagination from '@/components/pagination'
+import MapOperate from '@/components/MapOperate'
 
 Vue.use(Router)
 
@@ -125,6 +126,11 @@ export default new Router({
       path: '/roadlist',
       name: 'RoadList',
       component: ScoreList
+    },
+    {
+      path: '/mapOperate',
+      name: 'MapOperate',
+      component: MapOperate
     }
   ]
 })
