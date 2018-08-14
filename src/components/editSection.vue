@@ -178,8 +178,7 @@
               name: _this.sectionName,
               startPlace: _this.sectionStart,
               endPlace: _this.sectionEnd,
-              startPoint: _this.startPoint,
-              endPoint: _this.endPoint,
+              XYCOORDINATE: _this.xyCoordinate,
               remark1: _this.remark1,
               remark2: _this.remark2,
               remark3: _this.remark3

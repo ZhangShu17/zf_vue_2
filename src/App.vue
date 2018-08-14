@@ -4,11 +4,11 @@
       <ul class="nav nav-pills">
         <li id="logout" v-if="getUserId()" role="presentation"><router-link to="/logout">退出登陆</router-link></li>
         <li id="login" v-else role="presentation"><router-link to="/login">登陆</router-link></li>
-        <li id="serviceLine" role="presentation"><router-link to="/serviceLineList">勤务路线管理</router-link></li>
-        <li id="roadList" role="presentation"><router-link :to="{path: '/roadlist', query: {serviceLineId: 0}}">路线管理</router-link></li>
-        <li id="sectionList" role="presentation"><router-link :to="{path:'/sectionlist',query: {type: 0}}">路段管理</router-link></li>
-        <li id="stationList" role="presentation"><router-link :to="{path: '/stationList', query: {type: 0, sectionId: 0}}">岗哨管理</router-link></li>
-        <li id="facultyList" role="presentation"><router-link to="/facultyList">人员管理</router-link></li>
+        <li id="serviceLine" role="presentation" v-if="getUserId()"><router-link to="/serviceLineList">勤务路线管理</router-link></li>
+        <li id="roadList" role="presentation" v-if="getUserId()"><router-link :to="{path: '/roadlist', query: {serviceLineId: 0}}">路线管理</router-link></li>
+        <li id="sectionList" role="presentation" v-if="getUserId()"><router-link :to="{path:'/sectionlist',query: {type: 0}}">路段管理</router-link></li>
+        <li id="stationList" role="presentation" v-if="getUserId()"><router-link :to="{path: '/stationList', query: {type: 0, sectionId: 0}}">岗哨管理</router-link></li>
+        <li id="facultyList" role="presentation" v-if="getUserId()"><router-link to="/facultyList">人员管理</router-link></li>
       </ul>
       <router-view></router-view>
     </div>

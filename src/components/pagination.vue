@@ -19,12 +19,13 @@
 
 
 <script>
+    import eventbus from '../assets/EventBus'
     export default {
       name: 'pagination',
       data () {
         return {
           current_page: 1,
-          pages: 50,
+          pages: 30,
           changePage: '',
           nowIndex: 0
         }
@@ -35,6 +36,7 @@
           console.log(curval)
           console.log(oldval)
           console.log('监听页码 end')
+          eventbus.$emit('paginatorPage', curval)
         }
       },
       computed: {

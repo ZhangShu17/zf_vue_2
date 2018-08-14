@@ -20,11 +20,17 @@ import ServiceLine from '@/components/ServiceLine'
 import AddServiceLine from '@/components/AddServiceLine'
 import EditServiceLine from '@/components/EditServiceLine'
 import pagination from '@/components/pagination'
+import login1 from '@/components/login1'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/login1',
+      name: 'login1',
+      component: login1
+    },
     {
       path: '/pagination',
       name: 'pagination',

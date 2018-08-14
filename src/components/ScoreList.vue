@@ -28,8 +28,8 @@
           <th>路线ID</th>
           <th>路线名称</th>
           <th>路线长度</th>
-          <th>起点坐标</th>
-          <th>终点坐标</th>
+          <th>路线起点</th>
+          <th>路线终点</th>
           <th>段/岗信息</th>
           <th>操作</th>
         </tr>
@@ -40,8 +40,8 @@
           <th>{{list.id}}</th>
           <td :id="list.id" @click="PushExcel('', $event)"><a href="#">{{list.name}}</a></td>
           <td>{{list.length}}</td>
-          <td>{{list.startPoint}}</td>
-          <td>{{list.endPoint}}</td>
+          <td>{{list.startPlace}}</td>
+          <td>{{list.endPlace}}</td>
           <td :id="list.id" @click="PushSection('', $event)"><a href="#">{{list.sectionNumber + '段' + list.stationNumber + '岗'}}</a> </td>
           <td>
               <button :value="list.id" type="button" @click="EditRoad('',$event)">
@@ -74,6 +74,7 @@
 </template>
 
 <script>
+  import eventbus from '../assets/EventBus'
   import config from '../config/config'
   const pagination = () => import('../components/pagination')
   export default {
@@ -250,6 +251,13 @@
       if (this.serviceLineId) {
         this.RoadNotInServiceLine()
       }
+      let _this = this
+      eventbus.$on('paginatorPage', function (msg) {
+        console.log('监听事件打印')
+        console.log(msg)
+        _this.cur_page = msg
+        _this.init()
+      })
     }
   }
 </script>
