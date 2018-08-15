@@ -3,7 +3,7 @@
     <div class="container">
       <h3 align="center">勤务路线管理
       </h3>
-      <ul class="nav nav-pills">
+      <ul class="nav nav-pills" v-if="!parseInt(districtId)">
         <li @click="AddServerLine"><a href="#">+添加勤务路线</a></li>
       </ul>
       <hr>
@@ -35,7 +35,7 @@
                     <button @click="CopyServiceLine(list.id)" :value="list.id" type="button">
                       复制
                     </button>
-                    <button @click="pushpagination" :value="list.id" type="button">
+                    <button @click="Delete(list.id)" :value="list.id" type="button" style="background-color: red">
                       删除
                     </button>
                   </td>
@@ -64,7 +64,8 @@
       data () {
         return {
           name: 0,
-          serviceList: []
+          serviceList: [],
+          districtId: localStorage.getItem('districtId')
         }
       },
       methods: {
@@ -127,9 +128,24 @@
             }
           })
         },
-        pushpagination: function () {
-          this.$router.push({
-            path: '/pagination'
+        Delete: function (serviceLineId) {
+          console.log(serviceLineId)
+          let _this = this
+          let url = config.ROOT_API_URL + 'server_line/edit'
+          $.ajax({
+            url: url,
+            type: 'DELETE',
+            data: {
+              userName: localStorage.getItem('userName'),
+              serviceLineId: serviceLineId
+            },
+            async: false,
+            success: function (response) {
+              _this.init()
+            },
+            error: function (err) {
+              console.log(err)
+            }
           })
         }
       },

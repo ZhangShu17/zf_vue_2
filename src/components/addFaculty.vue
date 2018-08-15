@@ -131,6 +131,7 @@
             async: false,  // 取消异步请求
             data: {
               userName: localStorage.getItem('userName'),
+              districtId: localStorage.getItem('districtId'),
               roadId: _this.roadId,
               facultyType: _this.chiefType,
               name: _this.name,
@@ -157,6 +158,7 @@
             data: {
               userName: localStorage.getItem('userName'),
               sectionId: _this.sectionId,
+              districtId: localStorage.getItem('districtId'),
               facultyType: _this.chiefType,
               name: _this.name,
               mobile: _this.mobile,
@@ -182,6 +184,7 @@
             data: {
               userName: localStorage.getItem('userName'),
               stationId: _this.stationId,
+              districtId: localStorage.getItem('districtId'),
               facultyType: _this.chiefType,
               name: _this.name,
               mobile: _this.mobile,
