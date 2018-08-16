@@ -3,7 +3,7 @@
     <div class="container">
       <h3 align="center" v-if="sectionId">岗哨管理-路段【{{sectionId}}】
       </h3>
-      <h3 align="center" v-else>岗哨管理{{cur_page}}
+      <h3 align="center" v-else>岗哨管理
       </h3>
       <ul class="nav nav-pills">
         <li @click = 'jump2AddStation'><a href="#">+添加岗位</a></li>

@@ -36,7 +36,11 @@
       <tbody>
       <template v-for="list in sectionList">
         <tr>
-          <th>{{list.id}}</th>
+          <th>
+            <button v-show="type">↑</button>
+            <button v-show="type">↓</button>
+            {{list.id}}
+          </th>
           <td>{{list.name}}</td>
           <td>{{list.startPlace}}</td>
           <td>{{list.endPlace}}</td>
