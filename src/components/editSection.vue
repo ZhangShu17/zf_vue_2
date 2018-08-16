@@ -39,6 +39,7 @@
               <label for="xyCoordinate" class="col-sm-4 control-label">路段坐标</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="xyCoordinate" v-model="xyCoordinate">
+                <button @click="jump2map">地图画线</button>
               </div>
             </div>
             <!--备注1-->
@@ -88,6 +89,7 @@
       data () {
         return {
           type: '',
+          mapType:'',
           roadId: '',
           sectionId: '',
           sectionName: '',
@@ -97,7 +99,8 @@
           remark1: '',
           remark2: '',
           remark3: '',
-          action: ''
+          action: '',
+          mapType: ''
         }
       },
       methods: {
@@ -106,33 +109,47 @@
           this.sectionId = this.$route.query.sectionId
           this.roadId = this.$route.query.roadId
           this.action = this.$route.query.action
-          let url = config.ROOT_API_URL + 'section/single'
-          let _this = this
-          $.ajax({
-            url: url,
-            type: 'GET',
-            data: {
-              userName: localStorage.getItem('userName'),
-              sectionId: _this.sectionId
-            },
-            async: false,
-            success: function (response) {
-              console.log(response)
-              _this.sectionName = response.data.name
-              if (_this.action === 'Copy') {
-                _this.sectionName = response.data.name + '-copy'
+          this.mapType = this.$route.query.mapType
+
+          if(this.mapType == 6){
+            this.sectionName = this.$route.query.sectionName
+            this.sectionStart = this.$route.query.sectionStart
+            this.sectionEnd = this.$route.query.sectionEnd
+            this.xyCoordinate = this.$route.query.locationList
+            this.remark1 = this.$route.query.remark1
+            this.remark2 = this.$route.query.remark2
+            this.remark3 = this.$route.query.remark3
+            console.log('init,'+'districtId:'+this.districtId+',type:'+this.type+',roadId:'+this.roadId+',maptype:'+this.mapType+'sectionName:'+this.sectionName)
+          }else{
+            let url = config.ROOT_API_URL + 'section/single'
+            let _this = this
+            $.ajax({
+              url: url,
+              type: 'GET',
+              data: {
+                userName: localStorage.getItem('userName'),
+                sectionId: _this.sectionId
+              },
+              async: false,
+              success: function (response) {
+                console.log(response)
+                _this.sectionName = response.data.name
+                if (_this.action === 'Copy') {
+                  _this.sectionName = response.data.name + '-copy'
+                }
+                _this.sectionStart = response.data.startPlace
+                _this.sectionEnd = response.data.endPlace
+                _this.xyCoordinate = response.data.xyCoordinate
+                _this.remark1 = response.data.remark1
+                _this.remark2 = response.data.remark2
+                _this.remark3 = response.data.remark3
+              },
+              error: function (err) {
+                console.log(err)
               }
-              _this.sectionStart = response.data.startPlace
-              _this.sectionEnd = response.data.endPlace
-              _this.xyCoordinate = response.data.xyCoordinate
-              _this.remark1 = response.data.remark1
-              _this.remark2 = response.data.remark2
-              _this.remark3 = response.data.remark3
-            },
-            error: function (err) {
-              console.log(err)
-            }
-          })
+            })
+          }
+
         },
         EditSection: function () {
           let url = config.ROOT_API_URL + 'section/edit'
@@ -178,8 +195,7 @@
               name: _this.sectionName,
               startPlace: _this.sectionStart,
               endPlace: _this.sectionEnd,
-              startPoint: _this.startPoint,
-              endPoint: _this.endPoint,
+              XYCOORDINATE: _this.xyCoordinate,
               remark1: _this.remark1,
               remark2: _this.remark2,
               remark3: _this.remark3
@@ -196,6 +212,26 @@
             },
             error: function (err) {
               console.log(err)
+            }
+          })
+        },
+        jump2map: function () {
+          console.log('section jump2map')
+          this.$router.push({
+            path: '/mapOperate',
+            query: {
+              type: this.type,
+              mapType: 6,
+              sectionName: this.sectionName,
+              sectionId: this.sectionId,
+              roadId: this.roadId,
+              districtId: this.districtId,
+              sectionStart: this.sectionStart,
+              sectionEnd: this.sectionEnd,
+              locationList: this.xycoordinate,
+              remark1: this.remark1,
+              remark2: this.remark2,
+              remark3: this.remark3,
             }
           })
         }

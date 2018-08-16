@@ -3,7 +3,7 @@
     <div class="container">
       <h3 align="center" v-if="sectionId">岗哨管理-路段【{{sectionId}}】
       </h3>
-      <h3 align="center" v-else>岗哨管理
+      <h3 align="center" v-else>岗哨管理{{cur_page}}
       </h3>
       <ul class="nav nav-pills">
         <li @click = 'jump2AddStation'><a href="#">+添加岗位</a></li>
@@ -64,13 +64,19 @@
         </div>
       </div>
     </div>
+    <my-pagination></my-pagination>
   </div>
 </template>
 
 <script>
+  import eventbus from '../assets/EventBus'
   import config from '../config/config'
+  const pagination = () => import('../components/pagination')
   export default {
     name: 'StationList',
+    components: {
+      'my-pagination': pagination
+    },
     data () {
       return {
         type: '',
@@ -78,7 +84,8 @@
         sectionId: 0,
         stationList: [],
         stationIntoList: [],
-        selectStationId: ''
+        selectStationId: '',
+        cur_page: 1
       }
     },
     methods: {
@@ -95,7 +102,8 @@
           data: {
             userName: localStorage.getItem('userName'),
             sectionId: _this.sectionId,
-            districtId: localStorage.getItem('districtId')
+            districtId: localStorage.getItem('districtId'),
+            page: _this.cur_page
           },
           async: false,
           success: function (response) {
@@ -252,6 +260,13 @@
       if (this.sectionId) {
         this.StationNotInSection()
       }
+      let _this = this
+      eventbus.$on('paginatorPage', function (msg) {
+        console.log('监听事件打印')
+        console.log(msg)
+        _this.cur_page = msg
+        _this.init()
+      })
     }
   }
 </script>

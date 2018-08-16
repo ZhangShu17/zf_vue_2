@@ -25,6 +25,7 @@
               <label for="stationLocation" class="col-sm-4 control-label">岗位位置</label>
               <div class="col-sm-8">
                 <input type="email" class="form-control" id="stationLocation" v-model="stationLocation">
+                <button @click="jump2map">地图选点</button>
               </div>
             </div>
             <!--备注1-->
@@ -148,44 +149,76 @@
           this.sectionId = this.$route.query.sectionId
           this.stationId = this.$route.query.stationId
           this.action = this.$route.query.action
+          this.mapType = this.$route.query.mapType
           console.log('初始化打印信息')
           console.log(this.type)
           console.log(this.sectionId)
           console.log(this.stationId)
           console.log(this.action)
           console.log('初始化打印信息  END')
-          let _this = this
-          let url = config.ROOT_API_URL + 'station/edit'
-          console.log(this.stationId)
-          $.ajax({
-            url: url,
-            type: 'GET',
-            data: {
-              userName: localStorage.getItem('userName'),
-              stationId: _this.stationId
-            },
-            async: false,
-            success: function (response) {
-              console.log(response)
-              _this.stationId = response.data.list[0].id
-              console.log('stationId:' + response.data.list[0].id)
-              _this.stationName = response.data.list[0].name
-              if (_this.action === 'Copy') {
-                _this.stationName = response.data.list[0].name + '-copy'
+          if(this.mapType == 5){
+            this.stationName = this.$route.query.name
+            this.stationLocation = this.$route.query.location
+            this.remark1 = this.$route.query.remark1
+            this.remark2 = this.$route.query.remark2
+            this.remark3 = this.$route.query.remark3
+            this.action = this.$route.query.action
+          }else{
+            let _this = this
+            let url = config.ROOT_API_URL + 'station/edit'
+            console.log(this.stationId)
+            $.ajax({
+              url: url,
+              type: 'GET',
+              data: {
+                userName: localStorage.getItem('userName'),
+                stationId: _this.stationId
+              },
+              async: false,
+              success: function (response) {
+                console.log(response)
+                _this.stationId = response.data.list[0].id
+                console.log('stationId:' + response.data.list[0].id)
+                _this.stationName = response.data.list[0].name
+                if (_this.action === 'Copy') {
+                  _this.stationName = response.data.list[0].name + '-copy'
+                }
+                _this.stationLocation = response.data.list[0].location
+                _this.remark1 = response.data.list[0].remark1
+                _this.remark2 = response.data.list[0].remark2
+                _this.remark3 = response.data.list[0].remark3
+              },
+              error: function (err) {
+                console.log(err)
               }
-              _this.stationLocation = response.data.list[0].location
-              _this.remark1 = response.data.list[0].remark1
-              _this.remark2 = response.data.list[0].remark2
-              _this.remark3 = response.data.list[0].remark3
-            },
-            error: function (err) {
-              console.log(err)
+            })
+          }
+
+
+        },
+        jump2map: function () {
+          console.log('jump2map,districtId:'+this.districtId+'sectionId:'+this.sectionId+',stationId:'+this.stationId)
+          this.$router.push({
+            path: '/mapOperate',
+            query: {
+              type: this.type,
+              mapType: 5,
+              name: this.stationName,
+              location: this.stationLocation,
+              remark1: this.remark1,
+              remark2: this.remark2,
+              remark3: this.remark3,
+              sectionId: this.sectionId,
+              stationId: this.stationId
             }
           })
         }
       },
       mounted: function () {
         this.init()
+      },
+      updated: function () {
+        console.log('updated')
       }
     }
 </script>

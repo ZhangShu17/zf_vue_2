@@ -2,40 +2,29 @@
   <div id="wrapper">
 
     <div class="content">
-      <div id="map" class="mapId-1" style="width: 608px; height: 100%;">
+      <div id="map" class="mapId-1" style="width: 80%; height: 100%;">
         <!--<div>
             <input id='markonmap' type='text' style='color:black;background: white;width: 160px;height: 20px;' value='116.39,39.9'>
         <button id='markeronmap' >定位到该点</button>
         </div>-->
 
 
-
-
       </div>
-      <div id="drawPoint" class="menu_second"><button @click="drawPoint">画点</button><a class="second_arrow"></a></div>
-      <div id="drawLine" class="menu_second"><button @click="drawLine">画线</button><a class="second_arrow"></a></div>
-      <div class="form-group">
-        <label class="col-sm-4 control-label">点位坐标</label>
-        <div class="col-sm-4">
+      <div id="drawPoint" class="menu_second" v-if=" mapType === '3' || mapType === '5'" ><button @click="drawPoint">画点</button><a class="second_arrow"></a></div>
+      <div id="drawLine" class="menu_second" v-if="mapType === '4' || mapType === '6'"><button @click="drawLine">画线</button><a class="second_arrow"></a></div>
+
+      <div class="form-group" v-if=" mapType === '3' || mapType === '5'">
+        <label class="col-sm-2 control-label">点位坐标</label>
           <input type="text" class="form-control" id="point_coor" v-model="point_coor">
-        </div>
+          <button @click="saveCoor" >保存点位</button>
       </div>
-      <div class="form-group">
-        <label class="col-sm-4 control-label">线路标点</label>
-        <div class="col-sm-4">
+      <div class="form-group" v-if="mapType === '4' || mapType === '6'">
+        <label class="col-sm-2 control-label">线路标点</label>
           <input type="text" class="form-control" id="line_coors" v-model="lineCoors">
-        </div>
+        <button @click="saveLine">保存线路</button>
       </div>
-      <button @click="saveCoor" >保存点位</button>
-      <button @click="saveLine">保存线路</button>
 
-      <div id='mask' class = 'mask'>
-        <div id = 'closeMask' class='closeMask'>
-          <p id = 'minimum' class="minimum">−</p>
-          <p id = 'close' class='close'>X</p>
-        </div>
 
-      </div>
       <!--        <div id=''></div> -->
     </div>
   </div>
@@ -50,6 +39,7 @@
     name: 'MapOperate',
     data () {
       return {
+        count:0,
         type:'',    //上一个界面带来的参数
         point_coor: '', //station 坐标
         lineCoors:'',   //line 坐标
@@ -63,10 +53,12 @@
         station_remark2: '',
         station_remark3: '',
         sectionId: '',
+        stationId: '',
 
         //data from section
         roadId: '',
         sectionName: '',
+        sectionId: '',
         sectionStart: '',
         sectionEnd: '',
         locationList: '',
@@ -107,6 +99,7 @@
         var paramObj = {
           mapType: 'WMS_MAP',
           url: 'http://119.3.5.139:8080/geowebcache/service/wms',
+          // url: 'http://14.27.137.129:8080/geowebcache/service/wms',
           defaultZoom: 14,
           proj: 'EPSG:4326',
           minZoom: 0,
@@ -122,6 +115,7 @@
             mousePosition: eGIS.Constant.CONTROL_TYPE.MOUSEPOSITION,
           },
           layers: "BeijingB",
+          // layers: "BeijingDark",
           mapName: 'MapServer',
           resolutions:[1.4078260157100582,
             0.703913007855028,
@@ -145,9 +139,15 @@
             2.685215025481591E-6],
           tilegrid: wms_wgs84_tilegrid
         };
-        console.log('create map')
         eGIS.Map.createMap(paramObj);
-
+        let refresh =  window.localStorage.getItem('refresh', '0')
+        console.log('create map,refresh:'+ refresh)
+        if(refresh == '1'){
+          console.log('1111111')
+          window.localStorage.setItem('refresh','0')
+          console.log('after save ,refresh:'+ window.localStorage.getItem('refresh', '0'))
+          this.$router.go(0)
+        }
       },
       drawPoint: function () {
         let _this = this
@@ -180,6 +180,7 @@
             _this.point_coor = res.coordinates[0]+','+res.coordinates[1]
           }
         });
+        // this.refresh = true
       },
       drawLine: function () {
         let _this = this
@@ -208,31 +209,39 @@
             console.log(_this.lineCoors)
           }
         });
+        // this.refresh = true
       },
       saveCoor: function () {
-        console.log('savePoint:'+this.point_coor)
+        console.log('savePoint:'+this.point_coor+'districtId:'+this.districtId+'sectionId:'+this.sectionId)
+        eGIS.Map.removeMap('map');
+        let routePath = (this.mapType == 3 ? '/addStation' : '/submitStation')
         this.$router.push({
-          path: '/addStation',
+          path: routePath,
           query: {
             type:this.type,
-            mapType:3,
+            mapType: this.mapType,
             districtId: this.districtId,
             name:this.stationName,
             location:this.point_coor,
             remark1:this.station_remark1,
             remark2:this.station_remark2,
             remark3:this.station_remark3,
-            sectionId:this.sectionId
+            sectionId:this.sectionId,
+            stationId: this.stationId,
+            action: 'Edit'
           }
         })
+        window.localStorage.setItem('refresh','1')
       },
       saveLine: function () {
         console.log('saveLine')
+        eGIS.Map.removeMap('map');
+        let routePath = (this.mapType == 4 ? '/addSection' : '/editSection')
         this.$router.push({
-          path: '/addSection',
+          path: routePath,
           query: {
             type:this.type,
-            mapType:4,
+            mapType:this.mapType,
             districtId: this.districtId,
             sectionName:this.sectionName,
             roadId:this.roadId,
@@ -242,42 +251,57 @@
             remark1:this.section_remark1,
             remark2:this.section_remark2,
             remark3:this.section_remark3,
-            sectionId:this.sectionId
+            sectionId:this.sectionId,
+            action: 'Edit'
           }
         })
+        window.localStorage.setItem('refresh','1')
       }
     },
     mounted: function () {
+      console.log('mounted')
       this.init()
       this.type = this.$route.query.type
       this.mapType = this.$route.query.mapType
       this.districtId = this.$route.query.districtId
       console.log('mounted,mapType：' + this.mapType+'districtId:'+this.districtId)
-      if(this.mapType == 3){
+      if(this.mapType == 3 || this.mapType == 5){
+        this.sectionId = this.$route.query.sectionId
         this.stationName = this.$route.query.name
         this.location = this.$route.query.location
         this.station_remark1 = this.$route.query.remark1
         this.station_remark2 = this.$route.query.remark2
         this.station_remark3 = this.$route.query.remark3
-        console.log('stationIntoMap'
+        this.stationId = this.$route.query.stationId
+        console.log('stationIntoMap-------'
           +'stationName:'+this.stationName
-          + 'location:'+this.location)
-      }else if(this.mapType == 4){
-        this.roadId = this.$route.query.roadId,
-        this.sectionName = this.$route.query.sectionName,
-        this.sectionStart = this.$route.query.sectionStart,
-        this.sectionEnd = this.$route.query.sectionEnd,
-        this.locationList = this.$route.query.loactionList,
-        this.section_remark1 = this.$route.query.remark1,
-        this.section_remark2 = this.$route.query.remark2,
+          + 'location:'+this.location+',districtId:'+this.districtId+',sectionId:'+this.sectionId+',stationId:'+this.stationId)
+      }else if(this.mapType == 4 || this.mapType == 6){
+        this.sectionId = this.$route.query.sectionId
+        this.roadId = this.$route.query.roadId
+        this.sectionName = this.$route.query.sectionName
+        this.sectionStart = this.$route.query.sectionStart
+        this.sectionEnd = this.$route.query.sectionEnd
+        this.locationList = this.$route.query.loactionList
+        this.section_remark1 = this.$route.query.remark1
+        this.section_remark2 = this.$route.query.remark2
         this.section_remark3 = this.$route.query.remark3
         console.log('sectionIntoMap'
           +'name:'+this.sectionName
           + 'location:'+this.location+'sectionName:'+this.sectionName+',sectionStart:'+this.sectionStart,'sectionRemark1:'+this.section_remark1)
+
       }
 
-    }
+    },
   }
+  $(document).ready(function () {
+    console.log('document ready')
+
+  });
+  $(document).on("pageshow",function(){
+    console.log('每次切换页面时我都会出现！');
+  });
+
 </script>
 
 <style scoped>

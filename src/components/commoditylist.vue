@@ -67,13 +67,19 @@
         </div>
       </div>
     </div>
+    <my-pagination></my-pagination>
   </div>
 </template>
 
 <script>
+  import eventbus from '../assets/EventBus'
   import config from '../config/config'
+  const pagination = () => import('../components/pagination')
   export default {
     name: 'sectionList',
+    components: {
+      'my-pagination': pagination
+    },
     data () {
       return {
         type: '',
@@ -253,6 +259,13 @@
       if (this.roadId) {
         this.SectionNotInRoad()
       }
+      let _this = this
+      eventbus.$on('paginatorPage', function (msg) {
+        console.log('监听事件打印')
+        console.log(msg)
+        _this.cur_page = msg
+        _this.init()
+      })
     }
   }
 </script>

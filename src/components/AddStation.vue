@@ -97,7 +97,7 @@
               url: url,
               type: 'POST',
               data: {
-                districtId: _this.districtId,
+                districtId: window.localStorage.getItem('districtId'),
                 userName: localStorage.getItem('userName'),
                 name: _this.name,
                 location: _this.location,
@@ -144,7 +144,7 @@
           })
         },
         jump2mapOperate: function () {
-          console.log('jump2map')
+          console.log('jump2map,districtId:'+this.districtId+'sectionId:'+this.sectionId)
           this.$router.push({
             path: '/mapOperate',
             query: {
@@ -166,9 +166,9 @@
         this.type = this.$route.query.type
         this.mapType = this.$route.query.mapType
         this.sectionId = this.$route.query.sectionId
-        console.log('addstation mounted,'+'type:'+this.type+',sectionId:'+this.sectionId)
+        console.log('addstation mounted,'+'type:'+this.type+',sectionId:'+this.sectionId )
         if(this.mapType == 3){
-          this.districtId = this.$route.districtId
+          this.districtId = this.$route.query.districtId
           this.name = this.$route.query.name
           this.location = this.$route.query.location
           this.remark1 = this.$route.query.remark1

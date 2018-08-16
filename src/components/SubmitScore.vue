@@ -41,20 +41,6 @@
               <input type="text" class="form-control" id="roadend" v-model="roadEnd">
             </div>
           </div>
-          <!--起点坐标-->
-          <div class="form-group">
-            <label for="startpoint" class="col-sm-4 control-label">起点坐标</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="startpoint" v-model="startPoint">
-            </div>
-          </div>
-          <!--终点坐标-->
-          <div class="form-group">
-            <label for="endpoint" class="col-sm-4 control-label">终点坐标</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="endpoint" v-model="endPoint">
-            </div>
-          </div>
           <!--备注1-->
           <div class="form-group">
             <label for="remark1" class="col-sm-4 control-label">备注1</label>
@@ -130,8 +116,6 @@
             length: _this.length,
             startPlace: _this.roadStart,
             endPlace: _this.roadEnd,
-            startPoint: _this.startPoint,
-            endPoint: _this.endPoint,
             remark1: _this.remark1,
             remark2: _this.remark2,
             remark3: _this.remark3
@@ -160,8 +144,6 @@
             length: _this.length,
             startPlace: _this.roadStart,
             endPlace: _this.roadEnd,
-            startPoint: _this.startPoint,
-            endPoint: _this.endPoint,
             remark1: _this.remark1,
             remark2: _this.remark2,
             remark3: _this.remark3
@@ -210,8 +192,6 @@
           _this.length = response.data.length
           _this.roadStart = response.data.startPlace
           _this.roadEnd = response.data.endPlace
-          _this.startPoint = response.data.startPoint
-          _this.endPoint = response.data.endPoint
           _this.remark1 = response.data.remark1
           _this.remark2 = response.data.remark2
           _this.remark3 = response.data.remark3

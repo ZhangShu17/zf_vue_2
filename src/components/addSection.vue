@@ -109,7 +109,7 @@
           this.roadId = this.$route.query.roadId
           this.mapType = this.$route.query.mapType
 
-          if(this.mapType === 4){
+          if(this.mapType == 4){
             this.districtId = this.$route.query.districtId
             this.sectionName = this.$route.query.sectionName
             this.sectionStart = this.$route.query.sectionStart

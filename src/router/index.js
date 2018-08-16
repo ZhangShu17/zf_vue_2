@@ -21,6 +21,7 @@ import AddServiceLine from '@/components/AddServiceLine'
 import EditServiceLine from '@/components/EditServiceLine'
 import pagination from '@/components/pagination'
 import MapOperate from '@/components/MapOperate'
+import MainVue from '@/components/MainVue'
 
 Vue.use(Router)
 
@@ -131,6 +132,11 @@ export default new Router({
       path: '/mapOperate',
       name: 'MapOperate',
       component: MapOperate
+    },
+    {
+      path: '/mainVue',
+      name: 'mainVue',
+      component: MainVue
     }
   ]
 })
