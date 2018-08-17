@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <h3 align="center" v-if="serviceLineId">路线管理-勤务路线【{{serviceLineId}}】
+      <h3 align="center" v-if="serviceLineId">路线管理-勤务路线【{{serviceLineName}}】
       </h3>
       <h3 align="center" v-else>路线管理
       </h3>
@@ -11,7 +11,7 @@
         <li v-show="serviceLineId">添加已有路线：
           <select id="mySelect" v-model="selectRoadId" style="width: 300px">
             <template v-for="item in roadIntoList">
-              <option :value="item.id">[id={{item.id}}]{{item.name}}</option>
+              <option :value="item.id">[{{item.id}}]{{item.name}}</option>
             </template>
           </select>
         </li>
@@ -89,7 +89,8 @@
         serviceLineId: 0,
         districtId: localStorage.getItem('districtId'),
         roadIntoList: [],
-        selectRoadId: ''
+        selectRoadId: '',
+        serviceLineName: ''
       }
     },
     methods: {
@@ -112,6 +113,7 @@
             console.log(response)
             _this.count = response.data.listCount
             _this.roadlist = response.data.list
+            _this.serviceLineName = response.data.serviceLineName
           },
           error: function (err) {
             console.log(err)

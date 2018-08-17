@@ -24,7 +24,7 @@
             <div class="form-group">
               <label for="mobile" class="col-sm-4 control-label">手机号</label>
               <div class="col-sm-8">
-                <input type="email" class="form-control" id="mobile" v-model="mobile">
+                <input type="email" pattern="(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$" class="form-control" id="mobile" v-model="mobile">
               </div>
             </div>
             <!--职务-->

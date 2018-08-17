@@ -24,7 +24,7 @@ img{max-width:100%;}
 /*end reset*/
 body{
 	font-family: 'Droid Sans', sans-serif;
-	font-size:100%;
+	font-size:5%;
 	/*background: url(../static/bg.jpg);*/
 	background-repeat: no-repeat;
 	background-attachment: fixed;

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <h3 align="center" v-if="roadId">路段管理-路线【{{this.roadId}}】
+      <h3 align="center" v-if="roadId">路段管理-路线【{{this.roadName}}】
       </h3>
       <h3 align="center" v-else>路段管理
       </h3>
@@ -11,7 +11,7 @@
         <li v-show="roadId">添加已有路段：
           <select id="mySelect" v-model="selectSectionId" style="width: 300px">
             <template v-for="item in sectionIntoList">
-              <option :value="item.id">[id={{item.id}}]{{item.name}}</option>
+              <option :value="item.id">[{{item.id}}]{{item.name}}({{item.startPlace}}-{{item.endPlace}})</option>
             </template>
           </select>
         </li>
@@ -92,7 +92,8 @@
         sectionList: [],
         districtId: '',
         selectSectionId: '',
-        sectionIntoList: []
+        sectionIntoList: [],
+        roadName: ''
       }
     },
     methods: {
@@ -116,6 +117,7 @@
             console.log(response)
             _this.count = response.data.listCount
             _this.sectionList = response.data.list
+            _this.roadName = response.data.roadName
           },
           error: function (err) {
             console.log(err)

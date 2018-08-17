@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <h3 align="center" v-if="sectionId">岗哨管理-路段【{{sectionId}}】
+      <h3 align="center" v-if="sectionId">岗哨管理-路段【{{sectionName}}】
       </h3>
       <h3 align="center" v-else>岗哨管理
       </h3>
@@ -85,7 +85,8 @@
         stationList: [],
         stationIntoList: [],
         selectStationId: '',
-        cur_page: 1
+        cur_page: 1,
+        sectionName: ''
       }
     },
     methods: {
@@ -110,6 +111,7 @@
             console.log(response)
             _this.count = response.data.listCount
             _this.stationList = response.data.list
+            _this.sectionName = response.data.sectionName
           },
           error: function (err) {
             console.log(err)

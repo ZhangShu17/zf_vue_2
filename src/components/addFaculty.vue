@@ -108,6 +108,7 @@
             async: false,  // 取消异步请求
             data: {
               userName: localStorage.getItem('userName'),
+              districtId: localStorage.getItem('districtId'),
               name: _this.name,
               mobile: _this.mobile,
               duty: _this.duty,

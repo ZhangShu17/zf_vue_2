@@ -21,8 +21,8 @@
       methods: {
         logout: function () {
           localStorage.clear()
-          // this.$router.push({name: 'Login'})
           this.login_status = 0
+          this.$router.go(0)
         }
       },
       mounted: function () {

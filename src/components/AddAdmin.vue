@@ -7,7 +7,7 @@
         <hr>
         <form class="form-horizontal">
           <!--区域-->
-          <div class="form-group">
+          <div class="form-group" v-show="!parseInt(userDistrictId)">
             <label for="district" class="col-sm-4 control-label">路线区域</label>
             <div class="col-sm-8">
               <select class="form-control" id="district" v-model="district">
@@ -96,6 +96,7 @@
           remark1: '',
           remark2: '',
           remark3: '',
+          userDistrictId: '',
           allDistricts: []
         }
       },
@@ -161,6 +162,7 @@
       mounted () {
         this.serviceLineId = this.$route.query.serviceLineId
         this.district = window.localStorage.getItem('districtId')
+        this.userDistrictId = window.localStorage.getItem('districtId')
         this.initDistrict()
       }
     }
