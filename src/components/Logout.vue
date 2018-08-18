@@ -29,7 +29,7 @@
         this.username = window.localStorage.getItem('userName')
         let disId = window.localStorage.getItem('districtId')
         if (parseInt(disId) === 0) {
-          this.district = '警卫营'
+          this.district = '警卫局'
         }
         if (parseInt(disId) === 1) {
           this.district = '天安门区'

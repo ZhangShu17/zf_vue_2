@@ -6,6 +6,17 @@
           <h3 align="center">人员添加</h3>
           <hr>
           <form class="form-horizontal">
+            <!--区域-->
+            <div class="form-group" v-show="!parseInt(userDistrictId)">
+              <label for="district" class="col-sm-4 control-label">路线区域</label>
+              <div class="col-sm-8">
+                <select class="form-control" id="district" v-model="districtId">
+                  <template v-for="item in allDistricts">
+                    <option :value="item.id">{{item.name}}</option>
+                  </template>
+                </select>
+              </div>
+            </div>
             <!--姓名-->
             <div class="form-group">
               <label for="name" class="col-sm-4 control-label">姓名</label>
@@ -70,7 +81,10 @@
         mobile: '',
         duty: '',
         channel: '',
-        callSign: ''
+        callSign: '',
+        districtId: '',
+        userDistrictId: window.localStorage.getItem('districtId'),
+        allDistricts:[]
       }
     },
     methods: {
@@ -95,6 +109,23 @@
           console.log(this.stationId)
         }
       },
+      initDistrict: function () {
+        let url = config.ROOT_API_URL + 'district/lists'
+        let _this = this
+        $.ajax({
+          url: url,
+          type: 'GET',
+          data: {
+            userName: localStorage.getItem('userName')
+          },
+          success: function (response) {
+            _this.allDistricts = response.districtList
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
+      },
       AddFaculty: function () {
         console.log('~~~~~~~~~~~~~~~')
         console.log(this.chiefType)
@@ -108,7 +139,7 @@
             async: false,  // 取消异步请求
             data: {
               userName: localStorage.getItem('userName'),
-              districtId: localStorage.getItem('districtId'),
+              districtId: _this.districtId,
               name: _this.name,
               mobile: _this.mobile,
               duty: _this.duty,
@@ -206,6 +237,7 @@
     },
     mounted () {
       console.log('挂载完成')
+      this.initDistrict()
       this.init()
     }
   }

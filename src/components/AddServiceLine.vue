@@ -39,7 +39,7 @@
               <label class="col-sm-4 control-label">勤务地区</label>
               <div>
                 <template v-for="district in allDistricts">
-                <label><input type="checkbox" v-model="chosedDistrictIds" :value="district.id"/>{{district.name}}</label>
+                <label><input type="checkbox" class="col-sm-2" v-model="chosedDistrictIds" :value="district.id"/>{{district.name}}</label>
                 </template>
               </div>
               <!--<div>-->
@@ -72,8 +72,11 @@
             </div>
             <!--提交按钮-->
             <div class="form-group">
-              <div class="col-sm-offset-4 col-sm-8">
+              <div class="col-sm-offset-4 col-sm-4">
                 <button type="button" class="btn btn-primary btn-block" @click="AddServiceLine">提交</button>
+              </div>
+              <div class="col-sm-offset-4 col-sm-4" >
+                <button type="button" class="btn btn-primary btn-block" @click="">返回</button>
               </div>
             </div>
           </form>

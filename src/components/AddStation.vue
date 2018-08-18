@@ -93,6 +93,7 @@
           } else {
             let _this = this
             let url = config.ROOT_API_URL + 'station/edit'
+            console.log(window.localStorage.getItem('districtId'))
             $.ajax({
               url: url,
               type: 'POST',

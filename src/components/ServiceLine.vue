@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <h3 align="center">勤务路线管理
+      <h3 align="center">勤务管理
       </h3>
       <ul class="nav nav-pills" v-if="!parseInt(districtId)">
         <li @click="AddServerLine"><a href="#">+添加勤务路线</a></li>
@@ -16,7 +16,9 @@
               <tr>
                 <th>勤务路线ID</th>
                 <th>勤务路线名称</th>
-                <th>勤务路线时间</th>
+                <th>勤务时间</th>
+                <th>勤务起点</th>
+                <th>勤务终点</th>
                 <th>道路信息</th>
                 <th>操作</th>
               </tr>
@@ -27,6 +29,8 @@
                   <th>{{list.id}}</th>
                   <td>{{list.name}}</td>
                   <td>{{list.time}}</td>
+                  <td>{{list.startPlace}}</td>
+                  <td>{{list.endPlace}}</td>
                   <td :id="list.id" @click="Jump2RoadList"><a href="#">路线数量：{{list.roadCount}}</a></td>
                   <td>
                     <button @click="EditServiceLine(list.id)" :value="list.id" type="button">

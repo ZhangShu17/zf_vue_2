@@ -28,7 +28,7 @@
           <div class="form-group">
             <label for="length" class="col-sm-4 control-label">路线长度</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="请输入小数，例如4.0" id="length" v-model="length" @change="CheckLength">
+              <input type="text" class="form-control" placeholder="请输入小数，例如4.0" id="length" v-model="length" >
             </div>
           </div>
           <!--起点-->
@@ -148,16 +148,16 @@
             }
           })
         },
-        CheckLength: function () {
-          console.log('打印length')
-          console.log(this.length)
-          let reg = /^\d+\.\d+$/
-          console.log(reg.test(this.length))
-          if (!reg.test(this.length)) {
-            alert('输入不合法，请重新输入')
-            this.length = ''
-          }
-        }
+        // CheckLength: function () {
+        //   console.log('打印length')
+        //   console.log(this.length)
+        //   let reg = /^\d+\.\d+$/
+        //   console.log(reg.test(this.length))
+        //   if (!reg.test(this.length)) {
+        //     alert('输入不合法，请重新输入')
+        //     this.length = ''
+        //   }
+        // }
       },
       mounted () {
         this.serviceLineId = this.$route.query.serviceLineId
