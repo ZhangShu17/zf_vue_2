@@ -28,7 +28,7 @@
           <div class="form-group">
             <label for="length" class="col-sm-4 control-label">路线长度</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="请输入小数，例如4.0" id="length" v-model="length" @change="CheckLength">
+              <input type="text" class="form-control" placeholder="请输入小数，例如4.0" id="length" v-model="length" >
             </div>
           </div>
           <!--起点-->

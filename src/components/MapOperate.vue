@@ -276,6 +276,7 @@
         console.log('stationIntoMap-------'
           +'stationName:'+this.stationName
           + 'location:'+this.location+',districtId:'+this.districtId+',sectionId:'+this.sectionId+',stationId:'+this.stationId)
+        this.drawPoint()
       }else if(this.mapType == 4 || this.mapType == 6){
         this.sectionId = this.$route.query.sectionId
         this.roadId = this.$route.query.roadId
@@ -289,6 +290,7 @@
         console.log('sectionIntoMap'
           +'name:'+this.sectionName
           + 'location:'+this.location+'sectionName:'+this.sectionName+',sectionStart:'+this.sectionStart,'sectionRemark1:'+this.section_remark1)
+        this.drawLine()
 
       }
 

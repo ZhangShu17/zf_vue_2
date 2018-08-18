@@ -35,8 +35,8 @@
     <div v-if="login_status">
       <div class="container">
         <ul class="nav nav-pills">
-          <li id="logout" role="presentation"><router-link to="/logout">退出登陆</router-link></li>
-          <li id="serviceLine" role="presentation" v-if="getUserId()"><router-link to="/serviceLineList">勤务路线管理</router-link></li>
+          <li id="logout" role="presentation"><router-link to="/logout">账号信息</router-link></li>
+          <li id="serviceLine" role="presentation" v-if="getUserId()"><router-link to="/serviceLineList">勤务管理</router-link></li>
           <li id="roadList" role="presentation" v-if="getUserId()"><router-link :to="{path: '/roadlist', query: {serviceLineId: 0}}">路线管理</router-link></li>
           <li id="sectionList" role="presentation" v-if="getUserId()"><router-link :to="{path:'/sectionlist',query: {type: 0}}">路段管理</router-link></li>
           <li id="stationList" role="presentation" v-if="getUserId()"><router-link :to="{path: '/stationList', query: {type: 0, sectionId: 0}}">岗哨管理</router-link></li>

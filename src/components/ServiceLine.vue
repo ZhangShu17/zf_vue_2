@@ -28,9 +28,9 @@
                 <tr>
                   <th>{{list.id}}</th>
                   <td>{{list.name}}</td>
+                  <td>{{list.time}}</td>
                   <td>{{list.startPlace}}</td>
                   <td>{{list.endPlace}}</td>
-                  <td>{{list.time}}</td>
                   <td :id="list.id" @click="Jump2RoadList"><a href="#">路线数量：{{list.roadCount}}</a></td>
                   <td>
                     <button @click="EditServiceLine(list.id)" :value="list.id" type="button">

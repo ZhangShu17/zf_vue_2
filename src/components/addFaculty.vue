@@ -169,6 +169,23 @@
           console.log(this.stationId)
         }
       },
+      initDistrict: function () {
+        let url = config.ROOT_API_URL + 'district/lists'
+        let _this = this
+        $.ajax({
+          url: url,
+          type: 'GET',
+          data: {
+            userName: localStorage.getItem('userName')
+          },
+          success: function (response) {
+            _this.allDistricts = response.districtList
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
+      },
       AddFaculty: function () {
         console.log('~~~~~~~~~~~~~~~')
         console.log(this.chiefType)
@@ -313,29 +330,12 @@
             console.log(err)
           }
         })
-      },
-      initDistrict: function () {
-        let url = config.ROOT_API_URL + 'district/lists'
-        let _this = this
-        $.ajax({
-          url: url,
-          type: 'GET',
-          data: {
-            userName: localStorage.getItem('userName')
-          },
-          success: function (response) {
-            _this.allDistricts = response.districtList
-          },
-          error: function (err) {
-            console.log(err)
-          }
-        })
       }
     },
     mounted () {
       console.log('挂载完成')
-      this.init()
       this.initDistrict()
+      this.init()
     }
   }
 </script>
