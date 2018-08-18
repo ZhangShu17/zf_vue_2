@@ -6,6 +6,19 @@
           <h3 align="center">人员添加</h3>
           <hr>
           <form class="form-horizontal">
+
+            <!--区域-->
+            <div class="form-group" v-show="!parseInt(type) && !parseInt(userDistrictId)">
+              <label for="district" class="col-sm-4 control-label">区域</label>
+              <div class="col-sm-6">
+                <select class="form-control" id="district" v-model="districtId" >
+                  <template v-for="item in allDistricts">
+                    <option :value="item.id">{{item.name}}</option>
+                  </template>
+                </select>
+              </div>
+            </div>
+
             <!--姓名-->
             <div class="form-group">
               <label for="name" class="col-sm-4 control-label">姓名</label>
@@ -15,9 +28,9 @@
             </div>
             <!--手机-->
             <div class="form-group">
-              <label for="mobile" class="col-sm-4 control-label">手机号</label>
+              <label for="mobile" class="col-sm-4 control-label">手机</label>
               <div class="col-sm-8">
-                <input type="email" class="form-control" id="mobile" v-model="mobile">
+                <input type="text" class="form-control" id="mobile" v-model="mobile">
               </div>
             </div>
             <!--职务-->
@@ -27,24 +40,78 @@
                 <input type="text" class="form-control" id="duty" v-model="duty">
               </div>
             </div>
-            <!--电台信道-->
+
+            <!--层级-->
             <div class="form-group">
-              <label for="channel" class="col-sm-4 control-label">电台信道</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="channel" v-model="channel">
-              </div>
-            </div>
-            <!--电台呼号-->
-            <div class="form-group">
-              <label for="callSign" class="col-sm-4 control-label">电台呼号</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="callSign" v-model="callSign">
+              <label for="level" class="col-sm-4 control-label">层级</label>
+              <div class="col-sm-6">
+                <select class="form-control" id="level" v-model="level" @change="GetList">
+                  <template>
+                    <option value="1">路</option>
+                    <option value="2">段</option>
+                    <option value="3">岗</option>
+                  </template>
+                </select>
               </div>
             </div>
 
+            <!--路-段-岗下拉框-->
+            <div class="form-group" v-show="level">
+              <label for="road_section_station" class="col-sm-4 control-label" v-if="parseInt(level)===1">路线</label>
+              <label for="road_section_station" class="col-sm-4 control-label" v-if="parseInt(level)===2">路段</label>
+              <label for="road_section_station" class="col-sm-4 control-label" v-if="parseInt(level)===3">岗哨</label>
+              <div class="col-sm-6">
+                <select class="form-control" id="road_section_station" v-model="road_section_station">
+                  <template v-for="item in road_section_station_list">
+                    <option :value="item.id">{{item.id}}-{{item.name}}</option>
+                  </template>
+                </select>
+              </div>
+            </div>
+
+            <!--角色-->
+            <div class="form-group">
+              <label for="role" class="col-sm-4 control-label">角色</label>
+              <div class="col-sm-6">
+                <select class="form-control" id="role" v-model="role">
+                  <template v-if="parseInt(level)===1">
+                    <option value="1">路长</option>
+                    <option value="2">执行路长(分局)</option>
+                    <option value="3">执行路长(交管)</option>
+                    <option value="4">执行路长(武警)</option>
+                  </template>
+                  <template v-if="parseInt(level)===2">
+                    <option value="1">段长</option>
+                    <option value="2">执行段长(分局)</option>
+                    <option value="3">执行段长(交通)</option>
+                    <option value="4">执行段长(武警)</option>
+                  </template>
+                  <template v-if="parseInt(level)===3">
+                    <option value="1">岗长(分局)</option>
+                    <option value="2">执行岗长(交通)</option>
+                  </template>
+                </select>
+              </div>
+            </div>
+
+            <!--&lt;!&ndash;电台信道&ndash;&gt;-->
+            <!--<div class="form-group">-->
+              <!--<label for="channel" class="col-sm-4 control-label">电台信道</label>-->
+              <!--<div class="col-sm-8">-->
+                <!--<input type="text" class="form-control" id="channel" v-model="channel">-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;电台呼号&ndash;&gt;-->
+            <!--<div class="form-group">-->
+              <!--<label for="callSign" class="col-sm-4 control-label">电台呼号</label>-->
+              <!--<div class="col-sm-8">-->
+                <!--<input type="text" class="form-control" id="callSign" v-model="callSign">-->
+              <!--</div>-->
+            <!--</div>-->
+
             <!--提交按钮-->
             <div class="form-group">
-              <div class="col-sm-offset-4 col-sm-8">
+              <div class="col-sm-offset-4 col-sm-6">
                 <button type="button" class="btn btn-primary btn-block" @click="AddFaculty">提交添加</button>
               </div>
             </div>
@@ -61,6 +128,7 @@
     name: 'addFaculty',
     data () {
       return {
+        districtId: localStorage.getItem('districtId'),
         type: '',
         roadId: '',
         sectionId: '',
@@ -70,7 +138,13 @@
         mobile: '',
         duty: '',
         channel: '',
-        callSign: ''
+        userDistrictId: window.localStorage.getItem('districtId'),
+        callSign: '',
+        level: 0,
+        role: '',
+        road_section_station: '',
+        road_section_station_list: [],
+        allDistricts: []
       }
     },
     methods: {
@@ -108,12 +182,15 @@
             async: false,  // 取消异步请求
             data: {
               userName: localStorage.getItem('userName'),
-              districtId: localStorage.getItem('districtId'),
+              districtId: _this.districtId,
               name: _this.name,
               mobile: _this.mobile,
               duty: _this.duty,
               channel: _this.channel,
-              callSign: _this.callSign
+              callSign: _this.callSign,
+              level: _this.level,
+              role: _this.role,
+              road_section_station: _this.road_section_station
             },
             success: function (response) {
               console.log('success')
@@ -132,7 +209,7 @@
             async: false,  // 取消异步请求
             data: {
               userName: localStorage.getItem('userName'),
-              districtId: localStorage.getItem('districtId'),
+              districtId: _this.districtId,
               roadId: _this.roadId,
               facultyType: _this.chiefType,
               name: _this.name,
@@ -159,7 +236,7 @@
             data: {
               userName: localStorage.getItem('userName'),
               sectionId: _this.sectionId,
-              districtId: localStorage.getItem('districtId'),
+              districtId: _this.districtId,
               facultyType: _this.chiefType,
               name: _this.name,
               mobile: _this.mobile,
@@ -185,7 +262,7 @@
             data: {
               userName: localStorage.getItem('userName'),
               stationId: _this.stationId,
-              districtId: localStorage.getItem('districtId'),
+              districtId: _this.districtId,
               facultyType: _this.chiefType,
               name: _this.name,
               mobile: _this.mobile,
@@ -202,11 +279,63 @@
             }
           })
         }
+      },
+      GetList: function () {
+        console.log('12334')
+        console.log(this.level)
+        let url = ''
+        if (parseInt(this.level) === 1) {
+          console.log('i am 1')
+          url = config.ROOT_API_URL + 'road/edit'
+        }
+        if (parseInt(this.level) === 2) {
+          console.log('i am 2')
+          url = config.ROOT_API_URL + 'section/edit'
+        }
+        if (parseInt(this.level) === 3) {
+          console.log('i am 3')
+          url = config.ROOT_API_URL + 'station/edit'
+        }
+        let _this = this
+        $.ajax({
+          url: url,
+          type: 'GET',
+          data: {
+            userName: localStorage.getItem('userName'),
+            districtId: _this.districtId
+          },
+          async: false,
+          success: function (response) {
+            console.log(response)
+            _this.road_section_station_list = response.data.list
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
+      },
+      initDistrict: function () {
+        let url = config.ROOT_API_URL + 'district/lists'
+        let _this = this
+        $.ajax({
+          url: url,
+          type: 'GET',
+          data: {
+            userName: localStorage.getItem('userName')
+          },
+          success: function (response) {
+            _this.allDistricts = response.districtList
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
       }
     },
     mounted () {
       console.log('挂载完成')
       this.init()
+      this.initDistrict()
     }
   }
 </script>

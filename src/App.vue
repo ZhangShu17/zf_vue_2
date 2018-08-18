@@ -54,12 +54,12 @@
   export default {
     name: 'app',
     data () {
-      return{
+      return {
         username: '',
         password: '',
         refresh: true,
         districtId: '',
-        login_status: window.localStorage.getItem('login','0')
+        login_status: window.localStorage.getItem('login', '0')
       }
     },
     methods: {
@@ -106,7 +106,7 @@
         window.localStorage.setItem('districtId', result.data.districtId)
         window.localStorage.setItem('districtList', result.data.districtList)
         window.localStorage.setItem('districtList', '1')
-        window.localStorage.setItem('login','1')
+        window.localStorage.setItem('login', '1')
       },
       forgetPwd: function () {
         alert('请联系警务局获取账号信息！')
@@ -150,18 +150,16 @@
       }
     },
     mounted: function () {
-      console.log('app mounted,login state:'+window.localStorage.getItem('login','0'));
+      console.log('app mounted,login state:' + window.localStorage.getItem('login', '0'))
     }
   }
   $(document).ready(function () {
-      this.login_status =  window.localStorage.getItem('login',0)
-      window.localStorage.setItem('refresh', '1')
+    this.login_status = window.localStorage.getItem('login', 0)
+    window.localStorage.setItem('refresh', '1')
     $('.nav-pills').on('click', 'li', function () {
       $(this).addClass('active')
       $(this).siblings().removeClass('active')
     })
-
-
   })
 </script>
 

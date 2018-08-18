@@ -18,8 +18,9 @@
                 <th>人员名称</th>
                 <th>电话</th>
                 <th>职位</th>
-                <th>电台信道</th>
-                <th>电台呼号</th>
+                <th>层级</th>
+                <th>角色</th>
+                <th>路/段/岗名称</th>
                 <th>操作</th>
               </tr>
               </thead>
@@ -30,8 +31,9 @@
                   <td>{{list.name}}</td>
                   <td>{{list.mobile}}</td>
                   <td>{{list.duty}}</td>
-                  <td>{{list.channel}}</td>
-                  <td>{{list.callSign}}</td>
+                  <td>{{list.levelName}}</td>
+                  <td>{{list.roleName}}</td>
+                  <td>{{list.mainName}}</td>
                   <td>
                     <button :value="list.id" type="button" @click="EditFaculty('',$event)">
                       编辑

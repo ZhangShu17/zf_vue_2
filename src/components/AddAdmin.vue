@@ -8,7 +8,7 @@
         <form class="form-horizontal">
           <!--区域-->
           <div class="form-group" v-show="!parseInt(userDistrictId)">
-            <label for="district" class="col-sm-4 control-label">路线区域</label>
+            <label for="district" class="col-sm-4 control-label">区域</label>
             <div class="col-sm-8">
               <select class="form-control" id="district" v-model="district">
                 <template v-for="item in allDistricts">
@@ -102,34 +102,38 @@
       },
       methods: {
         AddRoad: function () {
-          let _this = this
-          let url = config.ROOT_API_URL + 'road/edit'
-          $.ajax({
-            url: url,
-            type: 'POST',
-            data: {
-              userName: localStorage.getItem('userName'),
-              serviceLineId: _this.serviceLineId,
-              districtId: _this.district,
-              name: _this.name,
-              length: _this.length,
-              startPlace: _this.startPlace,
-              endPlace: _this.endPlace,
-              remark1: _this.remark1,
-              remark2: _this.remark2,
-              remark3: _this.remark3
-            },
-            success: function (response) {
-              console.log(response)
-              _this.$router.push({path: '/roadlist',
-                query: {
-                  serviceLineId: _this.serviceLineId
-                }})
-            },
-            error: function (err) {
-              console.log(err)
-            }
-          })
+          if (!this.length) {
+            alert('请输入路线长度')
+          } else {
+            let _this = this
+            let url = config.ROOT_API_URL + 'road/edit'
+            $.ajax({
+              url: url,
+              type: 'POST',
+              data: {
+                userName: localStorage.getItem('userName'),
+                serviceLineId: _this.serviceLineId,
+                districtId: _this.district,
+                name: _this.name,
+                length: _this.length,
+                startPlace: _this.startPlace,
+                endPlace: _this.endPlace,
+                remark1: _this.remark1,
+                remark2: _this.remark2,
+                remark3: _this.remark3
+              },
+              success: function (response) {
+                console.log(response)
+                _this.$router.push({path: '/roadlist',
+                  query: {
+                    serviceLineId: _this.serviceLineId
+                  }})
+              },
+              error: function (err) {
+                console.log(err)
+              }
+            })
+          }
         },
         initDistrict: function () {
           let url = config.ROOT_API_URL + 'district/lists'
@@ -151,7 +155,7 @@
         CheckLength: function () {
           console.log('打印length')
           console.log(this.length)
-          let reg = /^\d+\.\d+$/
+          let reg = /^\d+(\.\d+)?$/
           console.log(reg.test(this.length))
           if (!reg.test(this.length)) {
             alert('输入不合法，请重新输入')

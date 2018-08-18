@@ -42,12 +42,6 @@
                 <label><input type="checkbox" v-model="chosedDistrictIds" :value="district.id"/>{{district.name}}</label>
                 </template>
               </div>
-              <!--<div>-->
-                <!--<label><input name="Fruit" type="checkbox" value="" />苹果 </label>-->
-                <!--<label><input name="Fruit" type="checkbox" value="" />苹果 </label>-->
-                <!--<label><input name="Fruit" type="checkbox" value="" />苹果 </label>-->
-                <!--<label><input name="Fruit" type="checkbox" value="" />苹果 </label>-->
-              <!--</div>-->
             </div>
             <!--备注1-->
             <div class="form-group">

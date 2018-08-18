@@ -3,14 +3,14 @@
     <div class="container" id="add_admin">
       <div class="row">
         <div class="col-md-6">
-          <h3 align="center">添加岗位</h3>
+          <h3 align="center">添加岗位{{location}}</h3>
           <hr>
           <form class="form-horizontal">
             <!--区域-->
             <div class="form-group" v-show="!parseInt(userDistrictId)">
-              <label for="district" class="col-sm-4 control-label">路线区域</label>
+              <label for="district" class="col-sm-4 control-label">区域</label>
               <div class="col-sm-8">
-                <select class="form-control" id="district" v-model="districtId">
+                <select class="form-control" id="district" v-model="districtId" >
                   <template v-for="item in allDistricts">
                     <option :value="item.id">{{item.name}}</option>
                   </template>
@@ -29,9 +29,22 @@
               <label for="location" class="col-sm-4 control-label">岗位坐标</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="location" v-model="location">
-                <button type="button" @click="jump2mapOperate" >地图选点</button>
+                <button type="button" @click="jump2mapOperate">地图选点</button>
               </div>
-
+            </div>
+            <!--电台信道-->
+            <div class="form-group">
+              <label for="channel" class="col-sm-4 control-label">电台信道</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="channel" v-model="channel">
+              </div>
+            </div>
+            <!--电台呼号-->
+            <div class="form-group">
+              <label for="call_sign" class="col-sm-4 control-label">电台呼号</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="call_sign" v-model="call_sign">
+              </div>
             </div>
             <!--备注1-->
             <div class="form-group">
@@ -77,6 +90,8 @@
           type: '',
           mapType: '',
           location: '',
+          channel: '1W',
+          call_sign: '',
           remark1: '',
           remark2: '',
           remark3: '',
@@ -97,11 +112,13 @@
               url: url,
               type: 'POST',
               data: {
-                districtId: window.localStorage.getItem('districtId'),
+                districtId: _this.districtId,
                 userName: localStorage.getItem('userName'),
                 name: _this.name,
                 location: _this.location,
                 sectionId: _this.sectionId,
+                channel: _this.channel,
+                callSign: _this.call_sign,
                 remark1: _this.remark1,
                 remark2: _this.remark2,
                 remark3: _this.remark3
@@ -144,7 +161,7 @@
           })
         },
         jump2mapOperate: function () {
-          console.log('jump2map,districtId:'+this.districtId+'sectionId:'+this.sectionId)
+          console.log('jump2map,districtId:' + this.districtId + 'sectionId:' + this.sectionId)
           this.$router.push({
             path: '/mapOperate',
             query: {
@@ -163,11 +180,14 @@
       },
 
       mounted: function () {
+        console.log('打印location')
+        console.log(this.$route.query.location)
+        console.log(this.$route.query.mapType)
+        console.log('打印location end')
         this.type = this.$route.query.type
         this.mapType = this.$route.query.mapType
         this.sectionId = this.$route.query.sectionId
-        console.log('addstation mounted,'+'type:'+this.type+',sectionId:'+this.sectionId )
-        if(this.mapType == 3){
+        if (parseInt(this.mapType) === 3) {
           this.districtId = this.$route.query.districtId
           this.name = this.$route.query.name
           this.location = this.$route.query.location

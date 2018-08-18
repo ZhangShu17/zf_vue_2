@@ -8,7 +8,7 @@
           <form class="form-horizontal">
             <!--区域-->
             <div class="form-group" v-show="!parseInt(userDistrictId)">
-              <label for="district" class="col-sm-4 control-label">路线区域</label>
+              <label for="district" class="col-sm-4 control-label">区域</label>
               <div class="col-sm-8">
                 <select class="form-control" id="district" v-model="districtId">
                   <template v-for="item in allDistricts">

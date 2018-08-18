@@ -29,6 +29,8 @@
                 <th>岗位ID</th>
                 <th>岗位名称</th>
                 <th>坐标位置</th>
+                <th>电台信道</th>
+                <th>电台呼号</th>
                 <th>操作</th>
               </tr>
               </thead>
@@ -38,6 +40,8 @@
                   <th>{{list.id}}</th>
                   <td>{{list.name}}</td>
                   <td>{{list.location}}</td>
+                  <td>{{list.channel}}</td>
+                  <td>{{list.callSign}}</td>
                   <td>
                     <button :value="list.id" type="button" @click="EditStation('',$event)">
                       编辑

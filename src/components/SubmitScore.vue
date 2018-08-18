@@ -160,10 +160,10 @@
       CheckLength: function () {
         console.log('打印length')
         console.log(this.length)
-        let reg = /^\d+\.\d+$/
+        let reg = /^\d+(\.\d+)?$/
         console.log(reg.test(this.length))
         if (!reg.test(this.length)) {
-          alert('输入不合法，长度应为带小数点的数字，请重新输入')
+          alert('输入不合法，长度应为整数或者小数，请重新输入')
         }
       }
     },
