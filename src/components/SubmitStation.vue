@@ -3,7 +3,8 @@
     <div class="container" id="edit_admin">
       <div class="row">
         <div class="col-md-6">
-          <h3 align="center">岗位编辑</h3>
+          <h3 align="center" v-show="action==='Edit'">岗位编辑</h3>
+          <h3 align="center" v-show="action==='Copy'">岗位复制</h3>
           <hr>
           <form class="form-horizontal">
             <!--岗位id-->
@@ -28,6 +29,23 @@
                 <button @click="jump2map">地图选点</button>
               </div>
             </div>
+
+            <!--电台信道-->
+            <div class="form-group">
+              <label for="channel" class="col-sm-4 control-label">电台信道</label>
+              <div class="col-sm-8">
+                <input type="email" class="form-control" id="channel" v-model="channel">
+              </div>
+            </div>
+
+            <!--电台呼号-->
+            <div class="form-group">
+              <label for="callSign" class="col-sm-4 control-label">电台呼号</label>
+              <div class="col-sm-8">
+                <input type="email" class="form-control" id="callSign" v-model="callSign">
+              </div>
+            </div>
+
             <!--备注1-->
             <div class="form-group">
               <label for="remark1" class="col-sm-4 control-label">备注1</label>
@@ -79,6 +97,8 @@
           sectionId: 0,
           stationName: '',
           stationLocation: '',
+          channel: '',
+          callSign: '',
           remark1: '',
           remark2: '',
           remark3: '',
@@ -98,6 +118,8 @@
               stationId: _this.stationId,
               name: _this.stationName,
               location: _this.stationLocation,
+              channel: _this.channel,
+              callSign: _this.callSign,
               remark1: _this.remark1,
               remark2: _this.remark2,
               remark3: _this.remark3
@@ -127,6 +149,8 @@
               stationId: _this.stationId,
               name: _this.stationName,
               location: _this.stationLocation,
+              channel: _this.channel,
+              callSign: _this.callSign,
               remark1: _this.remark1,
               remark2: _this.remark2,
               remark3: _this.remark3
@@ -156,14 +180,14 @@
           console.log(this.stationId)
           console.log(this.action)
           console.log('初始化打印信息  END')
-          if(this.mapType == 5){
+          if (parseInt(this.mapType) === 5) {
             this.stationName = this.$route.query.name
             this.stationLocation = this.$route.query.location
             this.remark1 = this.$route.query.remark1
             this.remark2 = this.$route.query.remark2
             this.remark3 = this.$route.query.remark3
             this.action = this.$route.query.action
-          }else{
+          } else {
             let _this = this
             let url = config.ROOT_API_URL + 'station/edit'
             console.log(this.stationId)
@@ -180,10 +204,10 @@
                 _this.stationId = response.data.list[0].id
                 console.log('stationId:' + response.data.list[0].id)
                 _this.stationName = response.data.list[0].name
-                if (_this.action === 'Copy') {
-                  _this.stationName = response.data.list[0].name + '-copy'
-                }
+                _this.stationName = response.data.list[0].name
                 _this.stationLocation = response.data.list[0].location
+                _this.channel = response.data.list[0].channel
+                _this.callSign = response.data.list[0].callSign
                 _this.remark1 = response.data.list[0].remark1
                 _this.remark2 = response.data.list[0].remark2
                 _this.remark3 = response.data.list[0].remark3
@@ -193,11 +217,9 @@
               }
             })
           }
-
-
         },
         jump2map: function () {
-          console.log('jump2map,districtId:'+this.districtId+'sectionId:'+this.sectionId+',stationId:'+this.stationId)
+          console.log('jump2map,districtId:' + this.districtId + 'sectionId:' + this.sectionId + ',stationId:' + this.stationId)
           this.$router.push({
             path: '/mapOperate',
             query: {

@@ -333,7 +333,6 @@
       }
     },
     mounted () {
-      console.log('挂载完成')
       this.initDistrict()
       this.init()
     }

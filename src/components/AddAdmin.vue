@@ -28,7 +28,7 @@
           <div class="form-group">
             <label for="length" class="col-sm-4 control-label">路线长度</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="请输入小数，例如4.0" id="length" v-model="length" >
+              <input type="text" class="form-control" placeholder="请输入小数，例如4.0" id="length" v-model="length" @change="CheckLength">
             </div>
           </div>
           <!--起点-->
@@ -45,6 +45,23 @@
               <input type="email" class="form-control" id="endPlace" v-model="endPlace">
             </div>
           </div>
+
+          <!--电台信道-->
+          <div class="form-group">
+            <label for="channel" class="col-sm-4 control-label">电台信道</label>
+            <div class="col-sm-8">
+              <input type="email" class="form-control" id="channel" v-model="channel">
+            </div>
+          </div>
+
+          <!--电台呼号-->
+          <div class="form-group">
+            <label for="callSign" class="col-sm-4 control-label">电台呼号</label>
+            <div class="col-sm-8">
+              <input type="email" class="form-control" id="callSign" v-model="callSign">
+            </div>
+          </div>
+
           <!--备注1-->
           <div class="form-group">
             <label for="remark1" class="col-sm-4 control-label">备注1</label>
@@ -93,6 +110,8 @@
           endPlace: '',
           startPoint: '',
           endPoint: '',
+          channel: '1W',
+          callSign: '',
           remark1: '',
           remark2: '',
           remark3: '',
@@ -118,6 +137,8 @@
                 length: _this.length,
                 startPlace: _this.startPlace,
                 endPlace: _this.endPlace,
+                channel: _this.channel,
+                callSign: _this.callSign,
                 remark1: _this.remark1,
                 remark2: _this.remark2,
                 remark3: _this.remark3

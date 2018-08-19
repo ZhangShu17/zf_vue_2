@@ -30,6 +30,8 @@
           <th>路线长度</th>
           <th>路线起点</th>
           <th>路线终点</th>
+          <th>电台信道</th>
+          <th>电台呼号</th>
           <th>段/岗信息</th>
           <th>操作</th>
         </tr>
@@ -42,6 +44,8 @@
           <td>{{list.length}}</td>
           <td>{{list.startPlace}}</td>
           <td>{{list.endPlace}}</td>
+          <td>{{list.channel}}</td>
+          <td>{{list.callSign}}</td>
           <td :id="list.id" @click="PushSection('', $event)"><a href="#">{{list.sectionNumber + '段' + list.stationNumber + '岗'}}</a> </td>
           <td>
               <button :value="list.id" type="button" @click="EditRoad('',$event)">

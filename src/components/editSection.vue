@@ -3,7 +3,8 @@
     <div class="container" id="edit_admin">
       <div class="row">
         <div class="col-md-6">
-          <h3 align="center">路段编辑</h3>
+          <h3 align="center" v-show="action==='Edit'">路段编辑</h3>
+          <h3 align="center" v-show="action==='Copy'">路段复制</h3>
           <hr>
           <form class="form-horizontal">
             <!--路段id-->
@@ -42,6 +43,23 @@
                 <button @click="jump2map">地图画线</button>
               </div>
             </div>
+
+            <!--电台信道-->
+            <div class="form-group">
+              <label for="channel" class="col-sm-4 control-label">电台信道</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="channel" v-model="channel">
+              </div>
+            </div>
+
+            <!--电台呼号-->
+            <div class="form-group">
+              <label for="callSign" class="col-sm-4 control-label">电台呼号</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="callSign" v-model="callSign">
+              </div>
+            </div>
+
             <!--备注1-->
             <div class="form-group">
               <label for="remark1" class="col-sm-4 control-label">备注1</label>
@@ -89,7 +107,7 @@
       data () {
         return {
           type: '',
-          mapType:'',
+          mapType: '',
           roadId: '',
           sectionId: '',
           sectionName: '',
@@ -99,8 +117,7 @@
           remark1: '',
           remark2: '',
           remark3: '',
-          action: '',
-          mapType: ''
+          action: ''
         }
       },
       methods: {
@@ -111,7 +128,7 @@
           this.action = this.$route.query.action
           this.mapType = this.$route.query.mapType
 
-          if(this.mapType == 6){
+          if (parseInt(this.mapType) === 6) {
             this.sectionName = this.$route.query.sectionName
             this.sectionStart = this.$route.query.sectionStart
             this.sectionEnd = this.$route.query.sectionEnd
@@ -119,8 +136,8 @@
             this.remark1 = this.$route.query.remark1
             this.remark2 = this.$route.query.remark2
             this.remark3 = this.$route.query.remark3
-            console.log('init,'+'districtId:'+this.districtId+',type:'+this.type+',roadId:'+this.roadId+',maptype:'+this.mapType+'sectionName:'+this.sectionName)
-          }else{
+            console.log('init,' + 'districtId:' + this.districtId + ',type:' + this.type + ',roadId:' + this.roadId + ',maptype:' + this.mapType + 'sectionName:' + this.sectionName)
+          } else {
             let url = config.ROOT_API_URL + 'section/single'
             let _this = this
             $.ajax({
@@ -134,12 +151,12 @@
               success: function (response) {
                 console.log(response)
                 _this.sectionName = response.data.name
-                if (_this.action === 'Copy') {
-                  _this.sectionName = response.data.name + '-copy'
-                }
+                _this.sectionName = response.data.name
                 _this.sectionStart = response.data.startPlace
                 _this.sectionEnd = response.data.endPlace
                 _this.xyCoordinate = response.data.xyCoordinate
+                _this.channel = response.data.channel
+                _this.callSign = response.data.callSign
                 _this.remark1 = response.data.remark1
                 _this.remark2 = response.data.remark2
                 _this.remark3 = response.data.remark3
@@ -149,7 +166,6 @@
               }
             })
           }
-
         },
         EditSection: function () {
           let url = config.ROOT_API_URL + 'section/edit'
@@ -164,6 +180,8 @@
               startPlace: _this.sectionStart,
               endPlace: _this.sectionEnd,
               XYCOORDINATE: _this.xyCoordinate,
+              channel: _this.channel,
+              callSign: _this.callSign,
               remark1: _this.remark1,
               remark2: _this.remark2,
               remark3: _this.remark3
@@ -196,6 +214,8 @@
               startPlace: _this.sectionStart,
               endPlace: _this.sectionEnd,
               XYCOORDINATE: _this.xyCoordinate,
+              channel: _this.channel,
+              callSign: _this.callSign,
               remark1: _this.remark1,
               remark2: _this.remark2,
               remark3: _this.remark3
@@ -231,7 +251,7 @@
               locationList: this.xycoordinate,
               remark1: this.remark1,
               remark2: this.remark2,
-              remark3: this.remark3,
+              remark3: this.remark3
             }
           })
         }

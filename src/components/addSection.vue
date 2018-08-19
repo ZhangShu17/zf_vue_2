@@ -39,13 +39,29 @@
             </div>
             <!--路段坐标-->
             <div class="form-group">
-              <label for="xycoordinate" class="col-sm-4 control-label">路段坐标坐标</label>
+              <label for="xycoordinate" class="col-sm-4 control-label">路段坐标</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" id="xycoordinate" v-model="xycoordinate">
                 <button @click="jump2map">地图</button>
               </div>
-
             </div>
+
+            <!--电台信道-->
+            <div class="form-group">
+              <label for="channel" class="col-sm-4 control-label">电台信道</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="channel" v-model="channel">
+              </div>
+            </div>
+
+            <!--电台呼号-->
+            <div class="form-group">
+              <label for="callSign" class="col-sm-4 control-label">电台信道</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" id="callSign" v-model="callSign">
+              </div>
+            </div>
+
             <!--备注1-->
             <div class="form-group">
               <label for="remark1" class="col-sm-4 control-label">备注1</label>
@@ -97,7 +113,8 @@
           remark1: '',
           remark2: '',
           remark3: '',
-          districtId: '',
+          channel: '1W',
+          callSign: '',
           userDistrictId: '',
           allDistricts: []
         }
@@ -109,7 +126,7 @@
           this.roadId = this.$route.query.roadId
           this.mapType = this.$route.query.mapType
 
-          if(this.mapType == 4){
+          if (parseInt(this.mapType) === 4) {
             this.districtId = this.$route.query.districtId
             this.sectionName = this.$route.query.sectionName
             this.sectionStart = this.$route.query.sectionStart
@@ -118,7 +135,7 @@
             this.remark1 = this.$route.query.remark1
             this.remark2 = this.$route.query.remark2
             this.remark3 = this.$route.query.remark3
-            console.log('init,'+'districtId:'+this.districtId+',type:'+this.type+',roadId:'+this.roadId+',maptype:'+this.mapType+'sectionName:'+this.sectionName)
+            console.log('init,' + 'districtId:' + this.districtId + ',type:' + this.type + ',roadId:' + this.roadId + ',maptype:' + this.mapType + 'sectionName:' + this.sectionName)
           }
         },
         AddSection: function () {
@@ -135,6 +152,8 @@
               startPlace: _this.sectionStart,
               endPlace: _this.sectionEnd,
               XYCOORDINATE: _this.xycoordinate,
+              channel: _this.channel,
+              callSign: _this.callSign,
               endPoint: _this.endPoint,
               remark1: _this.remark1,
               remark2: _this.remark2,
@@ -170,7 +189,7 @@
               locationList: this.xycoordinate,
               remark1: this.remark1,
               remark2: this.remark2,
-              remark3: this.remark3,
+              remark3: this.remark3
             }
           })
         },

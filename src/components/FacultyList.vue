@@ -33,7 +33,7 @@
                   <td>{{list.duty}}</td>
                   <td>{{list.levelName}}</td>
                   <td>{{list.roleName}}</td>
-                  <td>{{list.mainName}}</td>
+                  <td>[{{list.mainId}}]{{list.mainName}}</td>
                   <td>
                     <button :value="list.id" type="button" @click="EditFaculty('',$event)">
                       编辑

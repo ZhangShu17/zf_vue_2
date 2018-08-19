@@ -2,7 +2,8 @@
   <div class="container">
     <div class="col-md-12">
       <hr>
-      <h3>欢迎【{{username}}】登陆数据后台管理系统，您所在的区域为【{{district}}】</h3>
+      <h3>賬戶：{{username}}</h3>
+      <h3>區域：{{district}}</h3>
      <button class="btn btn-danger" @click="logout">退出登陆</button>
     </div>
   </div>

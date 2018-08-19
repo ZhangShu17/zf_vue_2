@@ -29,6 +29,8 @@
           <th>路段名称</th>
           <th>路段起点</th>
           <th>路段终点</th>
+          <th>电台信道</th>
+          <th>电台呼号</th>
           <th>岗哨信息</th>
           <th>操作</th>
         </tr>
@@ -44,6 +46,8 @@
           <td>{{list.name}}</td>
           <td>{{list.startPlace}}</td>
           <td>{{list.endPlace}}</td>
+          <td>{{list.channel}}</td>
+          <td>{{list.callSign}}</td>
           <td :id="list.id" @click="jump2Station('', $event)"><a href="#">岗哨数量：{{list.stationNumber}}</a></td>
           <td>
               <button :value="list.id" type="button" @click="EditAdmin('',$event)">

@@ -3,7 +3,8 @@
     <div class="container" id="add_admin">
       <div class="row">
         <div class="col-md-6">
-          <h3 align="center">编辑勤务路线</h3>
+          <h3 align="center" v-show="action==='Edit'">编辑勤务路线</h3>
+          <h3 align="center" v-show="action==='Copy'">复制勤务路线</h3>
           <hr>
           <form class="form-horizontal">
             <!--勤务ID-->
@@ -138,9 +139,7 @@
               console.log('请求单条路线')
               console.log(response)
               _this.info = response.data[0]
-              if (_this.action === 'Copy') {
-                _this.info.name = _this.info.name + '-copy'
-              }
+              _this.info.name = _this.info.name
               for (let i = 0; i < _this.info.district.length; i++) {
                 _this.currentDistrict.push(parseInt(_this.info.district[i].id))
               }

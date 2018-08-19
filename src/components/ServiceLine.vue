@@ -21,10 +21,11 @@
                 <th>勤务终点</th>
                 <th>道路信息</th>
                 <th>操作</th>
+                <th v-show="!parseInt(districtId)">提交情況</th>
               </tr>
               </thead>
               <tbody>
-              <template v-for="list in serviceList">
+              <template v-for="(list,index) in serviceList">
                 <tr>
                   <th>{{list.id}}</th>
                   <td>{{list.name}}</td>
@@ -33,15 +34,24 @@
                   <td>{{list.endPlace}}</td>
                   <td :id="list.id" @click="Jump2RoadList"><a href="#">路线数量：{{list.roadCount}}</a></td>
                   <td>
-                    <button @click="EditServiceLine(list.id)" :value="list.id" type="button">
+                    <button @click="EditServiceLine(list.id)" :value="list.id" type="button"  v-show="!parseInt(districtId)">
                       编辑
                     </button>
-                    <button @click="CopyServiceLine(list.id)" :value="list.id" type="button">
+                    <button @click="CopyServiceLine(list.id)" :value="list.id" type="button"  v-show="!parseInt(districtId)">
                       复制
                     </button>
-                    <button @click="Delete(list.id)" :value="list.id" type="button" style="background-color: red">
+                    <button @click="Delete(list.id)" :value="list.id" type="button" style="background-color: red" v-show="!parseInt(districtId)">
                       删除
                     </button>
+                    <button @click="SubmitServiceLine(list.id, list.roadCount)" :value="list.id" type="button" v-show="parseInt(districtId)">
+                      提交
+                    </button>
+                  </td>
+                  <td v-show="!parseInt(districtId)">
+                    <template v-for="dist in result[index]">
+                      <label style="background-color: #46b8da" v-if="dist.bollen">[{{dist.name}}]</label>
+                      <label style="background-color: red" v-else>[{{dist.name}}]</label>
+                    </template>
                   </td>
                 </tr>
               </template>
@@ -69,7 +79,8 @@
         return {
           name: 0,
           serviceList: [],
-          districtId: localStorage.getItem('districtId')
+          districtId: localStorage.getItem('districtId'),
+          result: []
         }
       },
       methods: {
@@ -151,10 +162,63 @@
               console.log(err)
             }
           })
+        },
+        SubmitServiceLine: function (id, count) {
+          if (!parseInt(count)) {
+            alert('Error：尚未添加路綫！！！')
+          } else {
+            let _this = this
+            let url = config.ROOT_API_URL + 'server_line/submit'
+            $.ajax({
+              url: url,
+              type: 'POST',
+              data: {
+                userName: localStorage.getItem('userName'),
+                serviceLineId: id,
+                districtId: _this.districtId
+              },
+              async: false,
+              success: function (response) {
+                console.log('提交成功')
+                alert('提交成功')
+              },
+              error: function (err) {
+                console.log(err)
+              }
+            })
+          }
+        },
+        isInArray: function (array, value) {
+          for (let i = 0; i < array.length; i++) {
+            if (value.toString() === array[i]) {
+              return 1
+            }
+          }
+          return 0
+        },
+        HandleSubmitDistrict: function (serviceList) {
+          for (let i = 0; i < serviceList.length; i++) {
+            let disList = serviceList[i].submitDistrict.split('-')
+            let result1 = []
+            for (let j = 0; j < serviceList[i].district.length; j++) {
+              let param = {}
+              let name = serviceList[i].district[j].name
+              let districtId = serviceList[i].district[j].id
+              let bollen = this.isInArray(disList, districtId)
+              param.name = name
+              param.districtId = districtId
+              param.bollen = bollen
+              result1.push(param)
+            }
+            this.result.push(result1)
+          }
         }
       },
       mounted () {
         this.init()
+        this.HandleSubmitDistrict(this.serviceList)
+        console.log('打印處理結果')
+        console.log(this.result)
         let _this = this
         eventbus.$on('paginatorPage', function (msg) {
           console.log('监听事件打印')

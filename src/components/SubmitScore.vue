@@ -3,7 +3,8 @@
   <div class="container" id="edit_admin">
     <div class="row">
       <div class="col-md-6">
-        <h3 align="center">道路编辑</h3>
+        <h3 align="center" v-show="action==='Edit'">道路编辑</h3>
+        <h3 align="center" v-show="action==='Copy'">道路复制</h3>
         <hr>
         <form class="form-horizontal">
           <!--道路id-->
@@ -39,6 +40,21 @@
             <label for="roadend" class="col-sm-4 control-label">道路终点</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" id="roadend" v-model="roadEnd">
+            </div>
+          </div>
+          <!--电台信道-->
+          <div class="form-group">
+            <label for="channel" class="col-sm-4 control-label">电台信道</label>
+            <div class="col-sm-8">
+              <input type="email" class="form-control" id="channel" v-model="channel">
+            </div>
+          </div>
+
+          <!--电台呼号-->
+          <div class="form-group">
+            <label for="callSign" class="col-sm-4 control-label">电台呼号</label>
+            <div class="col-sm-8">
+              <input type="email" class="form-control" id="callSign" v-model="callSign">
             </div>
           </div>
           <!--备注1-->
@@ -95,6 +111,8 @@
         roadEnd: '',
         startPoint: '',
         endPoint: '',
+        channel: '',
+        callSign: '',
         remark1: '',
         remark2: '',
         remark3: '',
@@ -116,6 +134,8 @@
             length: _this.length,
             startPlace: _this.roadStart,
             endPlace: _this.roadEnd,
+            channel: _this.channel,
+            callSign: _this.callSign,
             remark1: _this.remark1,
             remark2: _this.remark2,
             remark3: _this.remark3
@@ -144,6 +164,8 @@
             length: _this.length,
             startPlace: _this.roadStart,
             endPlace: _this.roadEnd,
+            channel: _this.channel,
+            callSign: _this.callSign,
             remark1: _this.remark1,
             remark2: _this.remark2,
             remark3: _this.remark3
@@ -186,12 +208,12 @@
           console.log(response)
           _this.roadId = response.data.id
           _this.roadName = response.data.name
-          if (_this.action === 'Copy') {
-            _this.roadName = response.data.name + '-copy'
-          }
+          _this.roadName = response.data.name
           _this.length = response.data.length
           _this.roadStart = response.data.startPlace
           _this.roadEnd = response.data.endPlace
+          _this.channel = response.data.channel
+          _this.callSign = response.data.callSign
           _this.remark1 = response.data.remark1
           _this.remark2 = response.data.remark2
           _this.remark3 = response.data.remark3
