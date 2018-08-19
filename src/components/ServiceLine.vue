@@ -63,24 +63,29 @@
       </div>
     </div>
     <my-pagination></my-pagination>
+    <toast :parentMessage="parentMessage" v-show="parseInt(districtId) && showType"></toast>
   </div>
 </template>
 
 <script>
     import eventbus from '../assets/EventBus'
     import config from '../config/config'
+    import toast from '../components/toast'
     const pagination = () => import('../components/pagination')
     export default {
       name: 'ServiceLine',
       components: {
-        'my-pagination': pagination
+        'my-pagination': pagination,
+        'toast': toast
       },
       data () {
         return {
           name: 0,
           serviceList: [],
           districtId: localStorage.getItem('districtId'),
-          result: []
+          result: [],
+          parentMessage: '',
+          showType: false
         }
       },
       methods: {
@@ -179,11 +184,21 @@
               },
               async: false,
               success: function (response) {
-                console.log('提交成功')
-                alert('提交成功')
+                _this.parentMessage = '提交成功!'
+                setTimeout(function () {
+                  _this.showType = true
+                }, 1000)
+                setTimeout(function () {
+                  _this.showType = false
+                }, 3000)
               },
               error: function (err) {
+                _this.parentMessage = '提交失敗!'
                 console.log(err)
+                _this.showType = true
+                setTimeout(function () {
+                  _this.showType = false
+                }, 3000)
               }
             })
           }
