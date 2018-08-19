@@ -68,12 +68,11 @@
         </div>
       </div>
     </div>
-    <my-pagination></my-pagination>
+    <my-pagination @paginatorPage="paginatorPage" :pages="pageCount"></my-pagination>
   </div>
 </template>
 
 <script>
-  import eventbus from '../assets/EventBus'
   import config from '../config/config'
   const pagination = () => import('../components/pagination')
   export default {
@@ -90,6 +89,7 @@
         stationIntoList: [],
         selectStationId: '',
         cur_page: 1,
+        pageCount: 0,
         sectionName: ''
       }
     },
@@ -108,7 +108,7 @@
             userName: localStorage.getItem('userName'),
             sectionId: _this.sectionId,
             districtId: localStorage.getItem('districtId'),
-            page: _this.cur_page
+            page: _this.cur_page,
           },
           async: false,
           success: function (response) {
@@ -116,6 +116,7 @@
             _this.count = response.data.listCount
             _this.stationList = response.data.list
             _this.sectionName = response.data.sectionName
+            _this.pageCount = response.data.pageCount
           },
           error: function (err) {
             console.log(err)
@@ -259,6 +260,12 @@
             console.log(err)
           }
         })
+      },
+      paginatorPage: function (page) {
+        console.log('父子組件傳參')
+        console.log(page)
+        this.cur_page = page
+        this.init()
       }
     },
     mounted () {
@@ -266,13 +273,6 @@
       if (this.sectionId) {
         this.StationNotInSection()
       }
-      let _this = this
-      eventbus.$on('paginatorPage', function (msg) {
-        console.log('监听事件打印')
-        console.log(msg)
-        _this.cur_page = msg
-        _this.init()
-      })
     }
   }
 </script>

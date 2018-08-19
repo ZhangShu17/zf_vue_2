@@ -51,12 +51,11 @@
         </div>
       </div>
     </div>
-    <my-pagination></my-pagination>
+    <my-pagination @paginatorPage="paginatorPage" :pages="pageCount"></my-pagination>
   </div>
 </template>
 
 <script>
-    import eventbus from '../assets/EventBus'
     import config from '../config/config'
     const pagination = () => import('../components/pagination')
     export default {
@@ -68,7 +67,8 @@
         return {
           count: 0,
           facultyList: [],
-          cur_page: 1
+          cur_page: 1,
+          pageCount: 0
         }
       },
       methods: {
@@ -88,6 +88,7 @@
               console.log(response)
               _this.count = response.data.listCount
               _this.facultyList = response.data.list
+              _this.pageCount = response.data.pageCount
             },
             error: function (err) {
               console.log(err)
@@ -125,17 +126,16 @@
         },
         addFaculty: function () {
           this.$router.push({path: '/addFaculty', query: {type: 0}})
+        },
+        paginatorPage: function (page) {
+          console.log('父子組件傳參')
+          console.log(page)
+          this.cur_page = page
+          this.init()
         }
       },
       mounted () {
         this.init()
-        let _this = this
-        eventbus.$on('paginatorPage', function (msg) {
-          console.log('监听事件打印')
-          console.log(msg)
-          _this.cur_page = msg
-          _this.init()
-        })
       }
     }
 </script>

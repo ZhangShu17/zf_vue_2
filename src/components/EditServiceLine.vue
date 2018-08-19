@@ -138,7 +138,7 @@
             success: function (response) {
               console.log('请求单条路线')
               console.log(response)
-              _this.info = response.data[0]
+              _this.info = response.data.list[0]
               _this.info.name = _this.info.name
               for (let i = 0; i < _this.info.district.length; i++) {
                 _this.currentDistrict.push(parseInt(_this.info.district[i].id))

@@ -62,13 +62,12 @@
         </div>
       </div>
     </div>
-    <my-pagination></my-pagination>
+    <my-pagination @paginatorPage="paginatorPage" :pages="pageCount"></my-pagination>
     <toast :parentMessage="parentMessage" v-show="parseInt(districtId) && showType"></toast>
   </div>
 </template>
 
 <script>
-    import eventbus from '../assets/EventBus'
     import config from '../config/config'
     import toast from '../components/toast'
     const pagination = () => import('../components/pagination')
@@ -85,7 +84,9 @@
           districtId: localStorage.getItem('districtId'),
           result: [],
           parentMessage: '',
-          showType: false
+          showType: false,
+          page: 1,
+          pageCount: 0
         }
       },
       methods: {
@@ -97,16 +98,14 @@
             type: 'GET',
             data: {
               userName: localStorage.getItem('userName'),
-              districtId: localStorage.getItem('districtId')
+              districtId: localStorage.getItem('districtId'),
+              page: _this.page
             },
             async: false,
             success: function (response) {
               console.log(response)
-              _this.serviceList = response.data
-              console.log('data:' + _this.serviceList[0].id)
-              console.log('data:' + _this.serviceList[0].name)
-              console.log('data:' + _this.serviceList[0].time)
-              console.log('data:' + _this.serviceList[0].roadCount)
+              _this.serviceList = response.data.list
+              _this.pageCount = response.data.pageCount
             },
             error: function (err) {
               console.log(err)
@@ -227,6 +226,12 @@
             }
             this.result.push(result1)
           }
+        },
+        paginatorPage: function (page) {
+          console.log('父子組件傳參')
+          console.log(page)
+          this.page = page
+          this.init()
         }
       },
       mounted () {
@@ -234,13 +239,6 @@
         this.HandleSubmitDistrict(this.serviceList)
         console.log('打印處理結果')
         console.log(this.result)
-        let _this = this
-        eventbus.$on('paginatorPage', function (msg) {
-          console.log('监听事件打印')
-          console.log(msg)
-          _this.cur_page = msg
-          _this.init()
-        })
       }
     }
 </script>
