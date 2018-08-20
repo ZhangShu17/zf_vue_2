@@ -141,8 +141,8 @@
         userDistrictId: window.localStorage.getItem('districtId'),
         callSign: '',
         level: 0,
-        role: '',
-        road_section_station: '',
+        role: 0,
+        road_section_station: 0,
         road_section_station_list: [],
         allDistricts: []
       }

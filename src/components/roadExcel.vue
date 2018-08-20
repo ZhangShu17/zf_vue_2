@@ -186,6 +186,7 @@
         </div>
       </div>
     </div>
+    <button style="margin-left: 50%" @click="pushTotal">下一页</button>
   </div>
 </template>
 
@@ -227,6 +228,11 @@
             const { export_table_to_excel } = require('../../vendor/vendor/Export2Excel')
             export_table_to_excel(tableId)
           })
+        },
+        pushTotal: function () {
+          this.$router.push(
+          {path: '/roadExcelTotal', query: {roadId: this.$route.query.roadId}}
+          )
         }
       },
       mounted () {

@@ -22,11 +22,17 @@ import EditServiceLine from '@/components/EditServiceLine'
 import pagination from '@/components/pagination'
 import MapOperate from '@/components/MapOperate'
 import MainVue from '@/components/MainVue'
+import roadExcelTotal from '@/components/roadExcelTotal'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/roadExcelTotal',
+      name: 'roadExcelTotal',
+      component: roadExcelTotal
+    },
     {
       path: '/pagination',
       name: 'pagination',

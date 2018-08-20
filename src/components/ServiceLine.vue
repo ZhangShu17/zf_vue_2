@@ -169,7 +169,16 @@
         },
         SubmitServiceLine: function (id, count) {
           if (!parseInt(count)) {
-            alert('Error：尚未添加路綫！！！')
+            let _this = this
+            // alert('Error：尚未添加路綫！！！')
+            _this.parentMessage = '尚未添加路线！'
+            setTimeout(function () {
+              _this.showType = true
+            }, 1000)
+            setTimeout(function () {
+              console.log('settimeout')
+              _this.showType = false
+            }, 3000)
           } else {
             let _this = this
             let url = config.ROOT_API_URL + 'server_line/submit'
