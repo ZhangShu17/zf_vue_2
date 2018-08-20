@@ -49,8 +49,8 @@
                   </td>
                   <td v-show="!parseInt(districtId)">
                     <template v-for="dist in result[index]">
-                      <label style="background-color: #46b8da" v-if="dist.bollen">[{{dist.name}}]</label>
-                      <label style="background-color: red" v-else>[{{dist.name}}]</label>
+                      <label style="background-color: #90EE90" v-if="dist.bollen">[{{dist.name}}]</label>
+                      <label style="background-color: 	#FFB6C1	" v-else>[{{dist.name}}]</label>
                     </template>
                   </td>
                 </tr>
@@ -170,13 +170,12 @@
         SubmitServiceLine: function (id, count) {
           if (!parseInt(count)) {
             let _this = this
-            // alert('Error：尚未添加路綫！！！')
-            _this.parentMessage = '尚未添加路线！'
+            _this.parentMessage = '错误：尚未添加路线!'
+
             setTimeout(function () {
               _this.showType = true
             }, 1000)
             setTimeout(function () {
-              console.log('settimeout')
               _this.showType = false
             }, 3000)
           } else {

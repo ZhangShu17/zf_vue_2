@@ -10,18 +10,21 @@
 
 
       </div>
-      <div id="drawPoint" class="menu_second" v-if=" mapType === '3' || mapType === '5'" ><button @click="drawPoint">画点</button><a class="second_arrow"></a></div>
-      <div id="drawLine" class="menu_second" v-if="mapType === '4' || mapType === '6'"><button @click="drawLine">画线</button><a class="second_arrow"></a></div>
+      <div id="drawPoint" class="menu_second" v-if=" mapType === '3' || mapType === '5'" ><button class="btn-info" @click="drawPoint">画点</button><a class="second_arrow"></a></div>
+      <div id="drawLine" class="menu_second" v-if="mapType === '4' || mapType === '6'"><button class="btn-info" @click="drawLine">画线</button><a class="second_arrow"></a></div>
+      <div align="center" v-if="mapType === '4' || mapType === '6'">
+        <label>(双击保存线路)</label>
+      </div>
 
       <div class="form-group" v-if=" mapType === '3' || mapType === '5'">
         <label class="col-sm-2 control-label">点位坐标</label>
           <input type="text" class="form-control" id="point_coor" v-model="point_coor">
-          <button @click="saveCoor" >保存点位</button>
+          <button class="btn-info" @click="saveCoor" >保存点位</button>
       </div>
       <div class="form-group" v-if="mapType === '4' || mapType === '6'">
         <label class="col-sm-2 control-label">线路标点</label>
           <input type="text" class="form-control" id="line_coors" v-model="lineCoors">
-        <button @click="saveLine">保存线路</button>
+        <button class="btn-info" @click="saveLine">保存线路</button>
       </div>
 
 
