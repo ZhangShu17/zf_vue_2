@@ -4,7 +4,7 @@
       <div class="message warning">
         <div class="inset">
           <div class="login-head">
-            <h1>警务路线录入系统</h1>
+            <h1>警卫路线录入系统</h1>
             <div class="alert-close"> </div>
           </div>
           <form>
@@ -109,7 +109,7 @@
         window.localStorage.setItem('login', '1')
       },
       forgetPwd: function () {
-        alert('请联系警务局获取账号信息！')
+        alert('请联系警卫局获取账号信息！')
       },
       getUserId: function () {
         console.log('检查退出登录')
@@ -163,7 +163,8 @@
   })
 </script>
 
-<style>
+<style scoped src = "../static/style.css"/>
+<style scoped>
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
