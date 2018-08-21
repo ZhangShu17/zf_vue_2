@@ -109,6 +109,11 @@
                 <button type="button" class="btn btn-primary btn-block" @click="EditFaculty">提交修改</button>
               </div>
             </div>
+            <div class="form-group">
+              <div class="col-sm-offset-4 col-sm-8">
+                <button type="button" class="btn btn-primary btn-block" @click="goBack">返 回</button>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -250,6 +255,20 @@
               console.log(error)
             }
           })
+        },
+        goBack: function () {
+          if (this.type === 0) {
+            this.$router.push('/facultyList')
+          }
+          if (this.type === 1) {
+            this.$router.push({path: '/facultyInfo', query: {type: this.type, roadId: this.roadId}})
+          }
+          if (this.type === 2) {
+            this.$router.push({path: '/facultyInfo', query: {type: this.type, sectionId: this.sectionId}})
+          }
+          if (this.type === 3) {
+            this.$router.push({path: '/facultyInfo', query: {type: this.type, stationId: this.stationId}})
+          }
         }
       },
       mounted () {

@@ -10,10 +10,10 @@
 
 
       </div>
-      <div id="drawPoint" class="menu_second" v-if=" mapType === '3' || mapType === '5'" ><button class="btn-info" @click="drawPoint">画点</button><a class="second_arrow"></a></div>
+      <div id="drawPoint" class="menu_second" v-if=" mapType === '3' || mapType === '5'"  ><button  class="btn-info" @click="drawPoint">画点</button><a class="second_arrow"></a></div>
       <div id="drawLine" class="menu_second" v-if="mapType === '4' || mapType === '6'"><button class="btn-info" @click="drawLine">画线</button><a class="second_arrow"></a></div>
       <div align="center" v-if="mapType === '4' || mapType === '6'">
-        <label>(双击保存线路)</label>
+        <label style="color: #1E90FF; font-size: 24px; margin-right: 20%" >(双击保存线路)</label>
       </div>
 
       <div class="form-group" v-if=" mapType === '3' || mapType === '5'">
@@ -101,8 +101,8 @@
 
         var paramObj = {
           mapType: 'WMS_MAP',
-          url: 'http://119.3.5.139:8080/geowebcache/service/wms',
-          // url: 'http://14.27.137.129:8080/geowebcache/service/wms',
+          // url: 'http://119.3.5.139:8080/geowebcache/service/wms',
+          url: 'http://14.27.137.129:8080/geowebcache/service/wms',
           defaultZoom: 14,
           proj: 'EPSG:4326',
           minZoom: 0,
@@ -117,8 +117,8 @@
             scaleLine: eGIS.Constant.CONTROL_TYPE.SCALELINE,
             mousePosition: eGIS.Constant.CONTROL_TYPE.MOUSEPOSITION,
           },
-          layers: "BeijingB",
-          // layers: "BeijingDark",
+          // layers: "BeijingB",
+          layers: "BeijingDark",
           mapName: 'MapServer',
           resolutions:[1.4078260157100582,
             0.703913007855028,
@@ -206,9 +206,7 @@
               _this.lineCoors += res.coordinates[i][0]+','
               _this.lineCoors += res.coordinates[i][1]+','
             }
-            if(_this.lineCoors.endsWith(',')){
-              _this.lineCoors =  _this.lineCoors.substring(0,_this.lineCoors.length-1)
-            }
+            _this.lineCoors =  _this.lineCoors.substring(0,_this.lineCoors.length-1)
             console.log(_this.lineCoors)
           }
         });

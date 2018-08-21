@@ -42,7 +42,7 @@
             </div>
 
             <!--层级-->
-            <div class="form-group">
+            <div class="form-group" v-show="!parseInt(type)">
               <label for="level" class="col-sm-4 control-label">层级</label>
               <div class="col-sm-6">
                 <select class="form-control" id="level" v-model="level" @change="GetList">
@@ -56,7 +56,7 @@
             </div>
 
             <!--路-段-岗下拉框-->
-            <div class="form-group" v-show="level">
+            <div class="form-group" v-show="level && !parseInt(type)">
               <label for="road_section_station" class="col-sm-4 control-label" v-if="parseInt(level)===1">路线</label>
               <label for="road_section_station" class="col-sm-4 control-label" v-if="parseInt(level)===2">路段</label>
               <label for="road_section_station" class="col-sm-4 control-label" v-if="parseInt(level)===3">岗哨</label>
@@ -70,7 +70,7 @@
             </div>
 
             <!--角色-->
-            <div class="form-group">
+            <div class="form-group" v-show="!parseInt(type)">
               <label for="role" class="col-sm-4 control-label">角色</label>
               <div class="col-sm-6">
                 <select class="form-control" id="role" v-model="role">
@@ -113,6 +113,11 @@
             <div class="form-group">
               <div class="col-sm-offset-4 col-sm-6">
                 <button type="button" class="btn btn-primary btn-block" @click="AddFaculty">提交添加</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-4 col-sm-6">
+                <button type="button" class="btn btn-primary btn-block" @click="goBack">返 回</button>
               </div>
             </div>
           </form>
@@ -296,6 +301,9 @@
             }
           })
         }
+      },
+      goBack: function () {
+        this.$router.push('/facultyList')
       },
       GetList: function () {
         console.log('12334')

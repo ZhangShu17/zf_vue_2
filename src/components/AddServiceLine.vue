@@ -32,6 +32,7 @@
               <label for="time" class="col-sm-4 control-label">勤务日期</label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="time" v-model="time">
+                <label style="color: #1E90FF;">(ie浏览器请按照yyyy-MM-dd格式填写)</label>
               </div>
             </div>
             <!--勤务地区-->
@@ -69,8 +70,11 @@
               <div class="col-sm-offset-4 col-sm-4">
                 <button type="button" class="btn btn-primary btn-block" @click="AddServiceLine">提交</button>
               </div>
-              <div class="col-sm-offset-4 col-sm-4" >
-                <button type="button" class="btn btn-primary btn-block" @click="">返回</button>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-offset-4 col-sm-4">
+                <button type="button" class="btn btn-primary btn-block" @click="goBack">返  回</button>
               </div>
             </div>
           </form>
@@ -136,6 +140,9 @@
             console.log(err)
           }
         })
+      },
+      goBack: function () {
+        this.$router.push('/serviceLineList')
       },
       initDistrict: function () {
         let url = config.ROOT_API_URL + 'district/lists'

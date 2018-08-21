@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <h3 align="center">{{result.data.name}}“三长制”统计表
+      <h3 align="center">{{result.data.name}}“三长制”详尽统计表
       </h3>
       <hr>
       <div class="container">

@@ -3,7 +3,7 @@
     <div class="container" id="add_admin">
       <div class="row">
         <div class="col-md-6">
-          <h3 align="center">添加岗位{{location}}</h3>
+          <h3 align="center">添加岗位</h3>
           <hr>
           <form class="form-horizontal">
             <!--区域-->
@@ -73,6 +73,11 @@
                 <button type="button" class="btn btn-primary btn-block" @click="AddStation">提交</button>
               </div>
             </div>
+            <div class="form-group">
+              <div class="col-sm-offset-4 col-sm-8">
+                <button type="button" class="btn btn-primary btn-block" @click="goBack">返回</button>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -109,6 +114,7 @@
             let _this = this
             let url = config.ROOT_API_URL + 'station/edit'
             console.log(window.localStorage.getItem('districtId'))
+            console.log('type:'+this.type)
             $.ajax({
               url: url,
               type: 'POST',
@@ -126,7 +132,7 @@
               },
               success: function (response) {
                 console.log(response)
-                if (_this.type === 1) {
+                if (_this.type == 1) {
                   _this.$router.push({
                     path: '/stationList',
                     query: {
@@ -142,6 +148,19 @@
                 console.log(err)
               }
             })
+          }
+        },
+        goBack: function (){
+          if (this.type == 1) {
+            this.$router.push({
+              path: '/stationList',
+              query: {
+                type: 1,
+                sectionId: this.sectionId
+              }
+            })
+          } else {
+            this.$router.push({path: '/stationList', query: {type: 0}})
           }
         },
         initDistrict: function () {
@@ -181,13 +200,12 @@
       },
 
       mounted: function () {
-        console.log('打印location')
-        console.log(this.$route.query.location)
-        console.log(this.$route.query.mapType)
-        console.log('打印location end')
         this.type = this.$route.query.type
         this.mapType = this.$route.query.mapType
         this.sectionId = this.$route.query.sectionId
+        console.log('打印type')
+        console.log(this.type)
+        console.log('打印type')
         if (parseInt(this.mapType) === 3) {
           this.districtId = this.$route.query.districtId
           this.name = this.$route.query.name
@@ -197,6 +215,7 @@
           this.remark3 = this.$route.query.remark3
         }
         this.initDistrict()
+
       }
     }
 </script>

@@ -89,6 +89,11 @@
               <button type="button" class="btn btn-primary btn-block" @click="AddRoad">提交</button>
             </div>
           </div>
+          <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-8">
+              <button type="button" class="btn btn-primary btn-block" @click="goBack">返回</button>
+            </div>
+          </div>
         </form>
       </div>
     </div>
@@ -182,6 +187,12 @@
             alert('输入不合法，请重新输入')
             this.length = ''
           }
+        },
+        goBack: function () {
+          this.$router.push({path: '/roadlist',
+            query: {
+              serviceLineId: this.serviceLineId
+            }})
         }
       },
       mounted () {

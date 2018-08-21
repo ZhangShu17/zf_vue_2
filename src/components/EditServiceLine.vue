@@ -40,6 +40,7 @@
               <label for="time" class="col-sm-4 control-label">勤务日期</label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="time" v-model="info.time">
+                <label style="color: #1E90FF;">(ie浏览器请按照yyyy-MM-dd格式填写)</label>
               </div>
             </div>
             <!--勤务地区-->
@@ -83,6 +84,12 @@
             <div class="form-group" v-show="action === 'Copy'">
               <div class="col-sm-offset-4 col-sm-8">
                 <button type="button" class="btn btn-primary btn-block" @click="ok1">提交复制</button>
+              </div>
+            </div>
+
+            <div class="form-group" >
+              <div class="col-sm-offset-4 col-sm-8">
+                <button type="button" class="btn btn-primary btn-block" @click="goBack">返  回</button>
               </div>
             </div>
           </form>
@@ -196,6 +203,9 @@
               console.log(err)
             }
           })
+        },
+        goBack: function () {
+          this.$router.push('/serviceLineList')
         },
         ok1: function () {
           this.selectDistricts = []

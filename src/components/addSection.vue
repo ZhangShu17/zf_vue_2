@@ -89,6 +89,11 @@
                 <button type="button" class="btn btn-primary btn-block" @click="AddSection">提交添加</button>
               </div>
             </div>
+            <div class="form-group">
+              <div class="col-sm-offset-4 col-sm-8">
+                <button type="button" class="btn btn-primary btn-block" @click="goBack">返  回</button>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -163,7 +168,7 @@
             success: function (response) {
               console.log('success')
               console.log(response)
-              if (_this.type === 1) {
+              if (_this.type == 1) {
                 _this.$router.push({path: '/sectionlist', query: {type: 1, roadId: _this.roadId}})
               } else {
                 _this.$router.push({path: '/sectionlist', query: {type: 0}})
@@ -209,6 +214,13 @@
               console.log(err)
             }
           })
+        },
+        goBack: function () {
+          if (this.type == 1) {
+            this.$router.push({path: '/sectionlist', query: {type: 1, roadId: this.roadId}})
+          } else {
+            this.$router.push({path: '/sectionlist', query: {type: 0}})
+          }
         }
       },
       mounted () {
