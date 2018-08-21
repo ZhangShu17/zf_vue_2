@@ -7,7 +7,7 @@
           <hr>
           <form class="form-horizontal">
             <!--区域-->
-            <div class="form-group" v-show="!parseInt(userDistrictId)">
+            <div class="form-group" v-show="!parseInt(userDistrictId) && !parseInt(type)">
               <label for="district" class="col-sm-4 control-label">区域</label>
               <div class="col-sm-8">
                 <select class="form-control" id="district" v-model="districtId" >

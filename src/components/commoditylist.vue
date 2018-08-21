@@ -39,8 +39,8 @@
       <template v-for="list in sectionList">
         <tr>
           <th>
-            <button v-show="type">↑</button>
-            <button v-show="type">↓</button>
+            <button v-show="type" @click="RankSection(list.id, 1)">↑</button>
+            <button v-show="type" @click="RankSection(list.id, 2)">↓</button>
             {{list.id}}
           </th>
           <td>{{list.name}}</td>
@@ -76,16 +76,20 @@
       </div>
     </div>
     <my-pagination @paginatorPage="paginatorPage" :pages="pageCount"></my-pagination>
+    <toast :parentMessage="parentMessage" v-show="showType"></toast>
+
   </div>
 </template>
 
 <script>
+  import toast from '../components/toast'
   import config from '../config/config'
   const pagination = () => import('../components/pagination')
   export default {
     name: 'sectionList',
     components: {
-      'my-pagination': pagination
+      'my-pagination': pagination,
+      'toast': toast
     },
     data () {
       return {
@@ -98,7 +102,9 @@
         sectionIntoList: [],
         roadName: '',
         page: 1,
-        pageCount: 0
+        pageCount: 0,
+        parentMessage: '',
+        showType: false
       }
     },
     methods: {
@@ -271,6 +277,42 @@
         console.log(page)
         this.page = page
         this.init()
+      },
+      RankSection: function (sectionId, rank) {
+        console.log(sectionId, rank)
+        let _this = this
+        let url = config.ROOT_API_URL + 'section/rank'
+        $.ajax({
+          url: url,
+          type: 'POST',
+          data: {
+            userName: localStorage.getItem('userName'),
+            roadId: _this.roadId,
+            sectionId: sectionId,
+            rank: rank
+          },
+          async: false,
+          success: function (response) {
+            console.log(response)
+            _this.parentMessage = 'success|成功'
+            setTimeout(function () {
+              _this.showType = true
+            }, 500)
+            setTimeout(function () {
+              _this.showType = false
+            }, 3000)
+            _this.init()
+          },
+          error: function (err) {
+            _this.parentMessage = err.responseJSON.retCode + ':' + err.responseJSON.retMsg
+            setTimeout(function () {
+              _this.showType = true
+            }, 500)
+            setTimeout(function () {
+              _this.showType = false
+            }, 3000)
+          }
+        })
       }
     },
     mounted () {
