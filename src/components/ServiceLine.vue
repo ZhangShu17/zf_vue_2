@@ -171,7 +171,6 @@
           if (!parseInt(count)) {
             let _this = this
             _this.parentMessage = '错误：尚未添加路线!'
-
             setTimeout(function () {
               _this.showType = true
             }, 1000)
