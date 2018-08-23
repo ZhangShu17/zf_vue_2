@@ -113,13 +113,18 @@
         </div>
       </div>
     </div>
+    <toast :parentMessage="parentMessage" v-show="showType"></toast>
   </div>
 </template>
 
 <script>
+    import toast from '../components/toast'
     import config from '../config/config'
     export default {
       name: 'editFaculty',
+      components: {
+        'toast': toast
+      },
       data () {
         return {
           type: '',
@@ -136,7 +141,9 @@
           role: 0,
           road_section_station: 0,
           road_section_station_list: [],
-          user_district_id: ''
+          user_district_id: '',
+          parentMessage: '',
+          showType: false
         }
       },
       methods: {
@@ -233,6 +240,14 @@
             },
             success: function (response) {
               console.log('success')
+              _this.parentMessage = '添加成功！'
+              setTimeout(function () {
+                _this.showType = true
+              }, 1000)
+              setTimeout(function () {
+                console.log('settimeout')
+                _this.showType = false
+              }, 3000)
               if (_this.type === 0) {
                 _this.$router.push('/facultyList')
               }
@@ -248,6 +263,14 @@
             },
             error: function (error) {
               console.log(error)
+              _this.parentMessage = error.responseJSON.retMsg
+              setTimeout(function () {
+                _this.showType = true
+              }, 1000)
+              setTimeout(function () {
+                console.log('settimeout')
+                _this.showType = false
+              }, 3000)
             }
           })
         }

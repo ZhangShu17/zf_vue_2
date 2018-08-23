@@ -4,6 +4,11 @@
       <h3 align="center" v-if="roadId">路段管理-路线【{{this.roadName}}】
       </h3>
       <h3 align="center" v-else>路段管理
+        <select class="col-md-1" v-if="!roadId" style="font-size: 10px" v-model="filterType">
+          <option value="0">全部</option>
+          <option value="1">已关联</option>
+          <option value="2">未关联</option>
+        </select>
       </h3>
       <ul class="nav nav-pills">
         <li @click="AddSection"><a href="#">+添加路段</a></li>
@@ -104,7 +109,16 @@
         page: 1,
         pageCount: 0,
         parentMessage: '',
-        showType: false
+        showType: false,
+        filterType: 0
+      }
+    },
+    watch: {
+      filterType: function (curValue, oldValue) {
+        console.log('watch')
+        this.filterType = curValue
+        this.init()
+        console.log('watch end')
       }
     },
     methods: {
@@ -122,7 +136,8 @@
             userName: localStorage.getItem('userName'),
             roadId: _this.roadId,
             districtId: localStorage.getItem('districtId'),
-            page: _this.page
+            page: _this.page,
+            filterType: _this.filterType
           },
           async: false,
           success: function (response) {

@@ -4,6 +4,11 @@
       <h3 align="center" v-if="serviceLineId">路线管理-勤务路线【{{serviceLineName}}】
       </h3>
       <h3 align="center" v-else>路线管理
+        <select class="col-md-1" v-if="!serviceLineId" style="font-size: 10px" v-model="filterType">
+          <option value="0">全部</option>
+          <option value="1">已关联</option>
+          <option value="2">未关联</option>
+        </select>
       </h3>
       <ul class="nav nav-pills">
         <li><router-link :to="{path: '/addroad', query: {serviceLineId: serviceLineId}}">+添加路线</router-link></li>
@@ -103,7 +108,16 @@
         page: 1,
         pageCount: 0,
         parentMessage: '',
-        showType: false
+        showType: false,
+        filterType: 0
+      }
+    },
+    watch: {
+      filterType: function (curValue, oldValue) {
+        console.log('watch')
+        this.filterType = curValue
+        this.init()
+        console.log('watch end')
       }
     },
     methods: {
@@ -119,6 +133,7 @@
           data: {
             userName: localStorage.getItem('userName'),
             districtId: localStorage.getItem('districtId'),
+            filterType: _this.filterType,
             serviceLineId: _this.serviceLineId,
             page: _this.page
           },

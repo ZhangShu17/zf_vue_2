@@ -4,11 +4,16 @@
       <h3 align="center" v-if="sectionId">岗哨管理-路段【{{sectionName}}】
       </h3>
       <h3 align="center" v-else>岗哨管理
+        <select class="col-md-1" v-if="!sectionId" style="font-size: 10px" v-model="filterType">
+          <option value="0">全部</option>
+          <option value="1">已关联</option>
+          <option value="2">未关联</option>
+        </select>
       </h3>
       <ul class="nav nav-pills">
         <li @click = 'jump2AddStation'><a href="#">+添加岗位</a></li>
         <hr v-show="sectionId">
-        <li v-show="sectionId">添加已有路线：
+        <li v-show="sectionId">添加已有岗哨：
           <select id="mySelect" v-model="selectStationId" style="width: 300px">
             <template v-for="item in stationIntoList">
               <option :value="item.id">[id={{item.id}}]{{item.name}}</option>
@@ -90,7 +95,16 @@
         selectStationId: '',
         cur_page: 1,
         pageCount: 0,
-        sectionName: ''
+        sectionName: '',
+        filterType: 0
+      }
+    },
+    watch: {
+      filterType: function (curValue, oldValue) {
+        console.log('watch')
+        this.filterType = curValue
+        this.init()
+        console.log('watch end')
       }
     },
     methods: {
@@ -109,6 +123,7 @@
             sectionId: _this.sectionId,
             districtId: localStorage.getItem('districtId'),
             page: _this.cur_page,
+            filterType: _this.filterType
           },
           async: false,
           success: function (response) {

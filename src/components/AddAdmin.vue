@@ -48,7 +48,7 @@
 
           <!--电台信道-->
           <div class="form-group">
-            <label for="channel" class="col-sm-4 control-label">电台信道</label>
+            <label for="channel" class="col-sm-4 control-label">路长电台信道</label>
             <div class="col-sm-8">
               <input type="email" class="form-control" id="channel" v-model="channel">
             </div>
@@ -56,7 +56,7 @@
 
           <!--电台呼号-->
           <div class="form-group">
-            <label for="callSign" class="col-sm-4 control-label">电台呼号</label>
+            <label for="callSign" class="col-sm-4 control-label">路长电台呼号</label>
             <div class="col-sm-8">
               <input type="email" class="form-control" id="callSign" v-model="callSign">
             </div>

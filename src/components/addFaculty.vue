@@ -119,13 +119,18 @@
         </div>
       </div>
     </div>
+    <toast :parentMessage="parentMessage" v-show="showType"></toast>
   </div>
 </template>
 
 <script>
+  import toast from '../components/toast'
   import config from '../config/config'
   export default {
     name: 'addFaculty',
+    components: {
+      'toast': toast
+    },
     data () {
       return {
         districtId: localStorage.getItem('districtId'),
@@ -144,7 +149,9 @@
         role: 0,
         road_section_station: 0,
         road_section_station_list: [],
-        allDistricts: []
+        allDistricts: [],
+        parentMessage: '',
+        showType: false
       }
     },
     methods: {
@@ -187,9 +194,6 @@
         })
       },
       AddFaculty: function () {
-        console.log('~~~~~~~~~~~~~~~')
-        console.log(this.chiefType)
-        console.log('~~~~~end~~~~~~')
         let _this = this
         if (_this.type === 0) {
           let url = config.ROOT_API_URL + 'faculty/edit'
@@ -211,10 +215,26 @@
             },
             success: function (response) {
               console.log('success')
+              _this.parentMessage = '添加成功！'
+              setTimeout(function () {
+                _this.showType = true
+              }, 1000)
+              setTimeout(function () {
+                console.log('settimeout')
+                _this.showType = false
+              }, 3000)
               _this.$router.push('/facultyList')
             },
             error: function (error) {
-              console.log(error)
+              console.log(error.responseJSON.retMsg)
+              _this.parentMessage = error.responseJSON.retMsg
+              setTimeout(function () {
+                _this.showType = true
+              }, 1000)
+              setTimeout(function () {
+                console.log('settimeout')
+                _this.showType = false
+              }, 3000)
             }
           })
         }

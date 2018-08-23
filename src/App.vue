@@ -4,7 +4,7 @@
       <div class="message warning">
         <div class="inset">
           <div class="login-head">
-            <h1>警务路线录入系统</h1>
+            <h1>警务路线“三长制”信息录入系统</h1>
             <div class="alert-close"> </div>
           </div>
           <form>
@@ -146,6 +146,12 @@
         }
         if (parseInt(disId) === 7) {
           return '石景山区'
+        }
+        if (parseInt(disId) === 8) {
+          return '西站区'
+        }
+        if (parseInt(disId) === 9) {
+          return '顺义区'
         }
       }
     },
