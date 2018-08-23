@@ -93,6 +93,11 @@
                 <button type="button" class="btn btn-primary btn-block" @click="CopySection">提交复制</button>
               </div>
             </div>
+            <div class="form-group" >
+              <div class="col-sm-offset-4 col-sm-8">
+                <button type="button" class="btn btn-primary btn-block" @click="goBack">返  回</button>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -190,7 +195,7 @@
             success: function (response) {
               console.log('success')
               console.log(response)
-              if (_this.type === 1) {
+              if (_this.type == 1) {
                 _this.$router.push({path: '/sectionlist', query: {type: 1, roadId: _this.roadId}})
               } else {
                 _this.$router.push({path: '/sectionlist', query: {type: 0}})
@@ -248,12 +253,19 @@
               districtId: this.districtId,
               sectionStart: this.sectionStart,
               sectionEnd: this.sectionEnd,
-              locationList: this.xycoordinate,
+              locationList: this.xyCoordinate,
               remark1: this.remark1,
               remark2: this.remark2,
               remark3: this.remark3
             }
           })
+        },
+        goBack: function () {
+          if (this.type == 1) {
+            this.$router.push({path: '/sectionlist', query: {type: 1, roadId: this.roadId}})
+          } else {
+            this.$router.push({path: '/sectionlist', query: {type: 0}})
+          }
         }
       },
       mounted () {

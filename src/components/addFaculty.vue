@@ -115,6 +115,11 @@
                 <button type="button" class="btn btn-primary btn-block" @click="AddFaculty">提交添加</button>
               </div>
             </div>
+            <div class="form-group">
+              <div class="col-sm-offset-4 col-sm-6">
+                <button type="button" class="btn btn-primary btn-block" @click="goBack">返 回</button>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -194,6 +199,13 @@
         })
       },
       AddFaculty: function () {
+        // check mobile num
+        let reg = /^[1][3,4,5,7,8][0-9]{9}$/
+        if (!reg.test(this.mobile)) {
+          // callback(new Error('请输入有效的手机号码'));
+          alert('请输入正确的手机号')
+          return
+        }
         let _this = this
         if (_this.type === 0) {
           let url = config.ROOT_API_URL + 'faculty/edit'
@@ -316,6 +328,9 @@
             }
           })
         }
+      },
+      goBack: function () {
+        this.$router.push('/facultyList')
       },
       GetList: function () {
         console.log('12334')

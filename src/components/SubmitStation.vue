@@ -79,6 +79,11 @@
                 <button type="button" class="btn btn-primary btn-block" @click="CopyStation">提交复制</button>
               </div>
             </div>
+            <div class="form-group" >
+              <div class="col-sm-offset-4 col-sm-8">
+                <button type="button" class="btn btn-primary btn-block" @click="goBack">返 回</button>
+              </div>
+            </div>
           </form>
         </div>
       </div>
@@ -126,7 +131,7 @@
             },
             success: function (response) {
               console.log('success')
-              if (_this.type === 1) {
+              if (_this.type == 1) {
                 _this.$router.push({path: '/stationList', query: {type: 1, sectionId: _this.sectionId}})
               } else {
                 _this.$router.push({path: '/stationList', query: {type: 0}})
@@ -136,6 +141,13 @@
               console.log(error)
             }
           })
+        },
+        goBack: function () {
+          if (this.type == 1) {
+            this.$router.push({path: '/stationList', query: {type: 1, sectionId: this.sectionId}})
+          } else {
+            this.$router.push({path: '/stationList', query: {type: 0}})
+          }
         },
         CopyStation: function () {
           let _this = this

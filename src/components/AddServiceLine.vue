@@ -32,6 +32,7 @@
               <label for="time" class="col-sm-4 control-label">勤务日期</label>
               <div class="col-sm-8">
                 <input type="date" class="form-control" id="time" v-model="time">
+                <label style="color: #1E90FF;">(ie浏览器请按照yyyy-MM-dd格式填写)</label>
               </div>
             </div>
             <!--勤务地区-->
@@ -39,7 +40,7 @@
               <label class="col-sm-4 control-label">勤务地区</label>
               <div>
                 <template v-for="district in allDistricts">
-                <label><input type="checkbox" class="col-sm-2" v-model="chosedDistrictIds" :value="district.id"/>{{district.name}}</label>
+                <label><input type="checkbox" v-model="chosedDistrictIds" :value="district.id"/>{{district.name}}</label>
                 </template>
               </div>
             </div>
@@ -69,8 +70,11 @@
               <div class="col-sm-offset-4 col-sm-4">
                 <button type="button" class="btn btn-primary btn-block" @click="AddServiceLine">提交</button>
               </div>
-              <div class="col-sm-offset-4 col-sm-4" >
-                <button type="button" class="btn btn-primary btn-block" @click="">返回</button>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-offset-4 col-sm-4">
+                <button type="button" class="btn btn-primary btn-block" @click="goBack">返  回</button>
               </div>
             </div>
           </form>
@@ -103,6 +107,10 @@
     methods: {
       AddServiceLine: function () {
         console.log(this.chosedDistrictIds)
+        // if(this.chosedDistrictIds.length <= 0){
+        //   alert('请添加勤务区域！')
+        //   return
+        // }
         let _this = this
         let url = config.ROOT_API_URL + 'server_line/edit'
         let strDistrictIds = ''
@@ -136,6 +144,9 @@
             console.log(err)
           }
         })
+      },
+      goBack: function () {
+        this.$router.push('/serviceLineList')
       },
       initDistrict: function () {
         let url = config.ROOT_API_URL + 'district/lists'

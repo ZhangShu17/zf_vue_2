@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <h3 align="center">{{result.data.name}}“三长制”统计表
+      <h3 align="center">{{result.data.name}}“三长制”详尽统计表
       </h3>
       <hr>
       <div class="container">
@@ -17,7 +17,7 @@
                 <th>长度(km)</th>
                 <th>{{result.data.length}}</th>
                 <th>段/岗数量</th>
-                <th>{{result.data.sectionStationNum.split('-')[0] + '岗' + result.data.sectionStationNum.split('-')[1] + '哨'}}</th>
+                <th>{{result.data.sectionStationNum.split('-')[0] + '段' + result.data.sectionStationNum.split('-')[1] + '岗'}}</th>
               </tr>
               </thead>
               <thead>

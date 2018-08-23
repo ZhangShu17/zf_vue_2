@@ -90,6 +90,11 @@
               <button type="button" class="btn btn-primary btn-block" @click="CopyRoad">提交复制</button>
             </div>
           </div>
+          <div class="form-group" >
+            <div class="col-sm-offset-4 col-sm-8">
+              <button type="button" class="btn btn-primary btn-block" @click="goBack">返  回</button>
+            </div>
+          </div>
         </form>
       </div>
     </div>
@@ -187,6 +192,9 @@
         if (!reg.test(this.length)) {
           alert('输入不合法，长度应为整数或者小数，请重新输入')
         }
+      },
+      goBack: function () {
+        this.$router.push({path: '/roadlist', query: {serviceLineId: this.serviceLineId}})
       }
     },
     mounted: function () {
