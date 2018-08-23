@@ -2,7 +2,7 @@
   <div id="wrapper">
 
     <div class="content">
-      <div id="map" class="mapId-1" style="width: 80%; height: 100%;">
+      <div id="map" class="mapId-1" style="width: 100%; height: 100%;">
         <!--<div>
             <input id='markonmap' type='text' style='color:black;background: white;width: 160px;height: 20px;' value='116.39,39.9'>
         <button id='markeronmap' >定位到该点</button>
@@ -10,20 +10,20 @@
 
 
       </div>
-      <div id="drawPoint" class="menu_second" v-if=" mapType === '3' || mapType === '5'"  ><button  class="btn-info" @click="drawPoint">画点</button><a class="second_arrow"></a></div>
-      <div id="drawLine" class="menu_second" v-if="mapType === '4' || mapType === '6'"><button class="btn-info" @click="drawLine">画线</button><a class="second_arrow"></a></div>
+      <div id="drawPoint" class="menu_second" v-if=" mapType === '3' || mapType === '5'"  ><button  class="btn-info" @click="drawPoint">编辑</button><a class="second_arrow"></a></div>
+      <div id="drawLine" class="menu_second" v-if="mapType === '4' || mapType === '6'"><button class="btn-info" @click="drawLine">编辑</button><a class="second_arrow"></a></div>
       <div align="center" v-if="mapType === '4' || mapType === '6'">
         <label style="color: #1E90FF; font-size: 24px; margin-right: 20%" >(双击保存线路)</label>
       </div>
 
       <div class="form-group" v-if=" mapType === '3' || mapType === '5'">
         <label class="col-sm-2 control-label">点位坐标</label>
-          <input type="text" class="form-control" id="point_coor" v-model="point_coor">
+          <input type="text" class="form-control" id="point_coor" v-model="location">
           <button class="btn-info" @click="saveCoor" >保存点位</button>
       </div>
       <div class="form-group" v-if="mapType === '4' || mapType === '6'">
         <label class="col-sm-2 control-label">线路标点</label>
-          <input type="text" class="form-control" id="line_coors" v-model="lineCoors">
+          <input type="text" class="form-control" id="line_coors" v-model="locationList">
         <button class="btn-info" @click="saveLine">保存线路</button>
       </div>
 
@@ -44,8 +44,8 @@
       return {
         count:0,
         type:'',    //上一个界面带来的参数
-        point_coor: '', //station 坐标
-        lineCoors:'',   //line 坐标
+        // point_coor: '', //station 坐标
+        // lineCoors:'',   //line 坐标
         mapType: '',    //进入map的类别
         districtId: '',
 
@@ -67,7 +67,10 @@
         locationList: '',
         section_remark1: '',
         section_remark2: '',
-        section_remark3: ''
+        section_remark3: '',
+
+        //init center for the map
+        center: [116.39, 39.9]
       }
     },
     methods: {
@@ -101,8 +104,8 @@
 
         var paramObj = {
           mapType: 'WMS_MAP',
-          // url: 'http://119.3.5.139:8080/geowebcache/service/wms',
-          url: 'http://14.27.137.129:8080/geowebcache/service/wms',
+          url: 'http://119.3.5.139:8080/geowebcache/service/wms',
+          // url: 'http://14.27.137.129:8080/geowebcache/service/wms',
           defaultZoom: 14,
           proj: 'EPSG:4326',
           minZoom: 0,
@@ -117,8 +120,8 @@
             scaleLine: eGIS.Constant.CONTROL_TYPE.SCALELINE,
             mousePosition: eGIS.Constant.CONTROL_TYPE.MOUSEPOSITION,
           },
-          // layers: "BeijingB",
-          layers: "BeijingDark",
+          layers: "BeijingB",
+          // layers: "BeijingDark",
           mapName: 'MapServer',
           resolutions:[1.4078260157100582,
             0.703913007855028,
@@ -152,7 +155,62 @@
           this.$router.go(0)
         }
       },
+      clearGeometry: function () {
+        eGIS.BaseLayer.clearLayers('map');
+        eGIS.Geometry.clearGeometryDraw('map');
+      },
+      showPoint: function(){
+        eGIS.Point.addLayer({
+          mapId: 'map',
+          layerId: 'point_layer'
+        });
+        let pointCor = this.location.split(',')
+        eGIS.Point.setLayerData({
+          mapId: 'map',
+          layerId: 'point_layer',
+          datas: [{
+            id:0,
+            coordinate:pointCor,
+            fillColor:'#407AFD',
+            strokeColor: '#FFFFFF',
+            strokeWidth:2,
+            radius:5,
+          }],
+        });
+      },
+      showLine: function() {
+        let lineCoor = this.locationList.split(',')
+        let newLineArray = []
+        // let newLineArray = [[116.3716496157554,39.90053769468671],[116.38239828894476,39.89878790997784],[116.4022708337382,39.90166255328839]]
+        for(let i =0; i < lineCoor.length;i+=2 ){
+          let array = lineCoor.slice(i,i+2)
+          for(let j = 0;j<array.length;j++){
+            array[j] = parseFloat(array[j])
+          }
+          newLineArray.push(array)
+        }
+        console.log('show line:newLineArray')
+        console.log(newLineArray)
+        eGIS.BLine.addLayer({
+          mapId: 'map',
+          layerId: 'line_layer'
+        });
+        eGIS.BLine.setLayerData({
+          layerId:'line_layer',
+          mapId:'map',
+          datas:[{
+            id:0,
+            coordinates:newLineArray,
+            strokeWidth:2,
+            fillColor:'#FDA135',
+            strokeColor:'#FDA135',
+        }],
+      });
+
+      },
       drawPoint: function () {
+        //clear the map
+        this.clearGeometry()
         let _this = this
         var layer = eGIS.OlUtil.getLayer({
           mapId: 'map',
@@ -180,12 +238,13 @@
           },
           endCallback: function (res) {
             console.log(res)
-            _this.point_coor = res.coordinates[0]+','+res.coordinates[1]
+            _this.location = res.coordinates[0]+','+res.coordinates[1]
           }
         });
         // this.refresh = true
       },
       drawLine: function () {
+        this.clearGeometry()
         let _this = this
         eGIS.Geometry.drawGeometry({
           mapId: 'map',
@@ -200,20 +259,20 @@
             console.log(point);
           },
           endCallback: function (res) {
-            _this.lineCoors = ''
+            _this.locationList = ''
             console.log(res.coordinates);
             for(let i = 0 ;i < res.coordinates.length;i++){
-              _this.lineCoors += res.coordinates[i][0]+','
-              _this.lineCoors += res.coordinates[i][1]+','
+              _this.locationList += res.coordinates[i][0]+','
+              _this.locationList += res.coordinates[i][1]+','
             }
-            _this.lineCoors =  _this.lineCoors.substring(0,_this.lineCoors.length-1)
-            console.log(_this.lineCoors)
+            _this.locationList =  _this.locationList.substring(0,_this.locationList.length-1)
+            console.log(_this.locationList)
           }
         });
         // this.refresh = true
       },
       saveCoor: function () {
-        console.log('savePoint:'+this.point_coor+'districtId:'+this.districtId+'sectionId:'+this.sectionId)
+        console.log('savePoint:'+this.location+'districtId:'+this.districtId+'sectionId:'+this.sectionId)
         eGIS.Map.removeMap('map');
         let routePath = (this.mapType == 3 ? '/addStation' : '/submitStation')
         this.$router.push({
@@ -223,7 +282,7 @@
             mapType: this.mapType,
             districtId: this.districtId,
             name:this.stationName,
-            location:this.point_coor,
+            location:this.location,
             remark1:this.station_remark1,
             remark2:this.station_remark2,
             remark3:this.station_remark3,
@@ -248,7 +307,7 @@
             roadId:this.roadId,
             sectionStart:this.sectionStart,
             sectionEnd:this.sectionEnd,
-            locationList:this.lineCoors,
+            locationList:this.locationList,
             remark1:this.section_remark1,
             remark2:this.section_remark2,
             remark3:this.section_remark3,
@@ -274,25 +333,24 @@
         this.station_remark2 = this.$route.query.remark2
         this.station_remark3 = this.$route.query.remark3
         this.stationId = this.$route.query.stationId
-        console.log('stationIntoMap-------'
-          +'stationName:'+this.stationName
-          + 'location:'+this.location+',districtId:'+this.districtId+',sectionId:'+this.sectionId+',stationId:'+this.stationId)
-        this.drawPoint()
+
+        if(this.location != null && this.location != ''){
+          this.showPoint()
+        }
       }else if(this.mapType == 4 || this.mapType == 6){
         this.sectionId = this.$route.query.sectionId
         this.roadId = this.$route.query.roadId
         this.sectionName = this.$route.query.sectionName
         this.sectionStart = this.$route.query.sectionStart
         this.sectionEnd = this.$route.query.sectionEnd
-        this.locationList = this.$route.query.loactionList
+        this.locationList = this.$route.query.locationList
         this.section_remark1 = this.$route.query.remark1
         this.section_remark2 = this.$route.query.remark2
         this.section_remark3 = this.$route.query.remark3
-        console.log('sectionIntoMap'
-          +'name:'+this.sectionName
-          + 'location:'+this.location+'sectionName:'+this.sectionName+',sectionStart:'+this.sectionStart,'sectionRemark1:'+this.section_remark1)
-        this.drawLine()
 
+        if(this.locationList != null && this.locationList != ''){
+          this.showLine()
+        }
       }
 
     },

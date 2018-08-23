@@ -253,7 +253,7 @@
               districtId: this.districtId,
               sectionStart: this.sectionStart,
               sectionEnd: this.sectionEnd,
-              locationList: this.xycoordinate,
+              locationList: this.xyCoordinate,
               remark1: this.remark1,
               remark2: this.remark2,
               remark3: this.remark3

@@ -40,7 +40,7 @@
               <label class="col-sm-4 control-label">勤务地区</label>
               <div>
                 <template v-for="district in allDistricts">
-                <label><input type="checkbox" class="col-sm-2" v-model="chosedDistrictIds" :value="district.id"/>{{district.name}}</label>
+                <label><input type="checkbox" v-model="chosedDistrictIds" :value="district.id"/>{{district.name}}</label>
                 </template>
               </div>
             </div>
@@ -107,6 +107,10 @@
     methods: {
       AddServiceLine: function () {
         console.log(this.chosedDistrictIds)
+        // if(this.chosedDistrictIds.length <= 0){
+        //   alert('请添加勤务区域！')
+        //   return
+        // }
         let _this = this
         let url = config.ROOT_API_URL + 'server_line/edit'
         let strDistrictIds = ''
