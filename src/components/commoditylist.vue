@@ -6,8 +6,8 @@
       <h3 align="center" v-else>路段管理
         <select class="col-md-1" v-if="!roadId" style="font-size: 10px" v-model="filterType">
           <option value="0">全部</option>
-          <option value="1">已关联</option>
-          <option value="2">未关联</option>
+          <option value="1">已关联路线</option>
+          <option value="2">未关联路线</option>
         </select>
       </h3>
       <ul class="nav nav-pills">
@@ -32,11 +32,13 @@
         <tr>
           <th>路段ID</th>
           <th>路段名称</th>
+          <th>所在区域</th>
           <th>路段起点</th>
           <th>路段终点</th>
           <th>电台信道</th>
           <th>电台呼号</th>
           <th>岗哨信息</th>
+          <th>关联勤务</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -49,11 +51,13 @@
             {{list.id}}
           </th>
           <td>{{list.name}}</td>
+          <td>{{list.districtName}}</td>
           <td>{{list.startPlace}}</td>
           <td>{{list.endPlace}}</td>
           <td>{{list.channel}}</td>
           <td>{{list.callSign}}</td>
           <td :id="list.id" @click="jump2Station('', $event)"><a href="#">岗哨数量：{{list.stationNumber}}</a></td>
+          <td>{{list.relatedServiceLine}}</td>
           <td>
               <button :value="list.id" type="button" @click="EditAdmin('',$event)">
                 编辑

@@ -123,6 +123,9 @@
       },
       getDistrictId: function () {
         let disId = window.localStorage.getItem('districtId')
+        console.log('hshshhshshshsjjjj')
+        console.log(disId)
+        console.log('hshshhshshshsjjjj end')
         if (parseInt(disId) === 0) {
           return '警卫营'
         }

@@ -6,8 +6,8 @@
       <h3 align="center" v-else>岗哨管理
         <select class="col-md-1" v-if="!sectionId" style="font-size: 10px" v-model="filterType">
           <option value="0">全部</option>
-          <option value="1">已关联</option>
-          <option value="2">未关联</option>
+          <option value="1">已关联段</option>
+          <option value="2">未关联段</option>
         </select>
       </h3>
       <ul class="nav nav-pills">
@@ -33,9 +33,11 @@
               <tr>
                 <th>岗位ID</th>
                 <th>岗位名称</th>
+                <th>所在区域</th>
                 <th>坐标位置</th>
                 <th>电台信道</th>
                 <th>电台呼号</th>
+                <th>关联勤务</th>
                 <th>操作</th>
               </tr>
               </thead>
@@ -44,9 +46,11 @@
                 <tr>
                   <th>{{list.id}}</th>
                   <td>{{list.name}}</td>
+                  <td>{{list.districtName}}</td>
                   <td>{{list.location}}</td>
                   <td>{{list.channel}}</td>
                   <td>{{list.callSign}}</td>
+                  <td>{{list.relatedServiceLine}}</td>
                   <td>
                     <button :value="list.id" type="button" @click="EditStation('',$event)">
                       编辑

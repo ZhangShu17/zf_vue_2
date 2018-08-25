@@ -6,8 +6,8 @@
       <h3 align="center" v-else>路线管理
         <select class="col-md-1" v-if="!serviceLineId" style="font-size: 10px" v-model="filterType">
           <option value="0">全部</option>
-          <option value="1">已关联</option>
-          <option value="2">未关联</option>
+          <option value="1">已关联勤务</option>
+          <option value="2">未关联勤务</option>
         </select>
       </h3>
       <ul class="nav nav-pills">
@@ -32,12 +32,14 @@
         <tr>
           <th>路线ID</th>
           <th>路线名称</th>
+          <th>所在区域</th>
           <th>路线长度</th>
           <th>路线起点</th>
           <th>路线终点</th>
           <th>电台信道</th>
           <th>电台呼号</th>
           <th>段/岗信息</th>
+          <th>关联勤务</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -49,12 +51,14 @@
             <button v-show="serviceLineId" @click="RankRoad(list.id, 2)">↓</button>
             {{list.id}}</th>
           <td :id="list.id" @click="PushExcel('', $event)"><a href="#">{{list.name}}</a></td>
+          <td>{{list.districtName}}</td>
           <td>{{list.length}}</td>
           <td>{{list.startPlace}}</td>
           <td>{{list.endPlace}}</td>
           <td>{{list.channel}}</td>
           <td>{{list.callSign}}</td>
           <td :id="list.id" @click="PushSection('', $event)"><a href="#">{{list.sectionNumber + '段' + list.stationNumber + '岗'}}</a> </td>
+          <td>{{list.relatedServiceLine}}</td>
           <td>
               <button :value="list.id" type="button" @click="EditRoad('',$event)">
                   编辑

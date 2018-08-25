@@ -53,6 +53,12 @@
         if (parseInt(disId) === 7) {
           this.district = '石景山区'
         }
+        if (parseInt(disId) === 8) {
+          this.district = '西站'
+        }
+        if (parseInt(disId) === 9) {
+          this.district = '顺义区'
+        }
         if (!window.localStorage.getItem('userName')) {
           this.$router.push({name: 'Login'})
         }

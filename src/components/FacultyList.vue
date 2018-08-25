@@ -18,6 +18,7 @@
                 <th>人员名称</th>
                 <th>电话</th>
                 <th>职位</th>
+                <th>所在区域</th>
                 <th>层级</th>
                 <th>角色</th>
                 <th>路/段/岗名称</th>
@@ -31,6 +32,7 @@
                   <td>{{list.name}}</td>
                   <td>{{list.mobile}}</td>
                   <td>{{list.duty}}</td>
+                  <td>{{list.districtName}}</td>
                   <td>{{list.levelName}}</td>
                   <td>{{list.roleName}}</td>
                   <td>[{{list.mainId}}]{{list.mainName}}</td>
