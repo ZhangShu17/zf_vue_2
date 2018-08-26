@@ -33,7 +33,7 @@
     </div>
 
     <div v-if="login_status">
-      <div class="container">
+      <div class="container" style="width: 1000px ;margin-left: 80px">
         <ul class="nav nav-pills">
           <li id="logout" role="presentation"><router-link to="/logout">账号信息</router-link></li>
           <li id="serviceLine" role="presentation" v-if="getUserId()"><router-link to="/serviceLineList">勤务管理</router-link></li>
