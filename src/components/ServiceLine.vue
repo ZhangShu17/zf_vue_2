@@ -218,6 +218,7 @@
           return 0
         },
         HandleSubmitDistrict: function (serviceList) {
+          this.result = []
           for (let i = 0; i < serviceList.length; i++) {
             let disList = serviceList[i].submitDistrict.split('-')
             let result1 = []
@@ -239,6 +240,7 @@
           console.log(page)
           this.page = page
           this.init()
+          this.HandleSubmitDistrict(this.serviceList)
         }
       },
       mounted () {
