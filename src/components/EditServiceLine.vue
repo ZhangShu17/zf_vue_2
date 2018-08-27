@@ -227,7 +227,7 @@
           }
           console.log(selectDistrictsStr)
           console.log(this.selectDistricts)
-          let url = config.ROOT_API_URL + 'server_line/edit'
+          let url = config.ROOT_API_URL + 'copy/service_line'
           let _this = this
           $.ajax({
             url: url,
