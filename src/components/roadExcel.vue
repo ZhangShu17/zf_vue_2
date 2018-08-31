@@ -78,7 +78,7 @@
             <!-- 表格 开始 -->
             <button type="button"  width="30" @click="export2Excel('tb_section')">打印</button>
             <table id="tb_section" class="table table-hover" align="center" border="1">
-              <template v-for="section in result.data.Road_Section">
+              <template v-for="section in result.data.Road_Section" v-if="section.enabled">
                 <thead>
 
                 <tr>
@@ -149,7 +149,7 @@
                   <th>电台通道</th>
                   <th>电台通道</th>
                 </tr>
-                <template v-for="station in section.Section_Station">
+                <template v-for="station in section.Section_Station" v-if="station.enabled">
 
                   <!--岗长-->
                   <template v-for="chief in station.chief">

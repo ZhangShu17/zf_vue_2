@@ -22,7 +22,7 @@
               </thead>
               <thead>
               <tr>
-                <th colspan="2" style="text-">名称</th>
+                <th colspan="2" >名称</th>
                 <th>姓名</th>
                 <th>职务</th>
                 <th>电话</th>
@@ -52,7 +52,7 @@
               </tr>
               </thead>
               <tbody>
-                <template v-for="section in result.data.Road_Section">
+                <template v-for="section in result.data.Road_Section" v-if="section.enabled">
                   <template v-for = "chief in section.chief">
                   <tr>
                     <th>段长</th>
@@ -76,8 +76,8 @@
               </tr>
               </thead>
               <tbody>
-              <template v-for="section in result.data.Road_Section">
-                <template v-for="station in section.Section_Station">
+              <template v-for="section in result.data.Road_Section" v-if="section.enabled">
+                <template v-for="station in section.Section_Station" v-if="station.enabled">
                   <template v-for="chief in station.chief">
                   <tr>
                     <th>岗长</th>

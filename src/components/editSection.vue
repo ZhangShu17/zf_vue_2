@@ -122,7 +122,8 @@
           remark1: '',
           remark2: '',
           remark3: '',
-          action: ''
+          action: '',
+          servicelinedIds: ''
         }
       },
       methods: {
@@ -132,6 +133,8 @@
           this.roadId = this.$route.query.roadId
           this.action = this.$route.query.action
           this.mapType = this.$route.query.mapType
+          this.servicelinedIds = this.$route.query.servicelinedIds
+          console.log('query here,servicelineId:'+this.servicelinedIds)
 
           if (parseInt(this.mapType) === 6) {
             this.sectionName = this.$route.query.sectionName
@@ -165,6 +168,13 @@
                 _this.remark1 = response.data.remark1
                 _this.remark2 = response.data.remark2
                 _this.remark3 = response.data.remark3
+                let serviceids = response.data.relatedServiceLineIds
+                if(serviceids.length > 0)
+                  _this.servicelinedIds = serviceids[0]
+                console.log('通过sectionID获得servicelineIds叔祖')
+                console.log(serviceids)
+                console.log('数组第一个servicelineIid如下')
+                console.log(_this.servicelinedIds)
               },
               error: function (err) {
                 console.log(err)
@@ -241,7 +251,8 @@
           })
         },
         jump2map: function () {
-          console.log('section jump2map')
+          console.log('section jump2map,serverLineId:')
+          console.log(this.servicelinedIds)
           this.$router.push({
             path: '/mapOperate',
             query: {
@@ -256,7 +267,8 @@
               locationList: this.xyCoordinate,
               remark1: this.remark1,
               remark2: this.remark2,
-              remark3: this.remark3
+              remark3: this.remark3,
+              servicelinedIds: this.servicelinedIds
             }
           })
         },

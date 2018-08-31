@@ -4,7 +4,7 @@
       <div class="message warning">
         <div class="inset">
           <div class="login-head">
-            <h1>警卫路线“三长制”信息录入系统</h1>
+            <h1>路线“三长制”信息录入系统</h1>
             <div class="alert-close"> </div>
           </div>
           <form>
@@ -33,7 +33,7 @@
     </div>
 
     <div v-if="login_status">
-      <div class="container" style="width: 1000px ;margin-left: 80px">
+      <div class="container" style="width: 1200px ; margin-left: 80px">
         <ul class="nav nav-pills">
           <li id="logout" role="presentation"><router-link to="/logout">账号信息</router-link></li>
           <li id="serviceLine" role="presentation" v-if="getUserId()"><router-link to="/serviceLineList">勤务管理</router-link></li>
@@ -82,6 +82,7 @@
           success: function (result) {
             // 登陆成功，储存用户信息，跳转
             console.log(result)
+            console.log(result.retCode)
             if (result.retCode === 0) {
               // background:url(../static/icons.png)  no-repeat 0px 0px;
               // document.querySelector('body').setAttribute('background','url(../static/icons.png)')
@@ -90,11 +91,11 @@
               _this.login_status = 1
               _this.saveInfo(result)
             } else {
-              alert(result.reason)
+              alert(result.retMsg)
             }
           },
           error: function (err) {
-            console.log(err)
+            alert(err.responseJSON.retMsg)
           }
         })
       },

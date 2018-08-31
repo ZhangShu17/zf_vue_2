@@ -150,7 +150,11 @@
             _this.pageCount = response.data.pageCount
           },
           error: function (err) {
-            console.log(err)
+            if(err.responseJSON[0] == 30002){
+              localStorage.clear()
+              _this.login_status = 0
+              _this.$router.go(0)
+            }
           }
         })
       },

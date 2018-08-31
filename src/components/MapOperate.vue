@@ -11,9 +11,11 @@
 
       </div>
       <div id="drawPoint" class="menu_second" v-if=" mapType === '3' || mapType === '5'"  ><button  class="btn-info" @click="drawPoint">编辑</button><a class="second_arrow"></a></div>
-      <div id="drawLine" class="menu_second" v-if="mapType === '4' || mapType === '6'"><button class="btn-info" @click="drawLine">编辑</button><a class="second_arrow"></a></div>
+      <div id="drawLine" class="menu_second" v-if="mapType === '4' || mapType === '6' && locationList == ''" ><button class="btn-info" @click="drawLine" >画线</button><a class="second_arrow"></a></div>
+      <div id="editLine" class="menu_second" v-if="mapType === '4' || mapType === '6'"><button class="btn-info" @click="editLine">编辑线段</button><a class="second_arrow"></a></div>
+      <div id="endEdit" class="menu_second" v-if="mapType === '4' || mapType === '6'"><button class="btn-info" @click="endEditLine">结束编辑</button><a class="second_arrow"></a></div>
       <div align="center" v-if="mapType === '4' || mapType === '6'">
-        <label style="color: #1E90FF; font-size: 24px; margin-right: 20%" >(双击保存线路)</label>
+        <label style="color: #1E90FF; font-size: 24px; margin-right: 20%" >(右键结束画线，二次编辑后点击结束编辑按钮进行保存)</label>
       </div>
 
       <div class="form-group" v-if=" mapType === '3' || mapType === '5'">
@@ -37,7 +39,7 @@
 <script>
 
 
-
+  import config from '../config/config'
   export default {
     name: 'MapOperate',
     data () {
@@ -48,6 +50,7 @@
         // lineCoors:'',   //line 坐标
         mapType: '',    //进入map的类别
         districtId: '',
+        map: null,
 
         //data from station
         stationName: '',
@@ -55,7 +58,6 @@
         station_remark1: '',
         station_remark2: '',
         station_remark3: '',
-        sectionId: '',
         stationId: '',
 
         //data from section
@@ -68,6 +70,10 @@
         section_remark1: '',
         section_remark2: '',
         section_remark3: '',
+        section_array: [],
+        servicelinedIds: '',
+        origintEditObject: '',
+        editObject: '',
 
         //init center for the map
         center: [116.39, 39.9]
@@ -76,6 +82,22 @@
     methods: {
       init: function () {
         console.log('init')
+        //init map
+        if(this.mapType == 3 || this.mapType == 5){
+          this.initHuaWeiMap()
+        }else{
+          this.initPGIS()
+        }
+
+        let refresh =  window.localStorage.getItem('refresh', '0')
+        console.log('create map,refresh:'+ refresh)
+        if(refresh == '1'){
+          window.localStorage.setItem('refresh','0')
+          console.log('after save ,refresh:'+ window.localStorage.getItem('refresh', '0'))
+          this.$router.go(0)
+        }
+      },
+      initHuaWeiMap: function () {
         var wms_wgs84_tilegrid = new lm.TileGrid({
           //控制地图显示范围
           extent: [-180,-90,180,90],
@@ -104,8 +126,8 @@
 
         var paramObj = {
           mapType: 'WMS_MAP',
-          url: 'http://119.3.5.139:8080/geowebcache/service/wms',
-          // url: 'http://14.27.137.129:8080/geowebcache/service/wms',
+          // url: 'http://119.3.5.139:8080/geowebcache/service/wms',
+          url: 'http://14.27.137.129:8080/geowebcache/service/wms',
           defaultZoom: 14,
           proj: 'EPSG:4326',
           minZoom: 0,
@@ -120,8 +142,8 @@
             scaleLine: eGIS.Constant.CONTROL_TYPE.SCALELINE,
             mousePosition: eGIS.Constant.CONTROL_TYPE.MOUSEPOSITION,
           },
-          layers: "BeijingB",
-          // layers: "BeijingDark",
+          // layers: "BeijingB",
+          layers: "BeijingDark",
           mapName: 'MapServer',
           resolutions:[1.4078260157100582,
             0.703913007855028,
@@ -146,14 +168,10 @@
           tilegrid: wms_wgs84_tilegrid
         };
         eGIS.Map.createMap(paramObj);
-        let refresh =  window.localStorage.getItem('refresh', '0')
-        console.log('create map,refresh:'+ refresh)
-        if(refresh == '1'){
-          console.log('1111111')
-          window.localStorage.setItem('refresh','0')
-          console.log('after save ,refresh:'+ window.localStorage.getItem('refresh', '0'))
-          this.$router.go(0)
-        }
+      },
+      initPGIS: function () {
+        this.map = new EzMap('map');
+        this.map.centerAndZoom( new EzCoord(116.39, 39.9), 15);
       },
       clearGeometry: function () {
         eGIS.BaseLayer.clearLayers('map');
@@ -179,34 +197,49 @@
         });
       },
       showLine: function() {
-        let lineCoor = this.locationList.split(',')
-        let newLineArray = []
-        // let newLineArray = [[116.3716496157554,39.90053769468671],[116.38239828894476,39.89878790997784],[116.4022708337382,39.90166255328839]]
-        for(let i =0; i < lineCoor.length;i+=2 ){
-          let array = lineCoor.slice(i,i+2)
-          for(let j = 0;j<array.length;j++){
-            array[j] = parseFloat(array[j])
-          }
-          newLineArray.push(array)
-        }
-        console.log('show line:newLineArray')
-        console.log(newLineArray)
-        eGIS.BLine.addLayer({
-          mapId: 'map',
-          layerId: 'line_layer'
-        });
-        eGIS.BLine.setLayerData({
-          layerId:'line_layer',
-          mapId:'map',
-          datas:[{
-            id:0,
-            coordinates:newLineArray,
-            strokeWidth:2,
-            fillColor:'#FDA135',
-            strokeColor:'#FDA135',
-        }],
-      });
+        console.log('locationList:')
+        console.log(this.locationList)
+        let xycoordinate = this.locationList
+        this.editObject = new Ez.g.Polyline(xycoordinate,{
+          'strokeColor': "#8625C5",
+          'strokeWidth': 3
+        })
+        this.map.addOverlay(this.editObject)
+      },
+      showOriginLines: function (){
+        console.log('showline')
+        console.log(this.servicelinedIds)
+        let url = config.ROOT_API_URL + 'server_line/edit'
+        let _this = this
+        $.ajax({
+          url: url,
+          type: 'GET',
+          data: {
+            userName: localStorage.getItem('userName'),
+            serviceLineId: _this.servicelinedIds
+          },
+          success: function (response) {
+            console.log(response.data)
+            _this.section_array = response.data.list[0].points
+            //show on the map
+            for(let i = 0;i < _this.section_array.length;i++){
 
+              console.log("prepare to draw points:")
+              console.log( _this.section_array[i])
+              if(_this.section_array[i] == _this.locationList){
+                continue
+              }
+              let editObject = new Ez.g.Polyline( _this.section_array[i],{
+                'strokeColor': "#000000",
+                'strokeWidth': 3
+              })
+              _this.map.addOverlay(editObject)
+            }
+          },
+          error: function (err) {
+            console.log(err)
+          }
+        })
       },
       drawPoint: function () {
         //clear the map
@@ -244,32 +277,56 @@
         // this.refresh = true
       },
       drawLine: function () {
-        this.clearGeometry()
         let _this = this
-        eGIS.Geometry.drawGeometry({
-          mapId: 'map',
-          type: eGIS.Geometry.DrawTypes.LineString,
-          isOpen: true,
-          showCloseIcon: true,
-          showGeometry: true,
-          strokeColor: '#FDA135',
-          strokeWidth: 2,
-
-          clickCallback: function (point) {
-            console.log(point);
-          },
-          endCallback: function (res) {
-            _this.locationList = ''
-            console.log(res.coordinates);
-            for(let i = 0 ;i < res.coordinates.length;i++){
-              _this.locationList += res.coordinates[i][0]+','
-              _this.locationList += res.coordinates[i][1]+','
-            }
-            _this.locationList =  _this.locationList.substring(0,_this.locationList.length-1)
-            console.log(_this.locationList)
-          }
+        this.map.changeDragMode('drawPolyline',function(e){
+          let str = e.coordString;
+          console.log('coordinates:')
+          console.log(str);
+          _this.locationList = str
+          _this.editObject = new Ez.g.Polyline(str,{
+            'strokeColor': "#8625C5"
+          });
+          _this.map.addOverlay(_this.editObject);
         });
+
+        // this.clearGeometry()
+        // let _this = this
+        // eGIS.Geometry.drawGeometry({
+        //   mapId: 'map',
+        //   type: eGIS.Geometry.DrawTypes.LineString,
+        //   isOpen: true,
+        //   showCloseIcon: true,
+        //   showGeometry: true,
+        //   strokeColor: '#FDA135',
+        //   strokeWidth: 2,
+        //
+        //   clickCallback: function (point) {
+        //     console.log(point);
+        //   },
+        //   endCallback: function (res) {
+        //     _this.locationList = ''
+        //     console.log(res.coordinates);
+        //     for(let i = 0 ;i < res.coordinates.length;i++){
+        //       _this.locationList += res.coordinates[i][0]+','
+        //       _this.locationList += res.coordinates[i][1]+','
+        //     }
+        //     _this.locationList =  _this.locationList.substring(0,_this.locationList.length-1)
+        //     console.log(_this.locationList)
+        //   }
+        // });
         // this.refresh = true
+      },
+      editLine: function() {
+        this.map.changeDragMode('editGeometry',function (e) {
+          console.log(e.coordString)
+        },this.editObject,"on");
+      },
+      endEditLine: function() {
+        let _this = this
+        this.map.changeDragMode('editGeometry',function(e){
+          console.log(e.coordString);
+          _this.locationList = e.coordString
+        },_this.editObject,"off");
       },
       saveCoor: function () {
         console.log('savePoint:'+this.location+'districtId:'+this.districtId+'sectionId:'+this.sectionId)
@@ -312,6 +369,7 @@
             remark2:this.section_remark2,
             remark3:this.section_remark3,
             sectionId:this.sectionId,
+            servicelinedIds: this.servicelinedIds,
             action: 'Edit'
           }
         })
@@ -320,11 +378,11 @@
     },
     mounted: function () {
       console.log('mounted')
-      this.init()
       this.type = this.$route.query.type
       this.mapType = this.$route.query.mapType
       this.districtId = this.$route.query.districtId
-      console.log('mounted,mapType：' + this.mapType+'districtId:'+this.districtId)
+      console.log('mounted,mapType：' + this.mapType)
+      this.init()
       if(this.mapType == 3 || this.mapType == 5){
         this.sectionId = this.$route.query.sectionId
         this.stationName = this.$route.query.name
@@ -347,10 +405,16 @@
         this.section_remark1 = this.$route.query.remark1
         this.section_remark2 = this.$route.query.remark2
         this.section_remark3 = this.$route.query.remark3
-
+        this.servicelinedIds = this.$route.query.servicelinedIds
+        console.log('get servicelineIds:')
+        console.log(this.servicelinedIds)
+        if(this.servicelinedIds != null && this.servicelinedIds != ''){
+          this.showOriginLines();
+        }
         if(this.locationList != null && this.locationList != ''){
           this.showLine()
         }
+
       }
 
     },
