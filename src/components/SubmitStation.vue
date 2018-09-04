@@ -114,6 +114,10 @@
         EditStation: function () {
           let _this = this
           let url = config.ROOT_API_URL + 'station/edit'
+          if(this.callSign.trim() == '' || this.channel.trim() == ''){
+            alert('请填入信道和呼号')
+            return
+          }
           $.ajax({
             url: url,
             type: 'PUT',

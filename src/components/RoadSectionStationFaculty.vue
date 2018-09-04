@@ -7,6 +7,9 @@
       </h3>
       <h3 align="center" v-if="type===3">岗哨人员管理-岗哨【{{stationId}}】
       </h3>
+      <h5 align="right">
+        <button @click="goBack">返回</button>
+      </h5>
       <ul class="nav nav-pills">
         <!--<li><router-link to="/addroad">路长+</router-link></li>-->
         <div v-if="type===1">
@@ -65,8 +68,8 @@
                   <td>{{list.name}}</td>
                   <td>{{list.mobile}}</td>
                   <td>{{list.duty}}</td>
-                  <td>{{list.channel}}</td>
-                  <td>{{list.callSign}}</td>
+                  <td>{{channel}}</td>
+                  <td>{{callSign}}</td>
                   <td>
                     <button :value="list.id" type="button" @click="EditFaculty('',$event)">
                       编辑
@@ -133,8 +136,8 @@
                   <td>{{list.name}}</td>
                   <td>{{list.mobile}}</td>
                   <td>{{list.duty}}</td>
-                  <td>{{list.channel}}</td>
-                  <td>{{list.callSign}}</td>
+                  <td>{{channel}}</td>
+                  <td>{{callSign}}</td>
                   <td>
                     <button :value="list.id" type="button" @click="EditFaculty('',$event)">
                       编辑
@@ -210,8 +213,8 @@
                   <td>{{list.name}}</td>
                   <td>{{list.mobile}}</td>
                   <td>{{list.duty}}</td>
-                  <td>{{list.channel}}</td>
-                  <td>{{list.callSign}}</td>
+                  <td>{{channel}}</td>
+                  <td>{{callSign}}</td>
                   <td>
                     <button :value="list.id" type="button" @click="EditFaculty('',$event)">
                       编辑
@@ -277,8 +280,8 @@
                   <td>{{list.name}}</td>
                   <td>{{list.mobile}}</td>
                   <td>{{list.duty}}</td>
-                  <td>{{list.channel}}</td>
-                  <td>{{list.callSign}}</td>
+                  <td>{{channel}}</td>
+                  <td>{{callSign}}</td>
                   <td>
                     <button :value="list.id" type="button" @click="EditFaculty('',$event)">
                       编辑
@@ -313,6 +316,8 @@
           sectionName: '',
           stationName: '',
           chiefList: [],
+          channel: '',
+          callSign: '',
           execChiefTransList: [],
           execChiefSubBureauList: [],
           execChiefArmedPoliList: [],
@@ -345,6 +350,12 @@
               async: false,
               success: function (response) {
                 console.log(response)
+                _this.channel = response.data.channel
+                _this.callSign = response.data.callSign
+                console.log('channel:')
+                console.log(_this.channel)
+                console.log('callSign')
+                console.log(_this.callSign)
                 _this.chiefList = response.data.chief
                 _this.execChiefSubBureauList = response.data.execChiefSubBureau
                 _this.execChiefTransList = response.data.execChiefTrans
@@ -370,6 +381,12 @@
               async: false,
               success: function (response) {
                 console.log(response)
+                _this.channel = response.data.channel
+                _this.callSign = response.data.callSign
+                console.log('channel:')
+                console.log(_this.channel)
+                console.log('callSign')
+                console.log(_this.callSign)
                 _this.chiefList = response.data.chief
                 _this.execChiefSubBureauList = response.data.execChiefSubBureau
                 _this.execChiefTransList = response.data.execChiefTrans
@@ -395,6 +412,12 @@
               async: false,
               success: function (response) {
                 console.log(response)
+                _this.channel = response.data.channel
+                _this.callSign = response.data.callSign
+                console.log('channel:')
+                console.log(_this.channel)
+                console.log('callSign')
+                console.log(_this.callSign)
                 _this.chiefList = response.data.chief
                 // _this.execChiefSubBureauList = response.data.execChiefSubBureau
                 _this.execChiefTransList = response.data.execChiefTrans
@@ -403,6 +426,33 @@
               error: function (err) {
                 console.log(err)
               }
+            })
+          }
+        },
+        goBack: function () {
+          if(this.type ==1){
+            let serviceId = localStorage.getItem('curServiceId')
+            this.$router.push({
+              path: '/roadlist',
+              query: {
+                serviceLineId: this.$route.query.backAll ? 0 : serviceId
+              }
+            })
+          } else if(this.type == 2){
+            let roadId = localStorage.getItem('curRoadId')
+            this.$router.push({path: '/sectionlist',
+              query: {
+                type: this.$route.query.backAll ? 0 : 1,
+                roadId: this.$route.query.backAll ? 0 : roadId
+            }
+            })
+          } else if (this.type == 3){
+            let sectionId = localStorage.getItem('curSectionId')
+            this.$router.push({path: '/stationList',
+              query: {
+                type:  this.$route.query.backAll ? 0 : 1,
+                sectionId: this.$route.query.backAll ? 0 : sectionId
+            }
             })
           }
         },

@@ -21,6 +21,7 @@
           </select>
         </li>
         <button style="height: 20px" v-show="sectionId" @click="InsertIntoSection">ok</button>
+        <button v-show="sectionId" @click="goBack" style="margin-left:600px;">返回</button>
       </ul>
 
       <hr>
@@ -100,7 +101,7 @@
         cur_page: 1,
         pageCount: 0,
         sectionName: '',
-        filterType: 0
+        filterType: 2
       }
     },
     watch: {
@@ -118,6 +119,7 @@
         let url = config.ROOT_API_URL + 'station/edit'
         if (this.$route.query.type !== 0) {
           this.sectionId = this.$route.query.sectionId
+          window.localStorage.setItem('curSectionId',this.sectionId)
         }
         $.ajax({
           url: url,
@@ -147,6 +149,10 @@
           }
         })
       },
+      goBack: function () {
+        let roadId = localStorage.getItem('curRoadId')
+        this.$router.push({path: '/sectionlist', query: {type: 1, roadId: roadId}})
+      },
       jump2AddStation: function () {
         this.$router.push({
           path: '/addStation',
@@ -159,12 +165,17 @@
       StationFaculty: function (msg, event) {
         let el = event.currentTarget
         let idInt = parseInt(el.value)
+        let backAll =  this.sectionId ? false:true
+        console.log('go to facultylis ,backAll')
+        console.log(backAll)
         // 跳转信息：1 路线人员信息 2：路段人员信息 3：岗哨人员信息
         this.$router.push({
           path: '/facultyInfo',
           query: {
             stationId: idInt,
-            type: 3}
+            type: 3,
+            backAll: backAll
+          }
         })
       },
       EditStation: function (msg, event) {

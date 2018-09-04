@@ -21,6 +21,7 @@
           </select>
         </li>
         <button style="height: 20px" v-show="serviceLineId" @click="InsertIntoServiceLine">ok</button>
+        <button v-show="serviceLineId" @click="goBack" style="margin-left:600px;">返回</button>
       </ul>
       <hr>
       <div class="container">
@@ -113,7 +114,7 @@
         pageCount: 0,
         parentMessage: '',
         showType: false,
-        filterType: 0
+        filterType: 2
       }
     },
     watch: {
@@ -129,6 +130,9 @@
         this.serviceLineId = this.$route.query.serviceLineId
         console.log('打印serviceLineId')
         console.log(this.serviceLineId)
+        if(this.serviceLineId != ''){
+          window.localStorage.setItem('curServiceId', this.serviceLineId)
+        }
         let _this = this
         let url = config.ROOT_API_URL + 'road/edit'
         $.ajax({
@@ -158,11 +162,17 @@
           }
         })
       },
+      goBack: function () {
+        this.$router.push('/serviceLineList')
+      },
       RoadFaculty: function (msg, event) {
         let el = event.currentTarget
         let idInt = parseInt(el.value)
+        let backAll =  this.serviceLineId ? false:true
+        console.log('go to facultylis ,backAll')
+        console.log(backAll)
         // 跳转信息：1 路线人员信息 2：路段人员信息 3：岗哨人员信息
-        this.$router.push({path: '/facultyInfo', query: {roadId: idInt, type: 1}})
+        this.$router.push({path: '/facultyInfo', query: {roadId: idInt, type: 1, backAll:backAll}})
       },
       EditRoad: function (msg, event) {
         var el = event.currentTarget
@@ -214,7 +224,8 @@
         let idInt = parseInt(el.id)
         console.log('跳转到excel')
         console.log(idInt)
-        this.$router.push({path: '/roadExcel', query: {roadId: idInt}})
+        let backAll = (this.serviceLineId == 0) ? true:false
+        this.$router.push({path: '/roadExcel', query: {roadId: idInt,backAll:backAll}})
       },
       RoadNotInServiceLine: function () {
         let _this = this

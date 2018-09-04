@@ -3,6 +3,9 @@
     <div class="container">
       <h3 align="center">{{result.data.name}}“三长制”总览统计表
       </h3>
+      <h4 align="right" height = "30px">
+        <button @click="goBack">返回</button>
+      </h4>
       <hr>
       <div class="container">
         <div class="bs-example" data-example-id="hoverable-table">
@@ -36,7 +39,7 @@
                   <td>{{list.name}}</td>
                   <td>{{list.duty}}</td>
                   <td>{{list.mobile}}</td>
-                  <td>{{list.callSign}}</td>
+                  <td>{{result.data.callSign}}</td>
                 </tr>
               </template>
               </tbody>
@@ -60,7 +63,7 @@
                     <td>{{chief.name}}</td>
                     <td>{{chief.duty}}</td>
                     <td>{{chief.mobile}}</td>
-                    <td>{{chief.callSign}}</td>
+                    <td>{{section.callSign}}</td>
                   </tr>
                   </template>
                 </template>
@@ -85,7 +88,7 @@
                     <td>{{chief.name}}</td>
                     <td>{{chief.duty}}</td>
                     <td>{{chief.mobile}}</td>
-                    <td>{{chief.callSign}}</td>
+                    <td>{{station.callSign}}</td>
                   </tr>
                   </template>
                 </template>
@@ -107,11 +110,13 @@
     name: 'roadExcelTotal',
     data () {
       return {
+        backAll: '',
         result: {}
       }
     },
     methods: {
       init: function () {
+        this.backAll = this.$route.query.backAll
         let roadId = this.$route.query.roadId
         let url = config.ROOT_API_URL + 'road/excel/info'
         let _this = this
@@ -133,6 +138,15 @@
           }
         })
       },
+      goBack: function () {
+        let serviceId = localStorage.getItem('curServiceId')
+        this.$router.push({
+          path: '/roadlist',
+          query: {
+            serviceLineId: this.backAll ? 0:serviceId
+          }
+        })
+      },
       export2Excel: function (tableId) {
         console.log('打印excel，tableId:' + 'table_print')
         require.ensure([], () => {
@@ -142,7 +156,7 @@
       },
       pushDetail: function () {
         this.$router.push(
-          {path: '/roadExcel', query: {roadId: this.$route.query.roadId}}
+          {path: '/roadExcel', query: {roadId: this.$route.query.roadId ,backAll:this.backAll}}
         )
       }
     },

@@ -21,6 +21,7 @@
           </select>
         </li>
         <button style="height: 20px" v-show="roadId" @click="InsertIntoRoad">ok</button>
+        <button v-show="roadId" @click="goBack" style="margin-left:600px;">返回</button>
       </ul>
       <hr>
       <div class="container">
@@ -87,6 +88,7 @@
     <my-pagination @paginatorPage="paginatorPage" :pages="pageCount"></my-pagination>
     <toast :parentMessage="parentMessage" v-show="showType"></toast>
 
+
   </div>
 </template>
 
@@ -114,7 +116,7 @@
         pageCount: 0,
         parentMessage: '',
         showType: false,
-        filterType: 0
+        filterType: 2
       }
     },
     watch: {
@@ -130,9 +132,10 @@
         this.type = this.$route.query.type
         if (this.type === 1) {
           this.roadId = this.$route.query.roadId
+          window.localStorage.setItem('curRoadId', this.roadId)
         }
         let _this = this
-        var url = config.ROOT_API_URL + 'section/edit'
+        let url = config.ROOT_API_URL + 'section/edit'
         $.ajax({
           url: url,
           type: 'GET',
@@ -218,14 +221,26 @@
       SectionFaculty: function () {
         let el = event.currentTarget
         let idInt = parseInt(el.value)
+        let backAll =  this.roadId ? false:true
+        console.log('go to facultylis ,backAll')
+        console.log(backAll)
         // 跳转信息：1 路线人员信息 2：路段人员信息 3：岗哨人员信息
-        this.$router.push({path: '/facultyInfo', query: {sectionId: idInt, type: 2}})
+        this.$router.push({path: '/facultyInfo', query: {sectionId: idInt, type: 2,backAll:backAll}})
       },
       jump2Station: function () {
         let el = event.currentTarget
         let idInt = parseInt(el.id)
         console.log('jump2StationList,sectioniId:' + idInt)
         this.$router.push({path: '/stationList', query: {type: 1, sectionId: idInt}})
+      },
+      goBack: function () {
+        let serviceId = localStorage.getItem('curServiceId')
+        this.$router.push({
+          path: '/roadlist',
+          query: {
+            serviceLineId: serviceId
+          }
+        })
       },
       InsertIntoRoad: function () {
         let _this = this

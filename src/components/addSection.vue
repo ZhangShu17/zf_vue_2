@@ -121,7 +121,8 @@
           channel: '1W',
           callSign: '',
           userDistrictId: '',
-          allDistricts: []
+          allDistricts: [],
+          relativeId:''
         }
       },
       methods: {
@@ -130,7 +131,8 @@
           // this.sectionId = this.$route.query.sectionId
           this.roadId = this.$route.query.roadId
           this.mapType = this.$route.query.mapType
-
+          this.relativeId = this.$route.query.servicelinedIds
+          console.log('init,maptype:'+this.mapType+',roadId:'+this.roadId)
           if (parseInt(this.mapType) === 4) {
             this.districtId = this.$route.query.districtId
             this.sectionName = this.$route.query.sectionName
@@ -141,6 +143,32 @@
             this.remark2 = this.$route.query.remark2
             this.remark3 = this.$route.query.remark3
             console.log('init,' + 'districtId:' + this.districtId + ',type:' + this.type + ',roadId:' + this.roadId + ',maptype:' + this.mapType + 'sectionName:' + this.sectionName)
+          }else if(this.roadId != ''){
+            let url = config.ROOT_API_URL + 'road/single'
+            let _this = this
+            console.log('userName')
+            console.log(localStorage.getItem('userName'))
+            $.ajax({
+              url: url,
+              type: 'GET',
+              data: {
+                userName: localStorage.getItem('userName'),
+                roadId: _this.roadId
+              },
+              async: false,
+              success: function (response) {
+                let serviceids = response.data.relatedServiceLineIds
+                if(serviceids.length > 0)
+                  _this.relativeId = serviceids[0]
+                console.log('通过roadId获得servicelineIds叔祖')
+                console.log(serviceids)
+                console.log('数组第一个servicelineIid如下')
+                console.log(_this.relativeId)
+              },
+              error: function (err) {
+                console.log(err)
+              }
+            })
           }
         },
         AddSection: function () {
@@ -180,7 +208,6 @@
           })
         },
         jump2map: function () {
-          console.log('section jump2map')
           this.$router.push({
             path: '/mapOperate',
             query: {
@@ -194,7 +221,8 @@
               locationList: this.xycoordinate,
               remark1: this.remark1,
               remark2: this.remark2,
-              remark3: this.remark3
+              remark3: this.remark3,
+              servicelinedIds: this.relativeId
             }
           })
         },

@@ -39,7 +39,7 @@
           <li id="serviceLine" role="presentation" v-if="getUserId()"><router-link to="/serviceLineList">勤务管理</router-link></li>
           <li id="roadList" role="presentation" v-if="getUserId()"><router-link :to="{path: '/roadlist', query: {serviceLineId: 0}}">路线管理</router-link></li>
           <li id="sectionList" role="presentation" v-if="getUserId()"><router-link :to="{path:'/sectionlist',query: {type: 0}}">路段管理</router-link></li>
-          <li id="stationList" role="presentation" v-if="getUserId()"><router-link :to="{path: '/stationList', query: {type: 0, sectionId: 0}}">岗哨管理</router-link></li>
+          <li id="stationList" role="presentation" v-if="getUserId()"><router-link :to="{path: '/stationList', query: {type: 0}}">岗哨管理</router-link></li>
           <li id="facultyList" role="presentation" v-if="getUserId()"><router-link to="/facultyList">人员管理</router-link></li>
         </ul>
         <router-view></router-view>

@@ -21,7 +21,6 @@ import AddServiceLine from '@/components/AddServiceLine'
 import EditServiceLine from '@/components/EditServiceLine'
 import pagination from '@/components/pagination'
 import MapOperate from '@/components/MapOperate'
-import MapOperate1 from '@/components/MapOperate1'
 import MainVue from '@/components/MainVue'
 import roadExcelTotal from '@/components/roadExcelTotal'
 
@@ -144,11 +143,6 @@ export default new Router({
       path: '/mainVue',
       name: 'mainVue',
       component: MainVue
-    },
-    {
-      path: '/mapOperate1',
-      name: 'mapOperate1',
-      component: MapOperate1
     }
   ]
 })

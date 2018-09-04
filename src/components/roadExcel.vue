@@ -3,6 +3,9 @@
     <div class="container">
       <h3 align="center">{{result.data.name}}“三长制”详尽统计表
       </h3>
+      <h4 align="right" height = "30px">
+        <button @click="goBack">返回</button>
+      </h4>
       <hr>
       <div class="container">
         <div class="bs-example" data-example-id="hoverable-table">
@@ -37,8 +40,8 @@
                   <td>{{list.name}}</td>
                   <td>{{list.duty}}</td>
                   <td>{{list.mobile}}</td>
-                  <td>{{list.channel}}</td>
-                  <td>{{list.callSign}}</td>
+                  <td>{{result.data.channel}}</td>
+                  <td>{{result.data.callSign}}</td>
                 </tr>
               </template>
               <template v-for="list in result.data.execChiefSubBureau">
@@ -47,8 +50,8 @@
                   <td>{{list.name}}</td>
                   <td>{{list.duty}}</td>
                   <td>{{list.mobile}}</td>
-                  <td>{{list.channel}}</td>
-                  <td>{{list.callSign}}</td>
+                  <td>{{result.data.channel}}</td>
+                  <td>{{result.data.callSign}}</td>
                 </tr>
               </template>
               <template v-for="list in result.data.execChiefTrans">
@@ -57,8 +60,8 @@
                   <td>{{list.name}}</td>
                   <td>{{list.duty}}</td>
                   <td>{{list.mobile}}</td>
-                  <td>{{list.channel}}</td>
-                  <td>{{list.callSign}}</td>
+                  <td>{{result.data.channel}}</td>
+                  <td>{{result.data.callSign}}</td>
                 </tr>
               </template>
               <template v-for="list in result.data.execChiefArmedPoli">
@@ -67,8 +70,8 @@
                   <td>{{list.name}}</td>
                   <td>{{list.duty}}</td>
                   <td>{{list.mobile}}</td>
-                  <td>{{list.channel}}</td>
-                  <td>{{list.callSign}}</td>
+                  <td>{{result.data.channel}}</td>
+                  <td>{{result.data.callSign}}</td>
                 </tr>
               </template>
               </tbody>
@@ -100,8 +103,8 @@
                     <td>{{chief.name}}</td>
                     <td>{{chief.duty}}</td>
                     <td>{{chief.mobile}}</td>
-                    <td>{{chief.channel}}</td>
-                    <td>{{chief.callSign}}</td>
+                    <td>{{section.channel}}</td>
+                    <td>{{section.callSign}}</td>
                   </tr>
                 </template>
                 <!--执行段长(分局)-->
@@ -112,8 +115,8 @@
                     <td>{{bureau.name}}</td>
                     <td>{{bureau.duty}}</td>
                     <td>{{bureau.mobile}}</td>
-                    <td>{{bureau.channel}}</td>
-                    <td>{{bureau.callSign}}</td>
+                    <td>{{section.channel}}</td>
+                    <td>{{section.callSign}}</td>
                   </tr>
                 </template>
                 <!--执行段长(交通)-->
@@ -124,8 +127,8 @@
                     <td>{{trans.name}}</td>
                     <td>{{trans.duty}}</td>
                     <td>{{trans.mobile}}</td>
-                    <td>{{trans.channel}}</td>
-                    <td>{{trans.callSign}}</td>
+                    <td>{{section.channel}}</td>
+                    <td>{{section.callSign}}</td>
                   </tr>
                 </template>
                 <!--执行段长(武警)-->
@@ -136,8 +139,8 @@
                     <td>{{armedPoli.name}}</td>
                     <td>{{armedPoli.duty}}</td>
                     <td>{{armedPoli.mobile}}</td>
-                    <td>{{armedPoli.channel}}</td>
-                    <td>{{armedPoli.callSign}}</td>
+                    <td>{{section.channel}}</td>
+                    <td>{{section.callSign}}</td>
                   </tr>
                 </template>
                 <tr>
@@ -159,8 +162,8 @@
                       <th>{{chief.name}}</th>
                       <th>{{chief.duty}}</th>
                       <th>{{chief.mobile}}</th>
-                      <th>{{chief.channel}}</th>
-                      <th>{{chief.callSign}}</th>
+                      <th>{{station.channel}}</th>
+                      <th>{{station.callSign}}</th>
                     </tr>
                   </template>
                   <!--执行岗长 交通-->
@@ -171,8 +174,8 @@
                       <th>{{trans.name}}</th>
                       <th>{{trans.duty}}</th>
                       <th>{{trans.mobile}}</th>
-                      <th>{{trans.channel}}</th>
-                      <th>{{trans.callSign}}</th>
+                      <th>{{station.channel}}</th>
+                      <th>{{station.callSign}}</th>
                     </tr>
                   </template>
                 </template>
@@ -196,11 +199,13 @@
       name: 'roadExcel',
       data () {
         return {
+          backAll: '',
           result: {}
         }
       },
       methods: {
         init: function () {
+          this.backAll = this.$route.query.backAll
           let roadId = this.$route.query.roadId
           let url = config.ROOT_API_URL + 'road/excel/info'
           let _this = this
@@ -222,6 +227,15 @@
             }
           })
         },
+        goBack: function () {
+          let serviceId = localStorage.getItem('curServiceId')
+          this.$router.push({
+            path: '/roadlist',
+            query: {
+              serviceLineId: this.backAll ? 0:serviceId
+            }
+          })
+        },
         export2Excel: function (tableId) {
           console.log('打印excel，tableId:' + 'table_print')
           require.ensure([], () => {
@@ -231,7 +245,7 @@
         },
         pushTotal: function () {
           this.$router.push(
-          {path: '/roadExcelTotal', query: {roadId: this.$route.query.roadId}}
+          {path: '/roadExcelTotal', query: {roadId: this.$route.query.roadId,backAll:this.backAll}}
           )
         }
       },

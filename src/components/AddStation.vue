@@ -108,8 +108,14 @@
       },
       methods: {
         AddStation: function () {
+          console.log('信道')
+          console.log(this.call_sign)
+          console.log('呼号')
+          console.log(this.channel)
           if (!this.districtId) {
             alert('请选择地区')
+          }else if(this.call_sign.trim() == '' || this.channel.trim() == ''){
+            alert('请填入信道和呼号')
           } else {
             let _this = this
             let url = config.ROOT_API_URL + 'station/edit'
@@ -205,7 +211,6 @@
         this.sectionId = this.$route.query.sectionId
         console.log('打印type')
         console.log(this.type)
-        console.log('打印type')
         if (parseInt(this.mapType) === 3) {
           this.districtId = this.$route.query.districtId
           this.name = this.$route.query.name
