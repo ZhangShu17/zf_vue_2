@@ -28,7 +28,7 @@
               <template v-for="(list,index) in serviceList">
                 <tr>
                   <th>{{list.id}}</th>
-                  <td>{{list.name}}</td>
+                  <td :id="list.id" @click="PushExcel('', $event)"><a href="#">{{list.name}}</a></td>
                   <td>{{list.time}}</td>
                   <td>{{list.startPlace}}</td>
                   <td>{{list.endPlace}}</td>
@@ -117,6 +117,12 @@
               // console.log(err.responseJSON[0] == 30002)
             }
           })
+        },
+        PushExcel: function (msg, event) {
+          let el = event.currentTarget
+          let idInt = parseInt(el.id)
+          let backAll = (this.serviceLineId == 0) ? true:false
+          this.$router.push({path: '/roadExcelTotal', query: {serviceLineId: idInt,backAll:backAll}})
         },
         Jump2RoadList: function () {
           let el = event.currentTarget

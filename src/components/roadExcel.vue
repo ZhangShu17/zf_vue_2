@@ -189,7 +189,6 @@
         </div>
       </div>
     </div>
-    <button style="margin-left: 50%" @click="pushTotal">下一页</button>
   </div>
 </template>
 
@@ -243,11 +242,11 @@
             export_table_to_excel(tableId)
           })
         },
-        pushTotal: function () {
-          this.$router.push(
-          {path: '/roadExcelTotal', query: {roadId: this.$route.query.roadId,backAll:this.backAll}}
-          )
-        }
+        // pushTotal: function () {
+        //   this.$router.push(
+        //   {path: '/roadExcelTotal', query: {roadId: this.$route.query.roadId,backAll:this.backAll}}
+        //   )
+        // }
       },
       mounted () {
         this.init()

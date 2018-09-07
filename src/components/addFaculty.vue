@@ -272,7 +272,15 @@
               _this.$router.push({path: '/facultyInfo', query: {type: _this.type, roadId: _this.roadId}})
             },
             error: function (error) {
-              console.log(error)
+              console.log(error.responseJSON.retMsg)
+              _this.parentMessage = error.responseJSON.retMsg
+              setTimeout(function () {
+                _this.showType = true
+              }, 1000)
+              setTimeout(function () {
+                console.log('settimeout')
+                _this.showType = false
+              }, 3000)
             }
           })
         }
@@ -298,7 +306,15 @@
               _this.$router.push({path: '/facultyInfo', query: {type: _this.type, sectionId: _this.sectionId}})
             },
             error: function (error) {
-              console.log(error)
+              console.log(error.responseJSON.retMsg)
+              _this.parentMessage = error.responseJSON.retMsg
+              setTimeout(function () {
+                _this.showType = true
+              }, 1000)
+              setTimeout(function () {
+                console.log('settimeout')
+                _this.showType = false
+              }, 3000)
             }
           })
         }
@@ -324,7 +340,15 @@
               _this.$router.push({path: '/facultyInfo', query: {type: _this.type, stationId: _this.stationId}})
             },
             error: function (error) {
-              console.log(error)
+              console.log(error.responseJSON.retMsg)
+              _this.parentMessage = error.responseJSON.retMsg
+              setTimeout(function () {
+                _this.showType = true
+              }, 1000)
+              setTimeout(function () {
+                console.log('settimeout')
+                _this.showType = false
+              }, 3000)
             }
           })
         }

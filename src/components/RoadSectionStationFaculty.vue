@@ -62,7 +62,7 @@
               </tr>
               </thead>
               <tbody>
-              <template v-for="list in chiefList">
+              <template v-for="list in chiefList" v-if="list.enabled">
                 <tr>
                   <th>{{list.id}}</th>
                   <td>{{list.name}}</td>
@@ -130,7 +130,7 @@
               </tr>
               </thead>
               <tbody>
-              <template v-for="list in execChiefSubBureauList">
+              <template v-for="list in execChiefSubBureauList" v-if="list.enabled">
                 <tr>
                   <th>{{list.id}}</th>
                   <td>{{list.name}}</td>
@@ -207,7 +207,7 @@
               </tr>
               </thead>
               <tbody>
-              <template v-for="list in execChiefTransList">
+              <template v-for="list in execChiefTransList" v-if="list.enabled">
                 <tr>
                   <th>{{list.id}}</th>
                   <td>{{list.name}}</td>
@@ -274,7 +274,7 @@
               </tr>
               </thead>
               <tbody>
-              <template v-for="list in execChiefArmedPoliList">
+              <template v-for="list in execChiefArmedPoliList" v-if="list.enabled">
                 <tr>
                   <th>{{list.id}}</th>
                   <td>{{list.name}}</td>
